@@ -3,12 +3,14 @@ package com.ourshipsgame.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.ourshipsgame.Main;
+import com.ourshipsgame.handlers.Constant;
 
-public class DesktopLauncher {
+public class DesktopLauncher implements Constant {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.width = 1920;
-		cfg.height = 1080;
+		cfg.title = "Ships Game v1.0 Credits -> Patryk Grzywacz | Dominik Grudzień | Adrian Pełka";
+		cfg.width = GAME_WIDTH;
+		cfg.height = GAME_HEIGHT;
 		new LwjglApplication(new Main(), cfg);
 	}
 }
