@@ -50,6 +50,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void createGraphics() {
+<<<<<<< HEAD
         menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
 
         stage = new Stage(new ScreenViewport());
@@ -80,6 +81,9 @@ public class MenuScreen extends ScreenAdapter implements Constant {
         stage.addActor(optionsButton);
         stage.addActor(quitButton);
     }
+=======
+        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, false);
+>>>>>>> 4bae2ba8a6a7b4c921ed068ba3f7583cdd017d1a
 
     private void handleButtons() {
         if(quitButton.isPressed())
