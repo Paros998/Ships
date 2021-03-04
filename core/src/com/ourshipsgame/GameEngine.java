@@ -1,12 +1,14 @@
 package com.ourshipsgame;
 
+import javax.xml.transform.Source;
+
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.ourshipsgame.handlers.Constant;
 
 import org.lwjgl.util.vector.Vector2f;
 
-public abstract class GameEngine extends ScreenAdapter implements Constant {
+public class GameEngine extends ScreenAdapter implements Constant {
     // Important vars
     protected int[][] FirstBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
@@ -43,10 +45,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
                         FirstBoardStart.x + (i * BOX_WIDTH_F), GAME_HEIGHT_F - FirstBoardStart.y, true);
         }
-
-        DragAndDrop dnd = new DragAndDrop();
-
-        return done;
+        /*
+         * DragAndDrop dnd = new DragAndDrop(); for (int i = 0; i < sum; i++) {
+         * dnd.addSource(new Source(FirstBoardShipsSprites)); } return done;
+         */
     }
 
     protected boolean gameLoop() {
