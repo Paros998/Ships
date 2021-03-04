@@ -23,7 +23,9 @@ public interface Constant {
     // Opcje graficzne
     public boolean FULLSCREENMODE = false;
     public boolean VSYNCENABLED = false;
-    public boolean FPSCAPUNLIMITED = false;
+    public int FPSMAX = 60;
+    public boolean UNDECORATED = false;
+    public boolean ALLOWSOFTWAREMODE = true;
     // Opcje muzyczne , key bindingi etc
     public float MUSIC_LEVEL = 1f;
     public float SOUND_LEVEL = 1f;

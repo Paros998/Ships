@@ -36,7 +36,7 @@ public class GameScreen extends ScreenAdapter implements Constant {
         // textures
         bgTexture = new Texture("core/assets/backgroundtextures/paper_bg.png");
         bgTexture.setAnisotropicFilter(16);
-        shipTexture = new Texture("core/assets/icon/statek.png");
+        shipTexture = new Texture("core/assets/icon/ship.png");
         shipTexture.setAnisotropicFilter(16);
         // sprites
         bgSprite = new Sprite(shipTexture);
@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter implements Constant {
     @Override
     public void render(float deltaTime) {
         // buffer screen
-        Gdx.gl20.glClearColor(1, 0, .5f, 1);
+        Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // update
         update(deltaTime);
