@@ -3,7 +3,6 @@ package com.ourshipsgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,7 +26,6 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
     private int direction = 0;
-    private int screenInt = 4;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -50,7 +48,6 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void createGraphics() {
-<<<<<<< HEAD
         menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
 
         stage = new Stage(new ScreenViewport());
@@ -63,11 +60,45 @@ public class MenuScreen extends ScreenAdapter implements Constant {
         scoreButton = new GameButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, skin);
         optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, skin);
         quitButton = new GameButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, skin);
+
+        playButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                processEnter(4);
+            }
+        });
+
+        helpButon.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                processEnter(3);
+            }
+        }); 
+
+        scoreButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                processEnter(2);
+            }
+        });
+
         quitButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(event.isTouchFocusCancel())
-                    Gdx.app.exit();
+                    processEnter(1);
                 return true;
             }
             @Override
@@ -75,36 +106,34 @@ public class MenuScreen extends ScreenAdapter implements Constant {
 
             }
         });
+        
         stage.addActor(playButton);
         stage.addActor(helpButon);
         stage.addActor(scoreButton);
         stage.addActor(optionsButton);
         stage.addActor(quitButton);
     }
-=======
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, false);
->>>>>>> 4bae2ba8a6a7b4c921ed068ba3f7583cdd017d1a
 
     private void handleButtons() {
         if(quitButton.isPressed())
             Gdx.app.exit();
     }
 
-    private void processEnter(float deltaTime) {
+    private void processEnter(int option) {
         // Changing screen based on screenInt and Enter pressed
-        switch (screenInt) {
+        switch (option) {
             case 4: {
                 super.dispose();
                 game.setScreen(new GameScreen(game));
                 break;
             }
             case 3: {
-                super.dispose();
+                //super.dispose();
                 // game.setScreen(new OptionScreen(game));
                 break;
             }
             case 2: {
-                super.dispose();
+                //super.dispose();
                 // game.setScreen(new ScoreScreen(game));
                 break;
             }
@@ -116,34 +145,9 @@ public class MenuScreen extends ScreenAdapter implements Constant {
         }
     }
 
-    private void handleInput(float deltaTime) {
-        /// Keys pressed
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-            processEnter(deltaTime);
-            return;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Keys.W) || Gdx.input.isKeyJustPressed(Keys.UP)) {
-            if (screenInt == 4)
-                return;
-            else
-                screenInt += 1;
-        } else if (Gdx.input.isKeyJustPressed(Keys.S) || Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-            if (screenInt == 1)
-                return;
-            else
-                screenInt -= 1;
-        } else if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            screenInt = 1;
-            processEnter(deltaTime);
-        }
-
-    }
-
     // update logics method
     private void update(float deltaTime) {
         moveMenu(deltaTime);
-        handleInput(deltaTime);
         handleButtons();
     }
 
