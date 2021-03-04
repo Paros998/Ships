@@ -42,7 +42,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void createGraphics() {
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0);
+        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, false);
 
     }
 
