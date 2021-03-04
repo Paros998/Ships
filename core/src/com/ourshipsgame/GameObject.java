@@ -2,6 +2,7 @@ package com.ourshipsgame;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameObject extends Rectangle {
@@ -28,6 +29,15 @@ public class GameObject extends Rectangle {
 
     protected void createSprite(Texture texture) {
         this.sprite = new Sprite(texture);
+        this.sprite.setX(this.x);
+        this.sprite.setY(this.y);
     }
 
+    protected Texture drawTexture() {
+        return this.texture;
+    }
+
+    protected void drawSprite(SpriteBatch batch) {
+        this.sprite.draw(batch);
+    }
 }

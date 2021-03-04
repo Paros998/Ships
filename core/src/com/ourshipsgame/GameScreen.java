@@ -2,16 +2,10 @@ package com.ourshipsgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.ourshipsgame.handlers.Constant;
 
-public class GameScreen extends ScreenAdapter implements Constant {
+public class GameScreen extends GameEngine {
 
     private final String id = getClass().getName();
 
@@ -19,10 +13,8 @@ public class GameScreen extends ScreenAdapter implements Constant {
     private Game game;
     private SpriteBatch sb;
     private float runTime;
+    private GameObject mapTexture;
     // other vars
-    private Texture bgTexture;
-    private Texture shipTexture;
-    private Sprite bgSprite;
 
     // constructor
     public GameScreen(Game game) {
@@ -32,20 +24,16 @@ public class GameScreen extends ScreenAdapter implements Constant {
 
     // method to create elements
     private void createGraphics() {
-
         // textures
-        bgTexture = new Texture("core/assets/backgroundtextures/paper_bg.png");
-        bgTexture.setAnisotropicFilter(16);
-        shipTexture = new Texture("core/assets/icon/ship.png");
-        shipTexture.setAnisotropicFilter(16);
+        mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0, false);
         // sprites
-        bgSprite = new Sprite(shipTexture);
-        bgSprite.setBounds(100, 100, 35, 35);
+        preparation(true);
+
         // etc
 
     }
 
-    private void handleInput() {
+    private void handleInput(float deltaTime) {
         /// Buttons pressed
 
         // Mouse Events Later
@@ -55,7 +43,7 @@ public class GameScreen extends ScreenAdapter implements Constant {
     // update logics method
     private void update(float deltaTime) {
         runTime += deltaTime;
-        handleInput();
+        handleInput(deltaTime);
     }
 
     // game loop method
@@ -64,10 +52,22 @@ public class GameScreen extends ScreenAdapter implements Constant {
         // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         // update
         update(deltaTime);
+
         // render things
         sb.begin();
+        sb.draw(mapTexture.drawTexture(), 0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        // Map First Always kurwa!!!!!!!!!!!!!
+        // Do not place any drawings up!!
+
+        // Ships
+        for (int i = 0; i < sum; i++)
+            FirstBoardShipsSprites[i].drawSprite(sb);
+
+        // Turrets
 
         sb.end();
     }
