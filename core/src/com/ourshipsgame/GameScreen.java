@@ -47,23 +47,7 @@ public class GameScreen extends ScreenAdapter implements Constant {
 
     private void handleInput() {
         /// Buttons pressed
-        if (Gdx.input.isKeyPressed(Keys.D) && Gdx.input.isKeyPressed(Keys.W)) {
-            bgSprite.translate(5, 5);
-        } else if (Gdx.input.isKeyPressed(Keys.D) && Gdx.input.isKeyPressed(Keys.S)) {
-            bgSprite.translate(5, -5);
-        } else if (Gdx.input.isKeyPressed(Keys.A) && Gdx.input.isKeyPressed(Keys.W)) {
-            bgSprite.translate(-5, 5);
-        } else if (Gdx.input.isKeyPressed(Keys.A) && Gdx.input.isKeyPressed(Keys.S)) {
-            bgSprite.translate(-5, -5);
-        } else if (Gdx.input.isKeyPressed(Keys.D)) {
-            bgSprite.translateX(5);
-        } else if (Gdx.input.isKeyPressed(Keys.A)) {
-            bgSprite.translateX(-5);
-        } else if (Gdx.input.isKeyPressed(Keys.W)) {
-            bgSprite.translateY(5);
-        } else if (Gdx.input.isKeyPressed(Keys.S)) {
-            bgSprite.translateY(-5);
-        }
+
         // Mouse Events Later
 
     }
@@ -80,13 +64,11 @@ public class GameScreen extends ScreenAdapter implements Constant {
         // buffer screen
         Gdx.gl20.glClearColor(1, 0, .5f, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         // update
         update(deltaTime);
         // render things
         sb.begin();
-        sb.draw(bgTexture, 0, 0, GAME_WIDTH, GAME_HEIGHT);
-        bgSprite.draw(sb);
+
         sb.end();
     }
 

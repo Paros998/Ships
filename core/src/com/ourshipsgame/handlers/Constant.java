@@ -12,8 +12,8 @@ public interface Constant {
     public final float BOX_WIDTH_F = 64.0f;
     public final float BOX_HEIGHT_F = 64.0f;
     // Ilosc kwadratów na planszy wg osi
-    public final int BOX_X_AXIS_NUMBER = 8;
-    public final int BOX_Y_AXIS_NUMBER = 8;
+    public final int BOX_X_AXIS_NUMBER = 10;
+    public final int BOX_Y_AXIS_NUMBER = 10;
 
     // Enumerator do słownego rozróżniania plansz -- przyda sie przy działaniu gry!
     public enum BOARD {
