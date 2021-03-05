@@ -38,7 +38,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
             // changing to next phase
             gameStage = 2;
         }
-        FirstBoardShipsSprites[11].goodPlacement = true;
         // etc
 
     }
@@ -83,8 +82,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
         // Turrets
 
-        sr.end();
         sb.end();
+        sr.end();
     }
 
     @Override

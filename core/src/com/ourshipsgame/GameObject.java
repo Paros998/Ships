@@ -19,6 +19,7 @@ public class GameObject extends Rectangle {
     protected int[] destroyed;
     protected Vector2 oldPos;
     protected boolean goodPlacement;
+    protected boolean shipDestroyed;
     protected Rectangle alligmentRectangle;
     protected Color rectColour;
 
@@ -69,6 +70,7 @@ public class GameObject extends Rectangle {
         this.rectColour = new Color(1, 0, 0, 1);
         this.size = size;
         this.destroyed = new int[size];
+        this.shipDestroyed = false;
         for (int i = 0; i < size; i++)
             destroyed[i] = 0;
         this.oldPos = new Vector2(x, y);
@@ -113,5 +115,21 @@ public class GameObject extends Rectangle {
 
     public void setGoodPlacement(boolean isIt) {
         this.goodPlacement = isIt;
+    }
+
+    public boolean isDestroyed() {
+        int destroyed = 0;
+        for (int i = 0; i < size; i++)
+            if (this.destroyed[i] == 1)
+                destroyed++;
+
+        if (destroyed == size)
+            return true;
+        return false;
+    }
+
+    public boolean collide(Rectangle otherRectangle) {
+
+        return false;
     }
 }

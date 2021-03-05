@@ -1,6 +1,7 @@
 package com.ourshipsgame;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
 import org.lwjgl.util.vector.Vector2f;
@@ -66,18 +67,49 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     protected void touchUpSprite() {
+        if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
+            GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
+
+            if (isShipPlacedGood(actualShip)) {
+                actualShip.setGoodPlacement(true);
+            } else
+                actualShip.setGoodPlacement(false);
+
+            if (actualShip.goodPlacement)
+                actualShip.changeRectColour();
+            else {
+                actualShip.setPosition(actualShip.oldPos);
+                actualShip.changeRectColour();
+            }
+        }
         activeSpriteDrag = 99;
     }
 
     protected void dragSprite(int screenX, int screenY) {
         if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
-            xSprite = FirstBoardShipsSprites[activeSpriteDrag].width / 2;
-            ySprite = FirstBoardShipsSprites[activeSpriteDrag].height / 2;
-            FirstBoardShipsSprites[activeSpriteDrag]
-                    .setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
+            GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
+            xSprite = actualShip.width / 2;
+            ySprite = actualShip.height / 2;
+            actualShip.setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
 
         }
     }
 
+    protected boolean isShipPlacedGood(GameObject actualShip) {
+        // Checking if ship is dropped on good position not colliding with anything
+        Rectangle board = new Rectangle(FirstBoardStart.x, FirstBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
+                BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
+        if (board.contains(actualShip.alligmentRectangle)) {
+            for (int i = 0; i < sum; i++) {
+                if (actualShip == FirstBoardShipsSprites[i])
+                    break;
+                // Need change Work in progress
+                if (actualShip.overlaps(FirstBoardShipsSprites[i].alligmentRectangle))
+                    return false;
+            }
+            return true;
+        } else
+            return false;
+    }
     // Stage 3 later
 }
