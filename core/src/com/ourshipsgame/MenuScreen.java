@@ -48,7 +48,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void createGraphics() {
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true, 0);
+        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);

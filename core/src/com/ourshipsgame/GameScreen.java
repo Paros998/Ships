@@ -56,7 +56,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // method to create elements
     private void createGraphics() {
         // textures
-        mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0, false, 0);
+        mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0);
         // sprites
         prepDone = preparation(true);
 

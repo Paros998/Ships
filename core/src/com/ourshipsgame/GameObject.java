@@ -17,6 +17,24 @@ public class GameObject extends Rectangle {
     protected int[] destroyed;
     protected Vector2 oldPos;
 
+    public GameObject(String internalPath, float x, float y) {
+        texture = new Texture(internalPath);
+        this.setX(x);
+        this.setY(y);
+        this.width = texture.getWidth();
+        this.height = texture.getHeight();
+    }
+
+    public GameObject(String internalPath, float x, float y, boolean createSprite) {
+        texture = new Texture(internalPath);
+        this.setX(x);
+        this.setY(y);
+        this.width = texture.getWidth();
+        this.height = texture.getHeight();
+        if (createSprite)
+            createSprite(texture);
+    }
+
     public GameObject(String internalPath, float x, float y, boolean createSprite, int sizeofShip) {
         texture = new Texture(internalPath);
         this.setX(x);
@@ -31,10 +49,18 @@ public class GameObject extends Rectangle {
         this.x += x;
     }
 
+    protected void createSprite(Texture texture) {
+        this.sprite = new Sprite(texture);
+        this.oldPos = new Vector2(x, y);
+        setSpritePos(this.oldPos);
+    }
+
     protected void createSprite(Texture texture, int size) {
         this.sprite = new Sprite(texture);
         this.size = size;
         this.destroyed = new int[size];
+        for (int i = 0; i < size; i++)
+            destroyed[i] = 0;
         this.oldPos = new Vector2(x, y);
         setSpritePos(this.oldPos);
     }
