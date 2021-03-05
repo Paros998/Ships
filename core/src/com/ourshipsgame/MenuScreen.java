@@ -48,7 +48,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void createGraphics() {
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
+        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true, 0);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -66,6 +66,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 processEnter(4);
@@ -77,17 +78,19 @@ public class MenuScreen extends ScreenAdapter implements Constant {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 processEnter(3);
             }
-        }); 
+        });
 
         scoreButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 processEnter(2);
@@ -97,16 +100,17 @@ public class MenuScreen extends ScreenAdapter implements Constant {
         quitButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(event.isTouchFocusCancel())
+                if (event.isTouchFocusCancel())
                     processEnter(1);
                 return true;
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
             }
         });
-        
+
         stage.addActor(playButton);
         stage.addActor(helpButon);
         stage.addActor(scoreButton);
@@ -115,7 +119,7 @@ public class MenuScreen extends ScreenAdapter implements Constant {
     }
 
     private void handleButtons() {
-        if(quitButton.isPressed())
+        if (quitButton.isPressed())
             Gdx.app.exit();
     }
 
@@ -128,12 +132,12 @@ public class MenuScreen extends ScreenAdapter implements Constant {
                 break;
             }
             case 3: {
-                //super.dispose();
+                // super.dispose();
                 // game.setScreen(new OptionScreen(game));
                 break;
             }
             case 2: {
-                //super.dispose();
+                // super.dispose();
                 // game.setScreen(new ScoreScreen(game));
                 break;
             }
