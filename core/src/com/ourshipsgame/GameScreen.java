@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameScreen extends GameEngine implements InputProcessor {
 
@@ -14,14 +14,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // vars mandatory
     private Game game;
     private SpriteBatch sb;
+    private ShapeRenderer sr;
     private float runTime;
     private GameObject mapTexture;
-
+    private int gameStage = 1;
     // other vars
     private boolean prepDone = false;
     protected int activeSpriteDrag = 1;
-    protected float xSprite;
-    protected float ySprite;
 
     // constructor
     public GameScreen(Game game) {
@@ -30,36 +29,16 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     }
 
-    private boolean preparation(boolean computerEnemy) {
-        boolean done = false;
-        for (int i = 0; i < BOX_X_AXIS_NUMBER; i++)
-            for (int j = 0; j < BOX_Y_AXIS_NUMBER; j++) {
-                FirstBoardShipsPos[i][j] = SecondBoardShipsPos[i][j] = FirstPlayerShotsDone[i][j] = SecondPlayerShotsDone[i][j] = 0;
-            }
-
-        for (int i = 0; i < sum; i++) {
-            if (i <= 2) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), GAME_HEIGHT_F - FirstBoardStart.y, true, 3);
-            }
-            if (i > 2 && i <= 6) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), GAME_HEIGHT_F - FirstBoardStart.y, true, 3);
-            } else
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), GAME_HEIGHT_F - FirstBoardStart.y, true, 3);
-        }
-        done = true;
-        return done;
-    }
-
     // method to create elements
     private void createGraphics() {
         // textures
         mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0);
         // sprites
-        prepDone = preparation(true);
-
+        if (prepDone = preparation(true)) {
+            // changing to next phase
+            gameStage = 2;
+        }
+        FirstBoardShipsSprites[11].goodPlacement = true;
         // etc
 
     }
@@ -89,23 +68,29 @@ public class GameScreen extends GameEngine implements InputProcessor {
         update(deltaTime);
         // render things
         sb.begin();
-        sb.draw(mapTexture.drawTexture(), 0, 0, GAME_WIDTH, GAME_HEIGHT);
+        sr.setAutoShapeType(true);
+        sr.begin();
+
+        sb.draw(mapTexture.drawTexture(), 0, 0, gameWidth, gameHeight);
 
         // Map First Always kurwa!!!!!!!!!!!!!
         // Do not place any drawings up!!
 
         // Ships
-        for (int i = 0; i < sum; i++)
-            FirstBoardShipsSprites[i].drawSprite(sb);
+        for (int i = 0; i < sum; i++) {
+            FirstBoardShipsSprites[i].drawSprite(sb, true, sr);
+        }
 
         // Turrets
 
+        sr.end();
         sb.end();
     }
 
     @Override
     public void show() {
         sb = new SpriteBatch();
+        sr = new ShapeRenderer();
         createGraphics();
         Gdx.input.setInputProcessor(this);
         Gdx.app.log(id, "The game is running");
@@ -119,6 +104,15 @@ public class GameScreen extends GameEngine implements InputProcessor {
     @Override
     public void resume() {
         Gdx.app.log(id, "The game is resumed");
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        gameHeight = height;
+        gameWidth = width;
+        gameHeight_f = (float) gameHeight;
+        gameWidth_f = (float) gameWidth;
+        super.resize(width, height);
     }
 
     @Override
@@ -141,30 +135,22 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        for (int i = 0; i < sum; i++) {
-            if (FirstBoardShipsSprites[i].spriteContains(new Vector2(screenX, GAME_HEIGHT_F - screenY))) {
-                activeSpriteDrag = i;
-                System.out.println(activeSpriteDrag);
-            }
-        }
+        if (gameStage == 2)
+            touchDownSprite(screenX, screenY);
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        activeSpriteDrag = 99;
+        if (gameStage == 2)
+            touchUpSprite();
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
-            xSprite = FirstBoardShipsSprites[activeSpriteDrag].width / 2;
-            ySprite = FirstBoardShipsSprites[activeSpriteDrag].height / 2;
-            FirstBoardShipsSprites[activeSpriteDrag]
-                    .setSpritePos(new Vector2(screenX - xSprite, GAME_HEIGHT_F - screenY - ySprite));
-
-        }
+        if (gameStage == 2)
+            dragSprite(screenX, screenY);
         return false;
     }
 

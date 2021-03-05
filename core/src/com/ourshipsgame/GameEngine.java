@@ -1,7 +1,7 @@
 package com.ourshipsgame;
 
 import com.badlogic.gdx.ScreenAdapter;
-
+import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -11,9 +11,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int[][] SecondBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
-
-    protected Vector2f FirstBoardStart = new Vector2f(83, 223);
+    protected Vector2f FirstBoardStart = new Vector2f(85, 223);
     protected Vector2f SecondBoardStart = new Vector2f(1204, 223);
+    protected int gameHeight = GAME_HEIGHT;
+    protected int gameWidth = GAME_WIDTH;
+    protected float gameHeight_f = GAME_HEIGHT_F;
+    protected float gameWidth_f = GAME_WIDTH_F;
     // Other vars
     protected int threeBoxShips = 3;
     protected int twoBoxShips = 4;
@@ -24,5 +27,57 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected GameObject SecondBoardShipsSprites[] = new GameObject[sum];
     // more other vars
     protected int activeSpriteDrag = 1;
+    protected float xSprite;
+    protected float ySprite;
 
+    // game methods below
+    // Stage 1
+    protected boolean preparation(boolean computerEnemy) {
+        boolean done = false;
+        for (int i = 0; i < BOX_X_AXIS_NUMBER; i++)
+            for (int j = 0; j < BOX_Y_AXIS_NUMBER; j++) {
+                FirstBoardShipsPos[i][j] = SecondBoardShipsPos[i][j] = FirstPlayerShotsDone[i][j] = SecondPlayerShotsDone[i][j] = 0;
+            }
+
+        for (int i = 0; i < sum; i++) {
+            if (i <= 2) {
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
+                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 3);
+            }
+            if (i > 2 && i <= 6) {
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
+                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 3);
+            } else
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModel.png",
+                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 3);
+        }
+        done = true;
+        return done;
+    }
+
+    // Stage 2 methods to place ships on board
+    protected void touchDownSprite(int screenX, int screenY) {
+        for (int i = 0; i < sum; i++) {
+            if (FirstBoardShipsSprites[i].spriteContains(new Vector2(screenX, gameHeight_f - screenY))) {
+                activeSpriteDrag = i;
+                System.out.println(activeSpriteDrag);
+            }
+        }
+    }
+
+    protected void touchUpSprite() {
+        activeSpriteDrag = 99;
+    }
+
+    protected void dragSprite(int screenX, int screenY) {
+        if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
+            xSprite = FirstBoardShipsSprites[activeSpriteDrag].width / 2;
+            ySprite = FirstBoardShipsSprites[activeSpriteDrag].height / 2;
+            FirstBoardShipsSprites[activeSpriteDrag]
+                    .setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
+
+        }
+    }
+
+    // Stage 3 later
 }

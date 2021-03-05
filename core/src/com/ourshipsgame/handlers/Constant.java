@@ -2,10 +2,10 @@ package com.ourshipsgame.handlers;
 
 public interface Constant {
     // Rozdzielczosc ekranu
-    public final int GAME_WIDTH = 1920;
-    public final int GAME_HEIGHT = 1080;
-    public final float GAME_WIDTH_F = 1920.0f;
-    public final float GAME_HEIGHT_F = 1080.0f;
+    public int GAME_WIDTH = 1920;
+    public int GAME_HEIGHT = 1080;
+    public float GAME_WIDTH_F = 1920.0f;
+    public float GAME_HEIGHT_F = 1080.0f;
     // Rozmiary kwadratów na planszy
     public final int BOX_WIDTH = 63;
     public final int BOX_HEIGHT = 63;
@@ -16,7 +16,7 @@ public interface Constant {
     public final int BOX_Y_AXIS_NUMBER = 10;
 
     // Enumerator do słownego rozróżniania plansz -- przyda sie przy działaniu gry!
-    public enum BOARD {
+    public enum TURN {
         FIRST, SECOND
     }
 
