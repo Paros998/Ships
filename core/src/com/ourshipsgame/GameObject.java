@@ -129,7 +129,16 @@ public class GameObject extends Rectangle {
     }
 
     public boolean collide(Rectangle otherRectangle) {
+        float bx = otherRectangle.x;
+        float by = otherRectangle.y;
+        float bx2 = otherRectangle.width + otherRectangle.x;
+        float by2 = otherRectangle.height + otherRectangle.y;
 
-        return false;
+        if (alligmentRectangle.contains(new Vector2(bx, by)) || alligmentRectangle.contains(new Vector2(bx2, by))
+                || alligmentRectangle.contains(new Vector2(bx, by2))
+                || alligmentRectangle.contains(new Vector2(bx2, by2)))
+            return true;
+        else
+            return false;
     }
 }

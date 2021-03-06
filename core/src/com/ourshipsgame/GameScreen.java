@@ -19,7 +19,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private GameObject mapTexture;
     private int gameStage = 1;
     // other vars
-    private boolean prepDone = false;
     protected int activeSpriteDrag = 1;
 
     // constructor
@@ -34,7 +33,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // textures
         mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0);
         // sprites
-        if (prepDone = preparation(true)) {
+        if (preparation(true)) {
             // changing to next phase
             gameStage = 2;
         }

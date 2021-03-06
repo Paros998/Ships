@@ -102,9 +102,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         if (board.contains(actualShip.alligmentRectangle)) {
             for (int i = 0; i < sum; i++) {
                 if (actualShip == FirstBoardShipsSprites[i])
-                    break;
+                    i++;
                 // Need change Work in progress
-                if (actualShip.overlaps(FirstBoardShipsSprites[i].alligmentRectangle))
+                if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle))
                     return false;
             }
             return true;
