@@ -3,6 +3,7 @@ package com.ourshipsgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +20,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private GameObject mapTexture;
     private int gameStage = 1;
     // other vars
-    protected int activeSpriteDrag = 1;
 
     // constructor
     public GameScreen(Game game) {
@@ -115,7 +115,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-
+        if (gameStage == 2) {
+            if (Gdx.input.isKeyPressed(Keys.R))
+                if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
+                    rotateActualShip();
+        }
         return false;
     }
 

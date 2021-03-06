@@ -22,6 +22,7 @@ public class GameObject extends Rectangle {
     protected boolean shipDestroyed;
     protected Rectangle alligmentRectangle;
     protected Color rectColour;
+    protected int rotation;
 
     public GameObject(String internalPath, float x, float y) {
         texture = new Texture(internalPath);
@@ -98,6 +99,8 @@ public class GameObject extends Rectangle {
     public void setSpritePos(Vector2 vector2) {
         this.sprite.setPosition(vector2.x, vector2.y);
         this.alligmentRectangle.setPosition(vector2);
+        this.x = vector2.x;
+        this.y = vector2.y;
     }
 
     public boolean spriteContains(Vector2 point) {
@@ -133,12 +136,83 @@ public class GameObject extends Rectangle {
         float by = otherRectangle.y;
         float bx2 = otherRectangle.width + otherRectangle.x;
         float by2 = otherRectangle.height + otherRectangle.y;
+        float ax = alligmentRectangle.x;
+        float ay = alligmentRectangle.y;
+        float ax2 = alligmentRectangle.width + alligmentRectangle.x;
+        float ay2 = alligmentRectangle.height + alligmentRectangle.y;
 
         if (alligmentRectangle.contains(new Vector2(bx, by)) || alligmentRectangle.contains(new Vector2(bx2, by))
                 || alligmentRectangle.contains(new Vector2(bx, by2))
-                || alligmentRectangle.contains(new Vector2(bx2, by2)))
+                || alligmentRectangle.contains(new Vector2(bx2, by2)) || otherRectangle.contains(new Vector2(ax, ay))
+                || otherRectangle.contains(new Vector2(ax2, ay)) || otherRectangle.contains(new Vector2(ax, ay2))
+                || otherRectangle.contains(new Vector2(ax2, ay2)))
             return true;
         else
             return false;
+    }
+
+    public boolean collide(Rectangle otherRectangle, boolean diffRotation, boolean actualShipRotatedVertically) {
+        float bx = otherRectangle.x;
+        float by = otherRectangle.y;
+        float bx2 = otherRectangle.width + otherRectangle.x;
+        float by2 = otherRectangle.height + otherRectangle.y;
+        float ax = alligmentRectangle.x;
+        float ay = alligmentRectangle.y;
+        float ax2 = alligmentRectangle.width + alligmentRectangle.x;
+        float ay2 = alligmentRectangle.height + alligmentRectangle.y;
+
+        if (alligmentRectangle.contains(new Vector2(bx, by)) || alligmentRectangle.contains(new Vector2(bx2, by))
+                || alligmentRectangle.contains(new Vector2(bx, by2))
+                || alligmentRectangle.contains(new Vector2(bx2, by2)) || otherRectangle.contains(new Vector2(ax, ay))
+                || otherRectangle.contains(new Vector2(ax2, ay)) || otherRectangle.contains(new Vector2(ax, ay2))
+                || otherRectangle.contains(new Vector2(ax2, ay2)))
+            return true;
+        else {
+            if (actualShipRotatedVertically) {
+                if (ax2 < bx || ax > bx2)
+                    return false;
+
+                float i = bx += 5;
+                while (i < bx2) {
+                    if (otherRectangle.contains(new Vector2(i, ay)))
+                        return true;
+                    i += 5;
+                }
+                i = ay += 5;
+                while (i < ay2) {
+                    if (otherRectangle.contains(new Vector2(bx, i)))
+                        return true;
+                    i += 5;
+                }
+            } else {
+                if (bx2 < ax || bx > ax2)
+                    return false;
+                float i = ax += 5;
+                while (i < ax2) {
+                    if (alligmentRectangle.contains(new Vector2(i, by)))
+                        return true;
+                    i += 5;
+                }
+                i = by += 5;
+                while (i < by2) {
+                    if (alligmentRectangle.contains(new Vector2(ax, i)))
+                        return true;
+                    i += 5;
+                }
+            }
+            return false;
+        }
+    }
+
+    public void rotate90() {
+        sprite.rotate90(true);
+        rotation++;
+        if (rotation > 3)
+            rotation = 0;
+        float tmp = this.height;
+        this.height = width;
+        this.width = tmp;
+        sprite.setSize(width, height);
+        alligmentRectangle.setSize(width, height);
     }
 }

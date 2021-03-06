@@ -27,7 +27,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected GameObject FirstBoardShipsSprites[] = new GameObject[sum];
     protected GameObject SecondBoardShipsSprites[] = new GameObject[sum];
     // more other vars
-    protected int activeSpriteDrag = 1;
+    protected int activeSpriteDrag = 99;
     protected float xSprite;
     protected float ySprite;
 
@@ -61,7 +61,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         for (int i = 0; i < sum; i++) {
             if (FirstBoardShipsSprites[i].spriteContains(new Vector2(screenX, gameHeight_f - screenY))) {
                 activeSpriteDrag = i;
-                System.out.println(activeSpriteDrag);
+                // System.out.println(activeSpriteDrag);
             }
         }
     }
@@ -91,7 +91,6 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             xSprite = actualShip.width / 2;
             ySprite = actualShip.height / 2;
             actualShip.setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
-
         }
     }
 
@@ -102,14 +101,27 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         if (board.contains(actualShip.alligmentRectangle)) {
             for (int i = 0; i < sum; i++) {
                 if (actualShip == FirstBoardShipsSprites[i])
-                    i++;
-                // Need change Work in progress
-                if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle))
-                    return false;
+                    continue;
+                // Need change Work in progress But working great actually
+                boolean actualShipRotatedVertically = actualShip.rotation % 2 == 1;
+                boolean otherShipRotatedVertically = FirstBoardShipsSprites[i].rotation % 2 == 1;
+                //
+                if (actualShipRotatedVertically != otherShipRotatedVertically) {
+                    if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle, true,
+                            actualShipRotatedVertically))
+                        return false;
+                } else {
+                    if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle))
+                        return false;
+                }
             }
             return true;
         } else
             return false;
+    }
+
+    protected void rotateActualShip() {
+        FirstBoardShipsSprites[activeSpriteDrag].rotate90();
     }
     // Stage 3 later
 }
