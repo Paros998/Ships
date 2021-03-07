@@ -103,6 +103,27 @@ public class GameObject extends Rectangle {
         this.y = vector2.y;
     }
 
+    public void translate(Vector2 vector2) {
+        this.sprite.translate(vector2.x, vector2.y);
+        this.alligmentRectangle.setPosition(sprite.getX(), sprite.getY());
+        this.x = sprite.getX();
+        this.y = sprite.getY();
+
+    }
+
+    public void translateX(float x) {
+        this.sprite.translateX(x);
+        this.alligmentRectangle.setPosition(sprite.getX(), this.y);
+        this.x = sprite.getX();
+
+    }
+
+    public void translateY(float y) {
+        this.sprite.translateY(y);
+        this.alligmentRectangle.setPosition(this.x, sprite.getY());
+        this.y = sprite.getY();
+    }
+
     public boolean spriteContains(Vector2 point) {
         if (this.alligmentRectangle.contains(point))
             return true;
