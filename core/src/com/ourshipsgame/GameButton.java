@@ -1,6 +1,5 @@
 package com.ourshipsgame;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -10,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 public class GameButton extends TextButton {
 
     public Skin skin;
-    Game game;
+    MenuGlobalElements mElements;
 
-    public GameButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final Game game) {
+    public GameButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final MenuGlobalElements mElements) {
         super(nameTag, skin);
-        this.game = game;
+        this.mElements = mElements;
         this.setX(x - this.getWidth() / 2);
         this.setY(y);
 
@@ -33,22 +32,27 @@ public class GameButton extends TextButton {
 
     private void menuOptions(int option) {
 		switch(option) {
-		case 1:
-            game.setScreen(new GameScreen(game));
+		case 1: // Enters to the game
+            mElements.game.setScreen(new GameScreen(mElements.game)); 
 			break;
 			
-		case 2:
+		case 2: // Enters to a help screen
 			break;
 			
-		case 3:
+		case 3: // Enters to a scores screen
 			break;
 			
-		case 4:
+		case 4: // Enters to a settings screen
+            mElements.game.setScreen(new OptionScreen(mElements));
 			break;
 			
-		case 5:
+		case 5: // Exits game
 			Gdx.app.exit();
 			break;
+
+        case 6: // Backs from current screen
+            mElements.game.setScreen(new MenuScreen(mElements.game));
+            break;
 		}
 	}
 
