@@ -5,8 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen extends GameEngine implements InputProcessor {
 
@@ -17,8 +21,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private SpriteBatch sb;
     private ShapeRenderer sr;
     private float runTime;
-    private GameObject mapTexture;
+    private OrthogonalTiledMapRenderer renderer;
+    private OrthographicCamera camera;
     private int gameStage = 1;
+    private TiledMap map;
+    private int[] layers;
     // other vars
 
     // constructor
@@ -31,14 +38,19 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // method to create elements
     private void createGraphics() {
         // textures
-        mapTexture = new GameObject("core/assets/backgroundtextures/map.png", 0, 0);
+        map = new TmxMapLoader().load("core/assets/map/mp1.tmx");
+        camera = new OrthographicCamera();
+        renderer = new OrthogonalTiledMapRenderer(map);
+        camera.setToOrtho(false, gameWidth_f, gameHeight_f);
         // sprites
         if (preparation(true)) {
             // changing to next phase
             gameStage = 2;
         }
         // etc
-
+        layers = new int[2];
+        layers[0] = 0;
+        layers[1] = 1;
     }
 
     private void handleInput(float deltaTime) {
@@ -62,6 +74,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //
+        camera.update();
+        renderer.setView(camera);
+        renderer.render();
         // update
         update(deltaTime);
         // render things
@@ -69,7 +85,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         sr.setAutoShapeType(true);
         sr.begin();
 
-        sb.draw(mapTexture.drawTexture(), 0, 0, gameWidth, gameHeight);
+        // sb.draw(mapTexture.drawTexture(), 0, 0, gameWidth, gameHeight);
 
         // Map First Always kurwa!!!!!!!!!!!!!
         // Do not place any drawings up!!

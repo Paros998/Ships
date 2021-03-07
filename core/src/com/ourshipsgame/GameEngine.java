@@ -30,6 +30,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int activeSpriteDrag = 99;
     protected float xSprite;
     protected float ySprite;
+    protected float xDiff;
+    protected float yDiff;
 
     // game methods below
     // Stage 1
