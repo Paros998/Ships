@@ -1,6 +1,8 @@
 package com.ourshipsgame;
 
 import com.badlogic.gdx.Game;
+import com.ourshipsgame.mainmenu.MenuGlobalElements;
+import com.ourshipsgame.mainmenu.MenuScreen;
 
 public class Main extends Game {
 

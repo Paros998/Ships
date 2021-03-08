@@ -1,8 +1,9 @@
-package com.ourshipsgame;
+package com.ourshipsgame.mainmenu;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.ourshipsgame.GameObject;
 
 public class MenuGlobalElements {
 

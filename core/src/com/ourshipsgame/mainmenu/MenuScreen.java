@@ -1,4 +1,4 @@
-package com.ourshipsgame;
+package com.ourshipsgame.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ourshipsgame.GameButton;
+import com.ourshipsgame.Main;
 import com.ourshipsgame.handlers.Constant;
 
 public class MenuScreen implements Screen, Constant {
@@ -64,7 +66,7 @@ public class MenuScreen implements Screen, Constant {
         // render things
         batch.begin();
 
-        batch.draw(game.menuElements.menuTexture.texture, game.menuElements.menuTexture.x,
+        batch.draw(game.menuElements.menuTexture.drawTexture(), game.menuElements.menuTexture.x,
                 game.menuElements.menuTexture.y);
 
         batch.end();
