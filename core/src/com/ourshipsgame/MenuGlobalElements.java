@@ -2,10 +2,9 @@ package com.ourshipsgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class MenuGlobalElements implements Screen {
+public class MenuGlobalElements {
 
     public Game game;
     public GameObject menuTexture;
@@ -32,46 +31,5 @@ public class MenuGlobalElements implements Screen {
                 direction = 0;
             menuTexture.moveTexture(20 * deltaTime);
         }
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void render(float delta) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void dispose() {
-        skin.dispose();
     }
 }

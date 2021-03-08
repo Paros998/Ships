@@ -10,30 +10,30 @@ import com.ourshipsgame.handlers.Constant;
 
 public class OptionScreen implements Screen, Constant {
 
-    private MenuGlobalElements menuElements;
-    private Stage stage;
-    private SpriteBatch batch;
+    private Main game;
     private GameButton backButton;
+    public Stage stage;
+    public SpriteBatch batch;
 
-    public OptionScreen(MenuGlobalElements menuElements) {
-        this.menuElements = menuElements;
+    public OptionScreen(Main game) {
+        this.game = game;
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
+        batch =  new SpriteBatch();
         Gdx.input.setInputProcessor(stage);
-        batch = new SpriteBatch();
 
         // Buttons
         backButton = new GameButton("Back to Main Menu", GAME_WIDTH / 2 - 600, GAME_HEIGHT / 2 - 300, 
-            menuElements.skin, 6, menuElements);
+            game.menuElements.skin, 6, game);
 
         stage.addActor(backButton);
     }
 
     private void update(float deltaTime) {
-        menuElements.moveMenu(deltaTime);
+        game.menuElements.moveMenu(deltaTime);
         stage.act();
     }
 
@@ -45,7 +45,10 @@ public class OptionScreen implements Screen, Constant {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(menuElements.menuTexture.texture, menuElements.menuTexture.x, menuElements.menuTexture.y);
+
+        batch.draw(game.menuElements.menuTexture.texture, 
+        game.menuElements.menuTexture.x, game.menuElements.menuTexture.y);
+
         batch.end();
         stage.draw();
     }
@@ -78,6 +81,7 @@ public class OptionScreen implements Screen, Constant {
     public void dispose() {
         stage.dispose();
         batch.dispose();
+        System.out.println("Elements from Option Menu disposed.");
     }
 
 }

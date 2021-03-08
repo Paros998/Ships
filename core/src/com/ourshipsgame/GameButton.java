@@ -5,15 +5,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 
 public class GameButton extends TextButton {
 
     public Skin skin;
-    MenuGlobalElements mElements;
+    Main game;
 
-    public GameButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final MenuGlobalElements mElements) {
+    public GameButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final Main game) {
         super(nameTag, skin);
-        this.mElements = mElements;
+        this.game = game;
         this.setX(x - this.getWidth() / 2);
         this.setY(y);
 
@@ -33,7 +34,8 @@ public class GameButton extends TextButton {
     private void menuOptions(int option) {
 		switch(option) {
 		case 1: // Enters to the game
-            mElements.game.setScreen(new GameScreen(mElements.game)); 
+            game.getScreen().dispose();
+            game.setScreen(new GameScreen(game)); 
 			break;
 			
 		case 2: // Enters to a help screen
@@ -43,7 +45,8 @@ public class GameButton extends TextButton {
 			break;
 			
 		case 4: // Enters to a settings screen
-            mElements.game.setScreen(new OptionScreen(mElements));
+            game.getScreen().dispose();
+            game.setScreen(new OptionScreen(game));
 			break;
 			
 		case 5: // Exits game
@@ -51,7 +54,8 @@ public class GameButton extends TextButton {
 			break;
 
         case 6: // Backs from current screen
-            mElements.game.setScreen(new MenuScreen(mElements.game));
+            game.getScreen().dispose();
+            game.setScreen(new MenuScreen(game));
             break;
 		}
 	}
