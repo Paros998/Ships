@@ -14,7 +14,7 @@ public class MenuScreen implements Screen, Constant {
     private Main game;
     public Stage stage;
     public SpriteBatch batch;
-    
+
     private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
     public MenuScreen(Main game) {
@@ -23,25 +23,20 @@ public class MenuScreen implements Screen, Constant {
 
     private void createGraphics() {
         stage = new Stage(new ScreenViewport());
-        batch =  new SpriteBatch();
+        batch = new SpriteBatch();
         Gdx.input.setInputProcessor(stage);
 
         // Buttons
-        playButton = new GameButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100,
-         game.menuElements.skin, 1, game);
+        playButton = new GameButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, game.menuElements.skin, 1, game);
 
-        helpButon = new GameButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2,
-         game.menuElements.skin, 2, game);
+        helpButon = new GameButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2, game.menuElements.skin, 2, game);
 
-        scoreButton = new GameButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100,
-         game.menuElements.skin, 3, game);
+        scoreButton = new GameButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3, game);
 
-        optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200,
-         game.menuElements.skin, 4, game);
+        optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4,
+                game);
 
-        quitButton = new GameButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300,
-         game.menuElements.skin, 5, game);
-
+        quitButton = new GameButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, game.menuElements.skin, 5, game);
 
         stage.addActor(playButton);
         stage.addActor(helpButon);
@@ -65,12 +60,12 @@ public class MenuScreen implements Screen, Constant {
         // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         // render things
         batch.begin();
 
-        batch.draw(game.menuElements.menuTexture.texture, 
-            game.menuElements.menuTexture.x, game.menuElements.menuTexture.y);
+        batch.draw(game.menuElements.menuTexture.texture, game.menuElements.menuTexture.x,
+                game.menuElements.menuTexture.y);
 
         batch.end();
         stage.draw();
@@ -91,14 +86,12 @@ public class MenuScreen implements Screen, Constant {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
