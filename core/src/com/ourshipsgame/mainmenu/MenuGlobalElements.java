@@ -8,12 +8,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ourshipsgame.GameObject;
 
 public class MenuGlobalElements {
 
     public Game game;
+
+    public GlyphLayout layout;
+    public BitmapFont font;
+
     public GameObject menuTexture;
     public Skin skin;
     public Music music;
@@ -40,6 +46,13 @@ public class MenuGlobalElements {
         this.game = game;
         menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
         skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
+
+        // Text, font
+        font = new BitmapFont (
+            Gdx.files.internal("core/assets/buttons/skins/rusty-robot/raw/font-title-export.fnt")
+        );
+        layout = new GlyphLayout();
+        layout.setText(font, "Ships Game");
     }
     
     // Menu methods

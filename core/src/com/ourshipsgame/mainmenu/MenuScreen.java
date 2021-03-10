@@ -69,6 +69,11 @@ public class MenuScreen implements Screen, Constant {
         batch.draw(game.menuElements.menuTexture.drawTexture(), game.menuElements.menuTexture.x,
                 game.menuElements.menuTexture.y);
 
+        game.menuElements.font.draw (
+            batch, game.menuElements.layout, 
+            GAME_WIDTH / 2 - game.menuElements.layout.width / 2, GAME_HEIGHT - 100
+        );
+
         batch.end();
         stage.draw();
     }
