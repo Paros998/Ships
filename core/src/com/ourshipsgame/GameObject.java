@@ -23,6 +23,7 @@ public class GameObject extends Rectangle {
     protected Rectangle alligmentRectangle;
     protected Color rectColour;
     protected int rotation;
+    protected Animator animator;
 
     public GameObject(String internalPath, float x, float y) {
         texture = new Texture(internalPath);
@@ -42,15 +43,23 @@ public class GameObject extends Rectangle {
             createSprite(texture);
     }
 
-    public GameObject(String internalPath, float x, float y, boolean createSprite, int sizeofShip) {
+    public GameObject(String internalPath, float x, float y, boolean createSprite, int sizeofShip, Vector2 vector2) {
         texture = new Texture(internalPath);
         this.setX(x);
         this.setY(y);
-        this.width = texture.getWidth();
-        this.height = texture.getHeight();
-        if (createSprite)
+        this.width = texture.getWidth() / vector2.x;
+        this.height = texture.getHeight() / vector2.y;
+        if (createSprite) {
             createSprite(texture, sizeofShip);
+            this.animator = new Animator(texture, vector2, 0.1f);
+        }
+    }
 
+    public void updateTexture() {
+        this.animator.update(0);
+        this.sprite.setRegion(this.animator.getCurrentFrame());
+        for (int i = 0; i < rotation; i++)
+            this.sprite.rotate90(true);
     }
 
     public void moveTexture(float x) {
@@ -62,6 +71,7 @@ public class GameObject extends Rectangle {
         this.oldPos = new Vector2(x, y);
         this.alligmentRectangle = new Rectangle(x, y, width, height);
         this.rectColour = new Color(1, 0, 0, 1);
+        this.sprite.setSize(width, height);
         setSpritePos(this.oldPos);
     }
 
@@ -75,6 +85,7 @@ public class GameObject extends Rectangle {
         for (int i = 0; i < size; i++)
             destroyed[i] = 0;
         this.oldPos = new Vector2(x, y);
+        this.sprite.setSize(width, height);
         setSpritePos(this.oldPos);
     }
 

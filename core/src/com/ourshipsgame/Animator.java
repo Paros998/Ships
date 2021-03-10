@@ -18,7 +18,6 @@ public class Animator {
         region = new TextureRegion(texture);
         currentImage = new Vector2(0, 0);
         this.imageCount = imageCount;
-
         int frameWidth = (int) (region.getRegionWidth() / imageCount.x);
         int frameHeight = (int) (region.getRegionHeight() / imageCount.y);
 
@@ -31,17 +30,34 @@ public class Animator {
     }
 
     // Public methods
-    public void update(int row) {
+    public void update() {
 
         totalTime += Gdx.graphics.getDeltaTime();
-        currentImage.y = row;
 
         if (totalTime >= switchTime) {
             totalTime -= switchTime;
             currentImage.x++;
 
-            if (currentImage.x >= imageCount.x)
+            if (currentImage.x >= imageCount.x) {
                 currentImage.x = 0;
+                currentImage.y++;
+            }
+            if (imageCount.y <= currentImage.y) {
+                currentImage.y = 0;
+            }
+        }
+    }
+
+    public void update(int row) {
+        totalTime += Gdx.graphics.getDeltaTime();
+        currentImage.y = row;
+        if (totalTime >= switchTime) {
+            totalTime -= switchTime;
+            currentImage.x++;
+
+            if (currentImage.x >= imageCount.x) {
+                currentImage.x = 0;
+            }
         }
     }
 
