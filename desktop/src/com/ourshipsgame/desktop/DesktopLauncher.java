@@ -17,7 +17,7 @@ public class DesktopLauncher implements Constant {
 		cfg.allowSoftwareMode = ALLOWSOFTWAREMODE;
 		cfg.foregroundFPS = FPSMAX;
 		cfg.undecorated = UNDECORATED;
-		cfg.fullscreen = false;
+		cfg.fullscreen = FULLSCREENMODE;
 		new LwjglApplication(new Main(), cfg);
 	}
 }

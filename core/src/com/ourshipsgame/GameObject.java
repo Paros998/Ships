@@ -14,7 +14,9 @@ public class GameObject extends Rectangle {
      */
     private static final long serialVersionUID = 1L;
     protected Texture texture;
+    protected Texture textureWave;
     protected Sprite sprite;
+    protected Sprite spriteWave;
     protected int size;
     protected int[] destroyed;
     protected Vector2 oldPos;
@@ -43,23 +45,83 @@ public class GameObject extends Rectangle {
             createSprite(texture);
     }
 
-    public GameObject(String internalPath, float x, float y, boolean createSprite, int sizeofShip, Vector2 vector2) {
-        texture = new Texture(internalPath);
+    public GameObject(String internalPath, String internalPath2, float x, float y, boolean createSprite, int sizeofShip,
+            Vector2 vector2) {
+        this.texture = new Texture(internalPath);
+        this.textureWave = new Texture(internalPath2);
         this.setX(x);
         this.setY(y);
-        this.width = texture.getWidth() / vector2.x;
-        this.height = texture.getHeight() / vector2.y;
+        this.width = texture.getWidth();
+        this.height = texture.getHeight();
         if (createSprite) {
+            createSpriteWave(textureWave);
             createSprite(texture, sizeofShip);
-            this.animator = new Animator(texture, vector2, 0.1f);
+            this.animator = new Animator(textureWave, vector2, 0.14f);
         }
     }
 
     public void updateTexture() {
         this.animator.update(0);
-        this.sprite.setRegion(this.animator.getCurrentFrame());
+        this.spriteWave.setRegion(this.animator.getCurrentFrame());
+        this.spriteWave.setScale(1.5f, 1.5f);
+
         for (int i = 0; i < rotation; i++)
-            this.sprite.rotate90(true);
+            this.spriteWave.rotate90(true);
+
+        switch (rotation) {
+        case 0: {
+            if (this.size == 3) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 3f),
+                        sprite.getY() + (sprite.getHeight() / 6f));
+            } else if (this.size == 2) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.5f),
+                        sprite.getY() + (sprite.getHeight() / 9f));
+            } else {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.1f),
+                        sprite.getY() + (sprite.getHeight() / 3f));
+            }
+            break;
+        }
+        case 1: {
+            if (this.size == 3) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() / 1.5f),
+                        sprite.getY() + (sprite.getHeight() * 1.4f));
+            } else if (this.size == 2) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() / 2f),
+                        sprite.getY() + (sprite.getHeight() / 1.6f));
+            } else {
+                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth(),
+                        sprite.getY() + (sprite.getHeight() / 2.5f));
+            }
+            break;
+        }
+        case 2: {
+            if (this.size == 3) {
+                this.spriteWave.setPosition(sprite.getX() + sprite.getHeight() - 5f,
+                        sprite.getY() + (sprite.getHeight() / 2.4f));
+            } else if (this.size == 2) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.5f),
+                        sprite.getY() + (sprite.getHeight() / 2.8f));
+            } else {
+                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth() + 5f,
+                        sprite.getY() + (sprite.getHeight() / 2.2f));
+            }
+            break;
+        }
+        case 3: {
+            if (this.size == 3) {
+                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth(),
+                        sprite.getY() + (sprite.getHeight() * 1.4f));
+            } else if (this.size == 2) {
+                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 0.7f),
+                        sprite.getY() + (sprite.getHeight() / 1.6f));
+            } else {
+                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth() + 7f,
+                        sprite.getY() + (sprite.getHeight() / 2.2f));
+            }
+            break;
+        }
+        }
     }
 
     public void moveTexture(float x) {
@@ -73,6 +135,15 @@ public class GameObject extends Rectangle {
         this.rectColour = new Color(1, 0, 0, 1);
         this.sprite.setSize(width, height);
         setSpritePos(this.oldPos);
+    }
+
+    protected void createSpriteWave(Texture texture) {
+        this.spriteWave = new Sprite(texture);
+        this.oldPos = new Vector2(x, y);
+        this.alligmentRectangle = new Rectangle(x, y, width, height);
+        this.rectColour = new Color(1, 0, 0, 1);
+        this.spriteWave.setSize(width, height);
+        this.spriteWave.setPosition(oldPos.x, oldPos.y);
     }
 
     protected void createSprite(Texture texture, int size) {
@@ -94,12 +165,15 @@ public class GameObject extends Rectangle {
     }
 
     public void drawSprite(SpriteBatch batch) {
+        if (spriteWave != null)
+            this.spriteWave.draw(batch);
         this.sprite.draw(batch);
     }
 
     public void drawSprite(SpriteBatch batch, boolean drawRect, ShapeRenderer sr) {
         if (this.goodPlacement)
             changeRectColour();
+        this.spriteWave.draw(batch);
         if (drawRect) {
             sr.rect(alligmentRectangle.x, alligmentRectangle.y, alligmentRectangle.width, alligmentRectangle.height,
                     rectColour, rectColour, rectColour, rectColour);
@@ -109,6 +183,8 @@ public class GameObject extends Rectangle {
 
     public void setSpritePos(Vector2 vector2) {
         this.sprite.setPosition(vector2.x, vector2.y);
+        if (spriteWave != null)
+            this.spriteWave.setPosition(vector2.x, vector2.y);
         this.alligmentRectangle.setPosition(vector2);
         this.x = vector2.x;
         this.y = vector2.y;
@@ -116,6 +192,8 @@ public class GameObject extends Rectangle {
 
     public void translate(Vector2 vector2) {
         this.sprite.translate(vector2.x, vector2.y);
+        if (spriteWave != null)
+            this.spriteWave.translate(vector2.x, vector2.y);
         this.alligmentRectangle.setPosition(sprite.getX(), sprite.getY());
         this.x = sprite.getX();
         this.y = sprite.getY();
@@ -124,6 +202,8 @@ public class GameObject extends Rectangle {
 
     public void translateX(float x) {
         this.sprite.translateX(x);
+        if (spriteWave != null)
+            this.spriteWave.translateX(x);
         this.alligmentRectangle.setPosition(sprite.getX(), this.y);
         this.x = sprite.getX();
 
@@ -131,6 +211,8 @@ public class GameObject extends Rectangle {
 
     public void translateY(float y) {
         this.sprite.translateY(y);
+        if (spriteWave != null)
+            this.spriteWave.translateY(y);
         this.alligmentRectangle.setPosition(this.x, sprite.getY());
         this.y = sprite.getY();
     }
@@ -238,6 +320,8 @@ public class GameObject extends Rectangle {
 
     public void rotate90() {
         sprite.rotate90(true);
+        if (spriteWave != null)
+            spriteWave.rotate90(true);
         rotation++;
         if (rotation > 3)
             rotation = 0;
@@ -245,6 +329,7 @@ public class GameObject extends Rectangle {
         this.height = width;
         this.width = tmp;
         sprite.setSize(width, height);
+        spriteWave.setSize(width, height);
         alligmentRectangle.setSize(width, height);
     }
 }
