@@ -64,6 +64,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private void update(float deltaTime) {
         runTime += deltaTime;
         handleInput(deltaTime);
+        for (int i = 0; i < sum; i++) {
+            FirstBoardShipsSprites[i].updateTexture();
+        }
 
     }
 
