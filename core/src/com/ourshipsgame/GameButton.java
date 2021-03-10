@@ -23,6 +23,7 @@ public class GameButton extends TextButton {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 menuOptions(buttonNumber);
+                game.menuElements.clickSound.play(game.menuElements.soundVolume);
             }
 
             @Override
