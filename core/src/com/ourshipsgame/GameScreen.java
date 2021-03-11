@@ -110,17 +110,17 @@ public class GameScreen extends GameEngine implements InputProcessor {
         sr = new ShapeRenderer();
         createGraphics();
         Gdx.input.setInputProcessor(this);
-        Gdx.app.log(id, "The game is running");
+
     }
 
     @Override
     public void pause() {
-        Gdx.app.log(id, "The game is paused");
+
     }
 
     @Override
     public void resume() {
-        Gdx.app.log(id, "The game is resumed");
+
     }
 
     @Override
@@ -130,6 +130,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
         gameHeight_f = (float) gameHeight;
         gameWidth_f = (float) gameWidth;
         super.resize(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
     @Override

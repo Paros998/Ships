@@ -54,8 +54,8 @@ public class GameObject extends Rectangle {
         this.width = texture.getWidth();
         this.height = texture.getHeight();
         if (createSprite) {
-            createSpriteWave(textureWave);
             createSprite(texture, sizeofShip);
+            createSpriteWave(textureWave);
             this.animator = new Animator(textureWave, vector2, 0.14f);
         }
     }
@@ -70,57 +70,43 @@ public class GameObject extends Rectangle {
 
         switch (rotation) {
         case 0: {
-            if (this.size == 3) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 3f),
-                        sprite.getY() + (sprite.getHeight() / 6f));
-            } else if (this.size == 2) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.5f),
-                        sprite.getY() + (sprite.getHeight() / 9f));
-            } else {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.1f),
-                        sprite.getY() + (sprite.getHeight() / 3f));
-            }
+            if (size == 3)
+                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.2f);
+            else if (size == 2)
+                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.3f);
+            else
+                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.5f);
             break;
         }
         case 1: {
-            if (this.size == 3) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() / 1.5f),
-                        sprite.getY() + (sprite.getHeight() * 1.4f));
-            } else if (this.size == 2) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() / 2f),
-                        sprite.getY() + (sprite.getHeight() / 1.6f));
-            } else {
-                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth(),
-                        sprite.getY() + (sprite.getHeight() / 2.5f));
-            }
+            if (size == 3)
+                this.spriteWave.setOrigin(sprite.getWidth() / 1.2f, sprite.getHeight() / 2f);
+            else if (size == 2)
+                this.spriteWave.setOrigin(sprite.getWidth() / 1.3f, sprite.getHeight() / 2f);
+            else
+                this.spriteWave.setOrigin(sprite.getWidth() / 1.5f, sprite.getHeight() / 2f);
             break;
         }
         case 2: {
-            if (this.size == 3) {
-                this.spriteWave.setPosition(sprite.getX() + sprite.getHeight() - 5f,
-                        sprite.getY() + (sprite.getHeight() / 2.4f));
-            } else if (this.size == 2) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 1.5f),
-                        sprite.getY() + (sprite.getHeight() / 2.8f));
-            } else {
-                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth() + 5f,
-                        sprite.getY() + (sprite.getHeight() / 2.2f));
-            }
+            if (size == 3)
+                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
+            else if (size == 2)
+                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
+            else
+                this.spriteWave.setOrigin(sprite.getWidth() / 1.7f, sprite.getHeight() / 4.5f);
             break;
+
         }
         case 3: {
-            if (this.size == 3) {
-                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth(),
-                        sprite.getY() + (sprite.getHeight() * 1.4f));
-            } else if (this.size == 2) {
-                this.spriteWave.setPosition(sprite.getX() + (sprite.getWidth() * 0.7f),
-                        sprite.getY() + (sprite.getHeight() / 1.6f));
-            } else {
-                this.spriteWave.setPosition(sprite.getX() + sprite.getWidth() + 7f,
-                        sprite.getY() + (sprite.getHeight() / 2.2f));
-            }
+            if (size == 3)
+                this.spriteWave.setOrigin(sprite.getWidth() / 4.2f, sprite.getHeight() / 2f);
+            else if (size == 2)
+                this.spriteWave.setOrigin(sprite.getWidth() / 3.4f, sprite.getHeight() / 2f);
+            else
+                this.spriteWave.setOrigin(sprite.getWidth() / 2.9f, sprite.getHeight() / 2f);
             break;
         }
+
         }
     }
 
@@ -137,15 +123,6 @@ public class GameObject extends Rectangle {
         setSpritePos(this.oldPos);
     }
 
-    protected void createSpriteWave(Texture texture) {
-        this.spriteWave = new Sprite(texture);
-        this.oldPos = new Vector2(x, y);
-        this.alligmentRectangle = new Rectangle(x, y, width, height);
-        this.rectColour = new Color(1, 0, 0, 1);
-        this.spriteWave.setSize(width, height);
-        this.spriteWave.setPosition(oldPos.x, oldPos.y);
-    }
-
     protected void createSprite(Texture texture, int size) {
         this.sprite = new Sprite(texture);
         this.alligmentRectangle = new Rectangle(x, y, width, height);
@@ -158,6 +135,16 @@ public class GameObject extends Rectangle {
         this.oldPos = new Vector2(x, y);
         this.sprite.setSize(width, height);
         setSpritePos(this.oldPos);
+    }
+
+    protected void createSpriteWave(Texture texture) {
+        this.spriteWave = new Sprite(texture);
+        this.oldPos = new Vector2(x, y);
+        this.alligmentRectangle = new Rectangle(x, y, width, height);
+        this.rectColour = new Color(1, 0, 0, 1);
+        this.spriteWave.setSize(width, height);
+        this.spriteWave.setPosition(oldPos.x, oldPos.y);
+        this.spriteWave.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 1.5f);
     }
 
     public Texture drawTexture() {
@@ -320,8 +307,10 @@ public class GameObject extends Rectangle {
 
     public void rotate90() {
         sprite.rotate90(true);
-        if (spriteWave != null)
+        if (spriteWave != null) {
             spriteWave.rotate90(true);
+            this.spriteWave.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 1.5f);
+        }
         rotation++;
         if (rotation > 3)
             rotation = 0;

@@ -111,7 +111,35 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
             xSprite = actualShip.width / 2;
             ySprite = actualShip.height / 2;
-            actualShip.setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
+            float box_size = 64f;
+
+            float xChange = screenX - actualShip.x - xSprite;
+            float yChange = gameHeight_f - screenY - actualShip.y - ySprite;
+
+            if (xChange >= box_size && yChange >= box_size)
+                actualShip.translate(new Vector2(box_size, box_size));
+
+            else if (xChange <= -box_size && yChange <= -box_size)
+                actualShip.translate(new Vector2(-box_size, -box_size));
+
+            else if (xChange >= box_size && yChange <= -box_size)
+                actualShip.translate(new Vector2(box_size, -box_size));
+
+            else if (xChange <= -box_size && yChange >= box_size)
+                actualShip.translate(new Vector2(-box_size, box_size));
+
+            else if (xChange >= box_size)
+                actualShip.translateX(box_size);
+
+            else if (xChange <= -box_size)
+                actualShip.translateX(-box_size);
+
+            else if (yChange >= box_size)
+                actualShip.translateY(box_size);
+
+            else if (yChange <= -box_size)
+                actualShip.translateY(-box_size);
+
         }
     }
 
