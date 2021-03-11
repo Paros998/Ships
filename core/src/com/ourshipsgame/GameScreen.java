@@ -99,6 +99,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
 
         // Turrets
+        for (int i = 0; i < sum; i++) {
+            FirstBoardShipsSprites[i].drawTurrets(sb);
+        }
 
         sb.end();
         sr.end();
