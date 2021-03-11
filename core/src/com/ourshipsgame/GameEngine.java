@@ -52,12 +52,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y + 1, true, 3, new Vector2(5, 1));
             } else if (i > 2 && i <= 6) {
                 FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/two/twoshipModel.png",
-                        "core/assets/oneship/two/twoshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
-                        FirstBoardStart.y + 1, true, 2, new Vector2(5, 1));
+                        "core/assets/oneship/two/twoshipModelwaves.png", internalPaths,
+                        FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y + 1, true, 2, new Vector2(5, 1));
             } else
                 FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/one/oneshipModel.png",
-                        "core/assets/oneship/one/oneshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
-                        FirstBoardStart.y + 1, true, 1, new Vector2(5, 1));
+                        "core/assets/oneship/one/oneshipModelwaves.png", internalPaths,
+                        FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y + 1, true, 1, new Vector2(5, 1));
         }
         for (int i = 0; i < sum; i++) {
             GameObject actualShip = FirstBoardShipsSprites[i];
@@ -83,7 +83,6 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         for (int i = 0; i < sum; i++) {
             if (FirstBoardShipsSprites[i].spriteContains(new Vector2(screenX, gameHeight_f - screenY))) {
                 activeSpriteDrag = i;
-                // System.out.println(activeSpriteDrag);
             }
         }
     }

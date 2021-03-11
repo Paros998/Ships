@@ -90,9 +90,9 @@ public class GameObject extends Rectangle implements Constant {
             if (size == 3)
                 turretsAmmount = 10;
             else if (size == 2)
-                turretsAmmount = 2;
+                turretsAmmount = 4;
             else
-                turretsAmmount = 1;
+                turretsAmmount = 2;
             createTurrets(internalPaths);
         }
     }
@@ -207,17 +207,39 @@ public class GameObject extends Rectangle implements Constant {
             turretTextures[8] = new Texture(internalPaths[2]);
             turretTextures[9] = new Texture(internalPaths[1]);
             break;
-        case 2:
+        case 4:
+            turretTextures[0] = new Texture(internalPaths[1]);
+            turretTextures[1] = new Texture(internalPaths[2]);
+            turretTextures[2] = new Texture(internalPaths[1]);
+            turretTextures[3] = new Texture(internalPaths[2]);
             break;
-        case 1:
+        case 2:
+            turretTextures[0] = new Texture(internalPaths[2]);
+            turretTextures[1] = new Texture(internalPaths[2]);
             break;
         }
-        for (int i = 0; i < turretsAmmount; i++) {
-            turretSprites[i] = new Sprite(turretTextures[i]);
-            turretSprites[i].setPosition(this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
-                    this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
-            turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
+        if (size == 3) {
+            for (int i = 0; i < turretsAmmount; i++) {
+                turretSprites[i] = new Sprite(turretTextures[i]);
+                turretSprites[i].setPosition(this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
+                        this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
+                turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
 
+            }
+        } else if (size == 2) {
+            for (int i = 0; i < turretsAmmount; i++) {
+                turretSprites[i] = new Sprite(turretTextures[i]);
+                turretSprites[i].setPosition(this.sprite.getX() + TurretsPos2[i].x - turretSprites[i].getWidth() / 2,
+                        this.sprite.getY() + TurretsPos2[i].y - turretSprites[i].getHeight() / 2);
+                turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
+            }
+        } else {
+            for (int i = 0; i < turretsAmmount; i++) {
+                turretSprites[i] = new Sprite(turretTextures[i]);
+                turretSprites[i].setPosition(this.sprite.getX() + TurretsPos1[i].x - turretSprites[i].getWidth() / 2,
+                        this.sprite.getY() + TurretsPos1[i].y - turretSprites[i].getHeight() / 2);
+                turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
+            }
         }
 
     }
@@ -471,30 +493,75 @@ public class GameObject extends Rectangle implements Constant {
 
                 switch (rotation) {
                 case 0:
-                    turretSprites[i].setPosition(
-                            this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
-                            this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].y - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].y - turretSprites[i].getHeight() / 2);
+                    }
                     break;
                 case 1:
-                    turretSprites[i].setPosition(
-                            this.sprite.getX() + TurretsPos3[i].y - turretSprites[i].getWidth() / 2,
-                            this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
                     break;
                 case 2:
-                    turretSprites[i].setPosition(
-                            (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos3[i].x
-                                    - turretSprites[i].getWidth() / 2,
-                            (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos3[i].y
-                                    - turretSprites[i].getHeight() / 2);
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos3[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos3[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos2[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos2[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos1[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos1[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    }
                     break;
                 case 3:
-                    turretSprites[i].setPosition(
-                            this.sprite.getX() - TurretsPos3[i].y + this.sprite.getHeight()
-                                    - turretSprites[i].getWidth() / 2,
-                            this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos3[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos2[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos1[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
                     break;
                 }
-
                 turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
             }
         }

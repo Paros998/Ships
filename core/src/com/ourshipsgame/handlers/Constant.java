@@ -25,6 +25,9 @@ public interface Constant {
     public final Vector2f TurretsPos3[] = { new Vector2f(8, 56), new Vector2f(31, 59), new Vector2f(52, 56),
             new Vector2f(8, 73), new Vector2f(31, 75), new Vector2f(52, 73), new Vector2f(16, 109),
             new Vector2f(31, 107), new Vector2f(47, 109), new Vector2f(31, 130) };
+    public final Vector2f TurretsPos2[] = { new Vector2f(31, 21), new Vector2f(31, 37), new Vector2f(31, 73),
+            new Vector2f(31, 92) };
+    public final Vector2f TurretsPos1[] = { new Vector2f(25, 32), new Vector2f(36, 32) };
 
     // Enumerator do słownego rozróżniania plansz -- przyda sie przy działaniu gry!
     public enum TURN {
