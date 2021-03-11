@@ -12,6 +12,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int[][] SecondBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+    protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
+            "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png" };
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
     protected Vector2f SecondBoardStart;
@@ -46,8 +48,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         for (int i = 0; i < sum; i++) {
             if (i <= 2) {
                 FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/three/threeshipModel.png",
-                        "core/assets/oneship/three/threeshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
-                        FirstBoardStart.y + 1, true, 3, new Vector2(5, 1));
+                        "core/assets/oneship/three/threeshipModelwaves.png", internalPaths,
+                        FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y + 1, true, 3, new Vector2(5, 1));
             } else if (i > 2 && i <= 6) {
                 FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/two/twoshipModel.png",
                         "core/assets/oneship/two/twoshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
@@ -57,7 +59,6 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                         "core/assets/oneship/one/oneshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
                         FirstBoardStart.y + 1, true, 1, new Vector2(5, 1));
         }
-
         for (int i = 0; i < sum; i++) {
             GameObject actualShip = FirstBoardShipsSprites[i];
             if (isShipPlacedGood(actualShip)) {

@@ -1,5 +1,7 @@
 package com.ourshipsgame.handlers;
 
+import org.lwjgl.util.vector.Vector2f;
+
 public interface Constant {
     // Rozdzielczosc ekranu
     public int GAME_WIDTH = 1920;
@@ -18,6 +20,11 @@ public interface Constant {
     public final int BoardTilesInX = 20;
     public final int BoardTilesInY = 20;
     public final float BoardBoxToTile = 0.5f;
+    // Współrzędne wieżyczek na statkach
+    // 3
+    public final Vector2f TurretsPos3[] = { new Vector2f(8, 56), new Vector2f(31, 59), new Vector2f(52, 56),
+            new Vector2f(8, 73), new Vector2f(31, 75), new Vector2f(52, 73), new Vector2f(16, 109),
+            new Vector2f(31, 107), new Vector2f(47, 109), new Vector2f(31, 130) };
 
     // Enumerator do słownego rozróżniania plansz -- przyda sie przy działaniu gry!
     public enum TURN {
