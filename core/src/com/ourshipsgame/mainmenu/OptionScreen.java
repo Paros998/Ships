@@ -89,7 +89,7 @@ public class OptionScreen implements Screen, Constant {
 
         batch.begin();
 
-        batch.draw(game.menuElements.menuTexture.drawTexture(), game.menuElements.menuTexture.x,
+        batch.draw(game.menuElements.menuTexture.getTexture(), game.menuElements.menuTexture.x,
                 game.menuElements.menuTexture.y);
 
         batch.end();

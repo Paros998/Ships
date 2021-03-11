@@ -89,8 +89,12 @@ public class GameObject extends Rectangle {
         setSpritePos(this.oldPos);
     }
 
-    public Texture drawTexture() {
-        return this.texture;
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public void drawSprite(SpriteBatch batch) {

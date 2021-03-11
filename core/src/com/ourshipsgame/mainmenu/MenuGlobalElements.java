@@ -84,7 +84,6 @@ public class MenuGlobalElements {
             sliderMusicPercent = Float.valueOf(scanner.nextLine().trim());
             sliderSoundPercent = Float.valueOf(scanner.next().trim());
 
-
             musicVolume = sliderMusicPercent / 5.0f;
             soundVolume = sliderSoundPercent / 5.0f;
 
