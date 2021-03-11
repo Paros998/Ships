@@ -35,12 +35,15 @@ public class GameObject extends Rectangle {
         this.height = texture.getHeight();
     }
 
-    public GameObject(String internalPath, float x, float y, boolean createSprite) {
+    public GameObject(String internalPath, float x, float y, boolean createSprite, boolean createAnimator, Vector2 vector) {
         texture = new Texture(internalPath);
         this.setX(x);
         this.setY(y);
         this.width = texture.getWidth();
         this.height = texture.getHeight();
+
+        if(createAnimator)
+            animator = new Animator(texture, vector, 0.25f);
         if (createSprite)
             createSprite(texture);
     }
@@ -58,6 +61,11 @@ public class GameObject extends Rectangle {
             createSpriteWave(textureWave);
             this.animator = new Animator(textureWave, vector2, 0.14f);
         }
+    }
+
+    public void updateAnimation() {
+        animator.update(0);
+        sprite.setRegion(animator.getCurrentFrame());
     }
 
     public void updateTexture() {
@@ -143,6 +151,8 @@ public class GameObject extends Rectangle {
 
     public Sprite getSprite() {
         return sprite;
+    }
+    
     protected void createSpriteWave(Texture texture) {
         this.spriteWave = new Sprite(texture);
         this.oldPos = new Vector2(x, y);
