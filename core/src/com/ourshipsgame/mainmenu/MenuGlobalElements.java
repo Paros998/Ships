@@ -44,7 +44,7 @@ public class MenuGlobalElements {
         clickSound.pause();
         
         this.game = game;
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true);
+        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true, false, null);
         skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
 
         // Text, font

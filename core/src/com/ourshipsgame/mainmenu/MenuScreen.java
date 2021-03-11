@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ourshipsgame.GameButton;
@@ -17,7 +18,7 @@ public class MenuScreen implements Screen, Constant {
     private Main game;
     public Stage stage;
     public SpriteBatch batch;
-    private GameObject shipLogo;
+    private GameObject shootingShip, destroyedShip, fireBall, fire;
 
     private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
@@ -30,10 +31,23 @@ public class MenuScreen implements Screen, Constant {
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(stage);
 
-        shipLogo = new GameObject("core/assets/shipstextures/ship-logo.png", 0, 0, true);
-        shipLogo.getSprite().setSize(shipLogo.width / 2, shipLogo.height / 2);
-        shipLogo.getSprite().setX(GAME_WIDTH / 2  - shipLogo.getSprite().getWidth() / 2);
-        shipLogo.getSprite().setY(GAME_HEIGHT / 2  - shipLogo.getSprite().getHeight() / 2 + 320);
+        // Background Scene
+        fire = new GameObject("core/assets/backgroundtextures/fire-animation.png",
+         0, 0, true, true, new Vector2(10, 1));
+
+        fire.getSprite().setSize(fire.width / 2, fire.height / 2);
+        fire.getSprite().setX(GAME_WIDTH / 2  - fire.getSprite().getWidth() / 2 - 200);
+        fire.getSprite().setY(GAME_HEIGHT / 2  - fire.getSprite().getHeight() / 2 + 320);
+
+        shootingShip = new GameObject("core/assets/backgroundtextures/ship1.png", 0, 0, true, false, null);
+        shootingShip.getSprite().setSize(shootingShip.width / 2, shootingShip.height / 2);
+        shootingShip.getSprite().setX(GAME_WIDTH / 2  - shootingShip.getSprite().getWidth() / 2 + 200);
+        shootingShip.getSprite().setY(GAME_HEIGHT / 2  - shootingShip.getSprite().getHeight() / 2 + 320);
+
+        destroyedShip = new GameObject("core/assets/backgroundtextures/ship2.png", 0, 0, true, false, null);
+        destroyedShip.getSprite().setSize(destroyedShip.width / 2, destroyedShip.height / 2);
+        destroyedShip.getSprite().setX(GAME_WIDTH / 2  - destroyedShip.getSprite().getWidth() / 2 - 200);
+        destroyedShip.getSprite().setY(GAME_HEIGHT / 2  - destroyedShip.getSprite().getHeight() / 2 + 320);
 
         // Buttons
         playButton = new GameButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, game.menuElements.skin, 1, game);
@@ -76,7 +90,9 @@ public class MenuScreen implements Screen, Constant {
         batch.draw(game.menuElements.menuTexture.getTexture(), game.menuElements.menuTexture.x,
                 game.menuElements.menuTexture.y);
 
-        shipLogo.drawSprite(batch);
+        shootingShip.drawSprite(batch);
+        destroyedShip.drawSprite(batch);
+        fire.drawSprite(batch);
 
         game.menuElements.font.draw (
             batch, game.menuElements.layout, 
