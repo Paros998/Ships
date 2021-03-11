@@ -75,7 +75,7 @@ public class MenuScreen implements Screen, Constant {
         // Background Scene
         fireBalls = new GameObject[2];
         for(int i = 0; i < 2; i++) {
-            fireBalls[i] = new GameObject("core/assets/backgroundtextures/fireball.png",
+            fireBalls[i] = new GameObject("core/assets/backgroundtextures/projectile.png",
             0, 0, true, false, null);
 
             fireBalls[i].getSprite().setSize(fireBalls[i].width / 4, fireBalls[i].height / 4);
@@ -84,11 +84,13 @@ public class MenuScreen implements Screen, Constant {
         }
         fireBalls[0].getSprite().setX(GAME_WIDTH / 2  - fireBalls[0].getSprite().getWidth() / 2 + 100);
         fireBalls[0].getSprite().setY(GAME_HEIGHT / 2  - fireBalls[0].getSprite().getHeight() / 2 + 310);
-        fireBalls[1].getSprite().setX(GAME_WIDTH / 2  - fireBalls[1].getSprite().getWidth() / 2);
+        fireBalls[1].getSprite().setX(GAME_WIDTH / 2  - fireBalls[1].getSprite().getWidth() / 2 - 300);
         fireBalls[1].getSprite().setY(GAME_HEIGHT / 2  - fireBalls[1].getSprite().getHeight() / 2 + 300);
 
         fireBalls[0].getSprite().flip(true, false);
-        fireBalls[0].getSprite().rotate(-45.0f);
+        fireBalls[0].getSprite().rotate(90.0f);
+        fireBalls[1].getSprite().flip(true, true);
+        fireBalls[1].getSprite().rotate(90.0f);
 
         fire = new GameObject("core/assets/backgroundtextures/fire-animation.png",
             0, 0, true, true, new Vector2(10, 1));
