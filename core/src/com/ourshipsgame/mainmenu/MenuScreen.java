@@ -18,9 +18,10 @@ public class MenuScreen implements Screen, Constant {
     private Main game;
     public Stage stage;
     public SpriteBatch batch;
+
+    // Objects in menu
     private GameObject notDestroyedShip, destroyedShip, fire;
     private GameObject[] projectile;
-
     private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
     public MenuScreen(Main game) {
