@@ -143,6 +143,8 @@ public class GameObject extends Rectangle {
 
     public Sprite getSprite() {
         return sprite;
+    }
+
     protected void createSpriteWave(Texture texture) {
         this.spriteWave = new Sprite(texture);
         this.oldPos = new Vector2(x, y);
