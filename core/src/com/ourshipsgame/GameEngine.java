@@ -12,8 +12,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int[][] SecondBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
-    protected Vector2f FirstBoardStart = new Vector2f(85, 223);
-    protected Vector2f SecondBoardStart = new Vector2f(1204, 223);
+    protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
+            8 * BOX_HEIGHT_F * BoardBoxToTile);
+    protected Vector2f SecondBoardStart;
     protected int gameHeight = GAME_HEIGHT;
     protected int gameWidth = GAME_WIDTH;
     protected float gameHeight_f = GAME_HEIGHT_F;
@@ -44,18 +45,34 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
 
         for (int i = 0; i < sum; i++) {
             if (i <= 2) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/threeshipModelAnimated.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 3,
-                        new Vector2(10, 1));
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/three/threeshipModel.png",
+                        "core/assets/oneship/three/threeshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
+                        FirstBoardStart.y + 1, true, 3, new Vector2(5, 1));
             } else if (i > 2 && i <= 6) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/twoshipModelAnimated.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 2,
-                        new Vector2(10, 1));
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/two/twoshipModel.png",
+                        "core/assets/oneship/two/twoshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
+                        FirstBoardStart.y + 1, true, 2, new Vector2(5, 1));
             } else
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/oneshipModelAnimated.png",
-                        FirstBoardStart.x + (i * BOX_WIDTH_F), gameHeight_f - FirstBoardStart.y, true, 3,
-                        new Vector2(10, 1));
+                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/one/oneshipModel.png",
+                        "core/assets/oneship/one/oneshipModelwaves.png", FirstBoardStart.x + (i * BOX_WIDTH_F) + 1,
+                        FirstBoardStart.y + 1, true, 1, new Vector2(5, 1));
         }
+
+        for (int i = 0; i < sum; i++) {
+            GameObject actualShip = FirstBoardShipsSprites[i];
+            if (isShipPlacedGood(actualShip)) {
+                actualShip.setGoodPlacement(true);
+            } else
+                actualShip.setGoodPlacement(false);
+
+            if (actualShip.goodPlacement)
+                actualShip.changeRectColour();
+            else {
+                actualShip.setPosition(actualShip.oldPos);
+                actualShip.changeRectColour();
+            }
+        }
+
         done = true;
         return done;
     }
@@ -94,7 +111,35 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
             xSprite = actualShip.width / 2;
             ySprite = actualShip.height / 2;
-            actualShip.setSpritePos(new Vector2(screenX - xSprite, gameHeight_f - screenY - ySprite));
+            float box_size = 64f;
+
+            float xChange = screenX - actualShip.x - xSprite;
+            float yChange = gameHeight_f - screenY - actualShip.y - ySprite;
+
+            if (xChange >= box_size && yChange >= box_size)
+                actualShip.translate(new Vector2(box_size, box_size));
+
+            else if (xChange <= -box_size && yChange <= -box_size)
+                actualShip.translate(new Vector2(-box_size, -box_size));
+
+            else if (xChange >= box_size && yChange <= -box_size)
+                actualShip.translate(new Vector2(box_size, -box_size));
+
+            else if (xChange <= -box_size && yChange >= box_size)
+                actualShip.translate(new Vector2(-box_size, box_size));
+
+            else if (xChange >= box_size)
+                actualShip.translateX(box_size);
+
+            else if (xChange <= -box_size)
+                actualShip.translateX(-box_size);
+
+            else if (yChange >= box_size)
+                actualShip.translateY(box_size);
+
+            else if (yChange <= -box_size)
+                actualShip.translateY(-box_size);
+
         }
     }
 
