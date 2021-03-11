@@ -18,8 +18,8 @@ public class MenuScreen implements Screen, Constant {
     private Main game;
     public Stage stage;
     public SpriteBatch batch;
-    private GameObject shootingShip, destroyedShip, fire;
-    private GameObject[] fireBalls;
+    private GameObject notDestroyedShip, destroyedShip, fire;
+    private GameObject[] projectile;
 
     private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
@@ -37,24 +37,23 @@ public class MenuScreen implements Screen, Constant {
     // game loop method
     @Override
     public void render(float deltaTime) {
-        // update
+        // Updating menu
         update(deltaTime);
 
-        // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // render things
+        // Rendering menu
         batch.begin();
 
         batch.draw(game.menuElements.menuTexture.getTexture(), game.menuElements.menuTexture.x,
                 game.menuElements.menuTexture.y);
 
         batch.draw(fire.getSprite(), fire.x, fire.y);
-        shootingShip.drawSprite(batch);
+        notDestroyedShip.drawSprite(batch);
         destroyedShip.drawSprite(batch);
 
-        for(GameObject fireBall : fireBalls)
+        for(GameObject fireBall : projectile)
             fireBall.drawSprite(batch);
 
         game.menuElements.font.draw (
@@ -72,26 +71,44 @@ public class MenuScreen implements Screen, Constant {
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(stage);
 
-        // Background Scene
-        fireBalls = new GameObject[2];
-        for(int i = 0; i < 2; i++) {
-            fireBalls[i] = new GameObject("core/assets/backgroundtextures/projectile.png",
+
+        /** Background scene */
+
+        // Creating projectile
+        projectile = new GameObject[4];
+
+        for(int i = 0; i < projectile.length; i++) {
+            projectile[i] = new GameObject("core/assets/backgroundtextures/projectile-vertical.png",
             0, 0, true, false, null);
 
-            fireBalls[i].getSprite().setSize(fireBalls[i].width / 4, fireBalls[i].height / 4);
-            fireBalls[i].x = fireBalls[i].getSprite().getX();
-            fireBalls[i].y = fireBalls[i].getSprite().getY();
+            projectile[i].getSprite().setSize(projectile[i].width * 2, projectile[i].height * 2);
+            projectile[i].x = projectile[i].getSprite().getX();
+            projectile[i].y = projectile[i].getSprite().getY();
+
+            if((i & 1) == 0) { // even
+                projectile[i].getSprite().flip(true, false);
+                projectile[i].getSprite().rotate(-45.0f);
+            }
+            else { // odd
+                projectile[i].getSprite().flip(false, true);
+                projectile[i].getSprite().rotate(45.0f);
+            }
         }
-        fireBalls[0].getSprite().setX(GAME_WIDTH / 2  - fireBalls[0].getSprite().getWidth() / 2 + 100);
-        fireBalls[0].getSprite().setY(GAME_HEIGHT / 2  - fireBalls[0].getSprite().getHeight() / 2 + 310);
-        fireBalls[1].getSprite().setX(GAME_WIDTH / 2  - fireBalls[1].getSprite().getWidth() / 2 - 300);
-        fireBalls[1].getSprite().setY(GAME_HEIGHT / 2  - fireBalls[1].getSprite().getHeight() / 2 + 300);
 
-        fireBalls[0].getSprite().flip(true, false);
-        fireBalls[0].getSprite().rotate(90.0f);
-        fireBalls[1].getSprite().flip(true, true);
-        fireBalls[1].getSprite().rotate(90.0f);
+        float x = GAME_WIDTH / 2  - projectile[0].getSprite().getWidth() / 2;
+        float y = GAME_HEIGHT / 2  - projectile[0].getSprite().getHeight() / 2;
 
+        Vector2[] positions = {
+            new Vector2(x + 100, y + 330), 
+            new Vector2(x - 50, y + 300), 
+            new Vector2(x + 60, y + 380),
+            new Vector2(x - 50, y + 330)
+        };
+
+        for(int i = 0; i < projectile.length; i++)
+            projectile[i].getSprite().setPosition(positions[i].x, positions[i].y);
+
+        // Creating fire at destroyedShip
         fire = new GameObject("core/assets/backgroundtextures/fire-animation.png",
             0, 0, true, true, new Vector2(10, 1));
         fire.getSprite().setSize(fire.width / 2, fire.height / 2);
@@ -100,28 +117,30 @@ public class MenuScreen implements Screen, Constant {
         fire.x = fire.getSprite().getX();
         fire.y = fire.getSprite().getY();
 
-        shootingShip = new GameObject("core/assets/backgroundtextures/ship1.png", 0, 0, true, false, null);
-        shootingShip.getSprite().setSize(shootingShip.width / 2, shootingShip.height / 2);
-        shootingShip.getSprite().setX(GAME_WIDTH / 2  - shootingShip.getSprite().getWidth() / 2 + 200);
-        shootingShip.getSprite().setY(GAME_HEIGHT / 2  - shootingShip.getSprite().getHeight() / 2 + 320);
+        // Creating notDestroyedShip
+        notDestroyedShip = new GameObject("core/assets/backgroundtextures/ship1.png", 0, 0, true, false, null);
+        notDestroyedShip.getSprite().setSize(notDestroyedShip.width / 2, notDestroyedShip.height / 2);
+        notDestroyedShip.getSprite().setX(GAME_WIDTH / 2  - notDestroyedShip.getSprite().getWidth() / 2 + 200);
+        notDestroyedShip.getSprite().setY(GAME_HEIGHT / 2  - notDestroyedShip.getSprite().getHeight() / 2 + 320);
 
+        // Creating destroyedShip
         destroyedShip = new GameObject("core/assets/backgroundtextures/ship2.png", 0, 0, true, false, null);
         destroyedShip.getSprite().setSize(destroyedShip.width / 2, destroyedShip.height / 2);
         destroyedShip.getSprite().setX(GAME_WIDTH / 2  - destroyedShip.getSprite().getWidth() / 2 - 200);
         destroyedShip.getSprite().setY(GAME_HEIGHT / 2  - destroyedShip.getSprite().getHeight() / 2 + 320);
 
-        // Buttons
+        // Creating buttons
         playButton = new GameButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, game.menuElements.skin, 1, game);
 
         helpButon = new GameButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2, game.menuElements.skin, 2, game);
 
         scoreButton = new GameButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3, game);
 
-        optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4,
-                game);
+        optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4, game);
 
         quitButton = new GameButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, game.menuElements.skin, 5, game);
 
+        // Adding actors to scene
         stage.addActor(playButton);
         stage.addActor(helpButon);
         stage.addActor(scoreButton);
