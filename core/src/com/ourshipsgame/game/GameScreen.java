@@ -66,12 +66,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
         switch (gameStage) {
         case 2:
             for (int i = 0; i < sum; i++) {
+                FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb, true, sr);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
             }
             break;
         case 3:
             for (int i = 0; i < sum; i++) {
+                FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
             }
@@ -113,10 +115,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // update logics of game
     private void update(float deltaTime) {
         runTime += deltaTime;
-        // handleInput(deltaTime);
-        for (int i = 0; i < sum; i++) {
-            FirstBoardShipsSprites[i].updateTexture();
-        }
+        handleInput(deltaTime);
         switch (gameStage) {
         case 2:
             // if(placement)
@@ -236,8 +235,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        // if (gameStage == 2)
-        // rotateTurretsWithMouse(screenX, screenY);
+        if (gameStage == 3)
+            rotateTurretsWithMouse(screenX, screenY);
         return false;
     }
 

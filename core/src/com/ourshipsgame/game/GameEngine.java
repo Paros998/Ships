@@ -10,9 +10,79 @@ import com.ourshipsgame.handlers.Constant;
 import org.lwjgl.util.vector.Vector2f;
 
 public abstract class GameEngine extends ScreenAdapter implements Constant {
+    // Board class
+    protected class Board {
+        protected int[][] ShipsPlaced = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+        protected Vector2[] BoardShipsPos;
+        protected int BoardNumber;
+
+        protected Board(int numberOfShips, int BoardNumber) {
+            this.BoardShipsPos = new Vector2[numberOfShips];
+            this.BoardNumber = BoardNumber;
+        }
+
+        protected void placeShipOnBoard(int numberOfShips) {
+            GameObject actualShip;
+            for (int i = 0; i < numberOfShips; i++) {
+
+                if (BoardNumber == 1)
+                    actualShip = FirstBoardShipsSprites[i];
+                else if (BoardNumber == 2)
+                    actualShip = SecondBoardShipsSprites[i];
+                else
+                    return;
+
+                int rotation = actualShip.rotation;
+                int xPos = (int) ((actualShip.getX() - FirstBoardStart.x) / BOX_WIDTH_F);
+                int yPos = (int) ((actualShip.getY() - FirstBoardStart.y) / BOX_HEIGHT_F);
+                BoardShipsPos[i].x = xPos;
+                BoardShipsPos[i].y = yPos;
+                switch (actualShip.size) {
+                case 3:
+                    if (rotation == 0) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos][yPos + 1] = 1;
+                        ShipsPlaced[xPos][yPos + 2] = 1;
+                    } else if (rotation == 1) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos + 1][yPos] = 1;
+                        ShipsPlaced[xPos + 2][yPos] = 1;
+                    } else if (rotation == 2) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos][yPos - 1] = 1;
+                        ShipsPlaced[xPos][yPos - 2] = 1;
+                    } else {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos - 1][yPos - 1] = 1;
+                        ShipsPlaced[xPos - 2][yPos - 2] = 1;
+                    }
+                    break;
+                case 2:
+                    if (rotation == 0) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos][yPos + 1] = 1;
+                    } else if (rotation == 1) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos + 1][yPos] = 1;
+                    } else if (rotation == 2) {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos][yPos - 1] = 1;
+                    } else {
+                        ShipsPlaced[xPos][yPos] = 1;
+                        ShipsPlaced[xPos - 1][yPos - 1] = 1;
+                    }
+                    break;
+                case 1:
+                    ShipsPlaced[xPos][yPos] = 1;
+                    break;
+                }
+            }
+        }
+    }
+
     // Important vars
-    protected int[][] FirstBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
-    protected int[][] SecondBoardShipsPos = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+    protected Board firstBoard;
+    protected Board secondBoard;
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
@@ -43,9 +113,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Stage 1
     protected boolean preparation(boolean computerEnemy) {
         boolean done = false;
+        firstBoard = new Board(sum, 1);
+        secondBoard = new Board(sum, 2);
         for (int i = 0; i < BOX_X_AXIS_NUMBER; i++)
             for (int j = 0; j < BOX_Y_AXIS_NUMBER; j++) {
-                FirstBoardShipsPos[i][j] = SecondBoardShipsPos[i][j] = FirstPlayerShotsDone[i][j] = SecondPlayerShotsDone[i][j] = 0;
+                firstBoard.ShipsPlaced[i][j] = secondBoard.ShipsPlaced[i][j] = FirstPlayerShotsDone[i][j] = SecondPlayerShotsDone[i][j] = 0;
             }
 
         for (int i = 0; i < sum; i++) {
@@ -186,6 +258,14 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         text = "Press R to rotate current ship!";
         len = text.length();
         font.draw(batch, text, (gameWidth_f - 230 - (43 * (len / 2))), gameHeight_f / 2);
+    }
+
+    protected boolean checkAllShips() {
+        for (int i = 0; i < sum; i++) {
+            if (isShipPlacedGood(FirstBoardShipsSprites[i]) == false)
+                return false;
+        }
+        return true;
     }
 
     // Stage 3 later
