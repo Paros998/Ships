@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.ourshipsgame.GameObject;
+import com.ourshipsgame.game.GameObject;
 
 public class MenuGlobalElements {
 
@@ -26,35 +26,37 @@ public class MenuGlobalElements {
     public Sound clickSound;
     public float sliderMusicPercent, sliderSoundPercent;
     public float soundVolume, musicVolume;
-    public long soundId; // Add table to create more sounds 
+    public long soundId; // Add table to create more sounds
     private int direction = 0;
 
     public MenuGlobalElements(Game game) {
-        try { loadSettings(); } /* loading settings from file */
-        catch (IOException e) { e.printStackTrace(); } 
+        try {
+            loadSettings();
+        } /* loading settings from file */
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Music and sounds
-        music = Gdx.audio.newMusic(Gdx.files.internal
-        ("core/assets/music/Epic Pirate Battle Theme/Blackmoor Tides Loop.wav"));
+        music = Gdx.audio
+                .newMusic(Gdx.files.internal("core/assets/music/Epic Pirate Battle Theme/Blackmoor Tides Loop.wav"));
         music.setLooping(true);
         music.setVolume(musicVolume);
         music.play();
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/sounds/menu-click.mp3"));
         clickSound.pause();
-        
+
         this.game = game;
         menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true, false, null);
         skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
 
         // Text, font
-        font = new BitmapFont (
-            Gdx.files.internal("core/assets/buttons/skins/rusty-robot/raw/font-title-export.fnt")
-        );
+        font = new BitmapFont(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/raw/font-title-export.fnt"));
         layout = new GlyphLayout();
         layout.setText(font, "Ships Game");
     }
-    
+
     // Menu methods
     public void moveMenu(float deltaTime) {
         if ((menuTexture.x <= 0) && (direction == 0)) {
@@ -72,22 +74,21 @@ public class MenuGlobalElements {
 
     private void loadSettings() throws IOException {
         File file = new File("core/assets/files/settings.txt");
-		if(!file.exists()) {
-			file.createNewFile(); // Creating player file with home details
+        if (!file.exists()) {
+            file.createNewFile(); // Creating player file with home details
             musicVolume = 0.2f;
             soundVolume = 0.2f;
             sliderSoundPercent = sliderMusicPercent = 100.0f;
-		}
-		else {
-			Scanner scanner = new Scanner(file);
-            
+        } else {
+            Scanner scanner = new Scanner(file);
+
             sliderMusicPercent = Float.valueOf(scanner.nextLine().trim());
             sliderSoundPercent = Float.valueOf(scanner.next().trim());
 
             musicVolume = sliderMusicPercent / 5.0f;
             soundVolume = sliderSoundPercent / 5.0f;
 
-			scanner.close();
-        }  
-    } 
+            scanner.close();
+        }
+    }
 }
