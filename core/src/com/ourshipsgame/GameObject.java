@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
 
+import org.lwjgl.util.vector.Vector2f;
+
 public class GameObject extends Rectangle implements Constant {
     /**
      *
@@ -572,5 +574,14 @@ public class GameObject extends Rectangle implements Constant {
         sprite.setSize(width, height);
         spriteWave.setSize(width, height);
         alligmentRectangle.setSize(width, height);
+    }
+
+    public void rotateTurret(float degrees, int index) {
+        if (this.turretSprites != null)
+            turretSprites[index].setRotation(degrees);
+    }
+
+    public Vector2f getVectorPos(int i) {
+        return new Vector2f(turretSprites[i].getX(), turretSprites[i].getY());
     }
 }

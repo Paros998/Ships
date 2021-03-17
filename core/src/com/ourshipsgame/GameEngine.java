@@ -1,6 +1,7 @@
 package com.ourshipsgame;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
@@ -172,5 +173,34 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected void rotateActualShip() {
         FirstBoardShipsSprites[activeSpriteDrag].rotate90();
     }
+
     // Stage 3 later
+    protected void rotateTurretsWithMouse(float screenX, float screenY) {
+        screenY = gameHeight_f - screenY;
+        float angle;
+        for (int j = 0; j < sum; j++) {
+            GameObject actualShip = FirstBoardShipsSprites[j];
+            for (int i = 0; i < actualShip.turretsAmmount; i++) {
+                Vector2f turretPos = actualShip.getVectorPos(i);
+                angle = MathUtils.radiansToDegrees * MathUtils.atan2(screenX - turretPos.x, turretPos.y - screenY);
+                if (angle < 0)
+                    angle += 360;
+                switch (actualShip.rotation) {
+                case 0:
+                    break;
+                case 1:
+                    angle += 90;
+                    break;
+                case 2:
+                    angle += 180;
+                    break;
+                case 3:
+                    angle += 270;
+                    break;
+                }
+                actualShip.rotateTurret(angle, i);
+            }
+
+        }
+    }
 }

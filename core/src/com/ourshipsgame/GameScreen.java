@@ -185,8 +185,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-
-        return false;
+        if (gameStage == 2)
+            // rotateTurretsWithMouse(screenX, screenY);
+            return false;
     }
 
     @Override
