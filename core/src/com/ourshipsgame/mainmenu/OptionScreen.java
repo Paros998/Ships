@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ourshipsgame.GameButton;
-import com.ourshipsgame.GameSlider;
 import com.ourshipsgame.Main;
+import com.ourshipsgame.game.GameSlider;
 import com.ourshipsgame.handlers.Constant;
 
 public class OptionScreen implements Screen, Constant {
@@ -47,14 +47,14 @@ public class OptionScreen implements Screen, Constant {
         musicVolumeText.setPosition(GAME_WIDTH / 2 - soundsVolumeText.getWidth() / 2, GAME_HEIGHT / 2 - 20);
 
         // Sliders
-        musicSliderVolume = new GameSlider(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100,
-            0, 100, 1, false, game.menuElements.skin, game);
+        musicSliderVolume = new GameSlider(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, 0, 100, 1, false,
+                game.menuElements.skin, game);
         musicSliderVolume.setSliderType(1);
 
-        soundSilderVolume = new GameSlider(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100,
-            0, 100, 1, false, game.menuElements.skin, game);
+        soundSilderVolume = new GameSlider(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, 0, 100, 1, false,
+                game.menuElements.skin, game);
         soundSilderVolume.setSliderType(2);
-        
+
         // Buttons
         backButton = new GameButton("Back to Main Menu", GAME_WIDTH / 2 - 600, GAME_HEIGHT / 2 - 300,
                 game.menuElements.skin, 6, game);
@@ -76,8 +76,8 @@ public class OptionScreen implements Screen, Constant {
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
         savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
-		savingPrintWriter.write(musicSliderVolume.getPercent() + "\n" + soundSilderVolume.getPercent());
-		savingPrintWriter.close();
+        savingPrintWriter.write(musicSliderVolume.getPercent() + "\n" + soundSilderVolume.getPercent());
+        savingPrintWriter.close();
     }
 
     @Override
@@ -118,8 +118,11 @@ public class OptionScreen implements Screen, Constant {
 
     @Override
     public void dispose() {
-        try { saveSettings(); } 
-        catch (IOException e) { e.printStackTrace(); }
+        try {
+            saveSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         stage.dispose();
         batch.dispose();
         System.out.println("Elements from Option Menu disposed.");
