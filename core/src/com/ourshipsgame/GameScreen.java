@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.ourshipsgame.hud.Hud;
 
 public class GameScreen extends GameEngine implements InputProcessor {
 
@@ -18,6 +19,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // vars mandatory
     private Game game;
+    private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
     private float runTime;
@@ -51,6 +53,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         layers = new int[2];
         layers[0] = 0;
         layers[1] = 1;
+        hud = new Hud();
     }
 
     private void handleInput(float deltaTime) {
@@ -105,6 +108,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
         sb.end();
         sr.end();
+        hud.updateHud();
     }
 
     @Override
