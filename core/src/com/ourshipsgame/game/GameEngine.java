@@ -2,6 +2,7 @@ package com.ourshipsgame.game;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
+
 import org.lwjgl.util.vector.Vector2f;
 
 public abstract class GameEngine extends ScreenAdapter implements Constant {
@@ -102,6 +104,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int gameWidth = GAME_WIDTH;
     protected float gameHeight_f = GAME_HEIGHT_F;
     protected float gameWidth_f = GAME_WIDTH_F;
+    // Sounds and music
+    protected Sound rotateSound;
+    protected boolean rotateSoundPlayed;
+    protected float rotateSoundTime = 5f;
     // Other vars
     protected int threeBoxShips = 3;
     protected int twoBoxShips = 4;
@@ -129,6 +135,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModel.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+        manager.load("core/assets/sounds/TurretRotation.mp3", Sound.class);
     }
 
     // game methods below
@@ -145,6 +152,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         MediumShipTextures[1] = manager.get("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
         SmallShipTextures[0] = manager.get("core/assets/oneship/one/oneshipModel.png", Texture.class);
         SmallShipTextures[1] = manager.get("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+        rotateSound = manager.get("core/assets/sounds/TurretRotation.mp3", Sound.class);
 
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);
@@ -302,6 +310,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected void rotateTurretsWithMouse(float screenX, float screenY) {
         screenY = gameHeight_f - screenY;
         float angle;
+
         for (int j = 0; j < sum; j++) {
             GameObject actualShip = FirstBoardShipsSprites[j];
             for (int i = 0; i < actualShip.turretsAmmount; i++) {

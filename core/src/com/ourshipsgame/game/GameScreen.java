@@ -24,7 +24,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
 
-    // vars mandatory
     private AssetManager manager;
     private Game game;
     private Hud hud;
@@ -39,6 +38,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private Texture loadingTexture;
     private boolean createdTextures = false;
     private int[] layers;
+    private float rotateTime;
     // other vars
     private BitmapFont font;
 
@@ -119,6 +119,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (preparation(true, manager)) {
             gameStage = 2;
             createdTextures = true;
+            rotateSound.loop(0.5f);
+            rotateSound.pause();
         }
     }
 
@@ -130,6 +132,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // update logics of game
     private void update(float deltaTime) {
         runTime += deltaTime;
+
+        rotateTime += deltaTime;
+        if (rotateTime >= 0.1f) {
+            rotateTime -= 0.1f;
+            rotateSound.pause();
+        }
         handleInput(deltaTime);
         switch (gameStage) {
         case 2:
@@ -269,8 +277,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 3)
+        if (gameStage == 2) {
+            rotateSound.resume();
             rotateTurretsWithMouse(screenX, screenY);
+
+        }
         return false;
     }
 
