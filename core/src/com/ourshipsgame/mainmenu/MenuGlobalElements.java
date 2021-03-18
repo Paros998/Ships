@@ -8,6 +8,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -48,7 +49,8 @@ public class MenuGlobalElements {
         clickSound.pause();
 
         this.game = game;
-        menuTexture = new GameObject("core/assets/backgroundtextures/paperTextOld.png", 0, 0, true, false, null);
+        menuTexture = new GameObject(new Texture("core/assets/backgroundtextures/paperTextOld.png"), 0, 0, true, false,
+                null);
         skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
 
         // Text, font

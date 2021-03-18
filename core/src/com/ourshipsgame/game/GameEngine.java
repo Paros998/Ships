@@ -1,6 +1,8 @@
 package com.ourshipsgame.game;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,6 +15,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Board class
     protected class Board {
         protected int[][] ShipsPlaced = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+        // Vector index is a ship index
+        // x and y are dimensions in ShipsPlaced where is the ship beginning
         protected Vector2[] BoardShipsPos;
         protected int BoardNumber;
 
@@ -81,12 +85,17 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     // Important vars
+
     protected Board firstBoard;
     protected Board secondBoard;
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
             "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png" };
+    protected Texture turretTextures[] = new Texture[4];
+    protected Texture BigShipTextures[] = new Texture[2];
+    protected Texture MediumShipTextures[] = new Texture[2];
+    protected Texture SmallShipTextures[] = new Texture[2];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
     protected Vector2f SecondBoardStart;
@@ -109,10 +118,35 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float xDiff;
     protected float yDiff;
 
+    // loading method
+    protected void loadGameEngine(AssetManager manager) {
+        manager.load(internalPaths[0], Texture.class);
+        manager.load(internalPaths[1], Texture.class);
+        manager.load(internalPaths[2], Texture.class);
+        manager.load(internalPaths[3], Texture.class);
+        manager.load("core/assets/oneship/three/threeshipModel.png", Texture.class);
+        manager.load("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
+        manager.load("core/assets/oneship/two/twoshipModel.png", Texture.class);
+        manager.load("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
+        manager.load("core/assets/oneship/one/oneshipModel.png", Texture.class);
+        manager.load("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+    }
+
     // game methods below
     // Stage 1
-    protected boolean preparation(boolean computerEnemy) {
+    protected boolean preparation(boolean computerEnemy, AssetManager manager) {
         boolean done = false;
+        turretTextures[0] = manager.get(internalPaths[0], Texture.class);
+        turretTextures[1] = manager.get(internalPaths[1], Texture.class);
+        turretTextures[2] = manager.get(internalPaths[2], Texture.class);
+        turretTextures[3] = manager.get(internalPaths[3], Texture.class);
+        BigShipTextures[0] = manager.get("core/assets/oneship/three/threeshipModel.png", Texture.class);
+        BigShipTextures[1] = manager.get("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
+        MediumShipTextures[0] = manager.get("core/assets/oneship/two/twoshipModel.png", Texture.class);
+        MediumShipTextures[1] = manager.get("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
+        SmallShipTextures[0] = manager.get("core/assets/oneship/one/oneshipModel.png", Texture.class);
+        SmallShipTextures[1] = manager.get("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);
         for (int i = 0; i < BOX_X_AXIS_NUMBER; i++)
@@ -122,16 +156,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
 
         for (int i = 0; i < sum; i++) {
             if (i <= 2) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/three/threeshipModel.png",
-                        "core/assets/oneship/three/threeshipModelwaves.png", internalPaths,
+                FirstBoardShipsSprites[i] = new GameObject(BigShipTextures[0], BigShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 191, true, 3, new Vector2(5, 1));
             } else if (i > 2 && i <= 6) {
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/two/twoshipModel.png",
-                        "core/assets/oneship/two/twoshipModelwaves.png", internalPaths,
+                FirstBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 127, true, 2, new Vector2(5, 1));
             } else
-                FirstBoardShipsSprites[i] = new GameObject("core/assets/oneship/one/oneshipModel.png",
-                        "core/assets/oneship/one/oneshipModelwaves.png", internalPaths,
+                FirstBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 63, true, 1, new Vector2(5, 1));
         }
         for (int i = 0; i < sum; i++) {
