@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.objects.Animator;
-
 import org.lwjgl.util.vector.Vector2f;
 
 public class GameObject extends Rectangle implements Constant {

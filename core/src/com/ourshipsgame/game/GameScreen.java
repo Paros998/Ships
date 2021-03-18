@@ -148,6 +148,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (manager.update()) {
+            // When loading screen disappers
+
             if (createdTextures == false) {
                 loadingTexture.dispose();
                 createGraphics();
@@ -177,6 +179,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             sr.end();
             hud.updateHud();
         } else {
+            // While loading the game assets
             progress = manager.getProgress();
             sb.begin();
             sb.draw(loadingTexture, 0, 0);
@@ -184,7 +187,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
             font.draw(sb, load, (gameWidth_f / 2f) - 150, (gameHeight_f / 2f) + 43);
             sb.end();
         }
-
     }
 
     @Override

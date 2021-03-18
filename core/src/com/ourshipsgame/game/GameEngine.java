@@ -85,7 +85,6 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     // Important vars
-
     protected Board firstBoard;
     protected Board secondBoard;
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
