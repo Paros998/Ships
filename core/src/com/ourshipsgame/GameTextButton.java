@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.ourshipsgame.game.GameScreen;
-import com.ourshipsgame.hud.OptionsWindow;
 import com.ourshipsgame.mainmenu.MenuScreen;
 import com.ourshipsgame.mainmenu.OptionScreen;
 
@@ -41,30 +40,7 @@ public class GameTextButton extends TextButton {
         });
     }
 
-    public void setListener(final int buttonNumber, final OptionsWindow window) {
-        this.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                switch(buttonNumber) {
-                    case 1:
-                        window.hideWindow();
-                        break;
-
-                    case 2:
-                        break;
-
-                    case 3:
-                        Gdx.app.exit();
-                        break;
-                }
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-    }
+    // Setlistener method to create
 
     private void menuOptions(int option) {
         switch (option) {
