@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.objects.Animator;
-
 import org.lwjgl.util.vector.Vector2f;
 
 public class GameObject extends Rectangle implements Constant {
@@ -44,9 +43,8 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     // Constructor for object with a texture ,sprite and animation for this sprite
-    public GameObject(String internalPath, float x, float y, boolean createSprite, boolean createAnimator,
-            Vector2 vector) {
-        texture = new Texture(internalPath);
+    public GameObject(Texture texture, float x, float y, boolean createSprite, boolean createAnimator, Vector2 vector) {
+        this.texture = texture;
         this.setX(x);
         this.setY(y);
         this.width = texture.getWidth();
@@ -60,10 +58,10 @@ public class GameObject extends Rectangle implements Constant {
 
     // Constructor for object with 2 textures , 2 sprites :one is a ship and the
     // other one are his waves, and setting a size of this ship
-    public GameObject(String internalPath, String internalPath2, float x, float y, boolean createSprite, int sizeofShip,
+    public GameObject(Texture texture, Texture texture2, float x, float y, boolean createSprite, int sizeofShip,
             Vector2 vector2) {
-        this.texture = new Texture(internalPath);
-        this.textureWave = new Texture(internalPath2);
+        this.texture = texture;
+        this.textureWave = texture2;
         this.setX(x);
         this.setY(y);
         this.width = texture.getWidth();
@@ -78,10 +76,10 @@ public class GameObject extends Rectangle implements Constant {
     // Constructor for object with 2 textures , 2 sprites :one is a ship and the
     // other one are his waves,also this one is creating a sprite array which is
     // used to manage ships turrets, and setting a size of this ship
-    public GameObject(String internalPath, String internalPath2, String[] internalPaths, float x, float y,
-            boolean createSprite, int sizeofShip, Vector2 vector2) {
-        this.texture = new Texture(internalPath);
-        this.textureWave = new Texture(internalPath2);
+    public GameObject(Texture texture, Texture texture2, Texture[] textures, float x, float y, boolean createSprite,
+            int sizeofShip, Vector2 vector2) {
+        this.texture = texture;
+        this.textureWave = texture2;
         this.setX(x);
         this.setY(y);
         this.width = texture.getWidth();
@@ -96,7 +94,7 @@ public class GameObject extends Rectangle implements Constant {
                 turretsAmmount = 4;
             else
                 turretsAmmount = 2;
-            createTurrets(internalPaths);
+            createTurrets(textures);
         }
     }
 
@@ -192,33 +190,33 @@ public class GameObject extends Rectangle implements Constant {
     // This method has to create array of turret sprites and its textures for a ship
     // depending on the ship size and place it on good positions accordingly to the
     // ship type
-    protected void createTurrets(String[] internalPaths) {
+    protected void createTurrets(Texture[] textures) {
 
         turretTextures = new Texture[turretsAmmount];
         turretSprites = new Sprite[turretsAmmount];
 
         switch (turretsAmmount) {
         case 10:
-            turretTextures[0] = new Texture(internalPaths[0]);
-            turretTextures[1] = new Texture(internalPaths[1]);
-            turretTextures[2] = new Texture(internalPaths[0]);
-            turretTextures[3] = new Texture(internalPaths[0]);
-            turretTextures[4] = new Texture(internalPaths[2]);
-            turretTextures[5] = new Texture(internalPaths[0]);
-            turretTextures[6] = new Texture(internalPaths[2]);
-            turretTextures[7] = new Texture(internalPaths[3]);
-            turretTextures[8] = new Texture(internalPaths[2]);
-            turretTextures[9] = new Texture(internalPaths[1]);
+            turretTextures[0] = textures[0];
+            turretTextures[1] = textures[1];
+            turretTextures[2] = textures[0];
+            turretTextures[3] = textures[0];
+            turretTextures[4] = textures[2];
+            turretTextures[5] = textures[0];
+            turretTextures[6] = textures[2];
+            turretTextures[7] = textures[3];
+            turretTextures[8] = textures[2];
+            turretTextures[9] = textures[1];
             break;
         case 4:
-            turretTextures[0] = new Texture(internalPaths[1]);
-            turretTextures[1] = new Texture(internalPaths[2]);
-            turretTextures[2] = new Texture(internalPaths[1]);
-            turretTextures[3] = new Texture(internalPaths[2]);
+            turretTextures[0] = textures[1];
+            turretTextures[1] = textures[2];
+            turretTextures[2] = textures[1];
+            turretTextures[3] = textures[2];
             break;
         case 2:
-            turretTextures[0] = new Texture(internalPaths[2]);
-            turretTextures[1] = new Texture(internalPaths[2]);
+            turretTextures[0] = textures[2];
+            turretTextures[1] = textures[2];
             break;
         }
         if (size == 3) {

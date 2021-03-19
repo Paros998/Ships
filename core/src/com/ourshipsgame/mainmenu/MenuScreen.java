@@ -3,6 +3,7 @@ package com.ourshipsgame.mainmenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -76,8 +77,8 @@ public class MenuScreen implements Screen, Constant {
         projectile = new GameObject[4];
 
         for (int i = 0; i < projectile.length; i++) {
-            projectile[i] = new GameObject("core/assets/backgroundtextures/projectile-vertical.png", 0, 0, true, false,
-                    null);
+            projectile[i] = new GameObject(new Texture("core/assets/backgroundtextures/projectile-vertical.png"), 0, 0,
+                    true, false, null);
 
             projectile[i].getSprite().setSize(projectile[i].width * 2, projectile[i].height * 2);
             projectile[i].x = projectile[i].getSprite().getX();
@@ -102,7 +103,7 @@ public class MenuScreen implements Screen, Constant {
             projectile[i].getSprite().setPosition(positions[i].x, positions[i].y);
 
         // Creating fire at destroyedShip
-        fire = new GameObject("core/assets/backgroundtextures/fire-animation.png", 0, 0, true, true,
+        fire = new GameObject(new Texture("core/assets/backgroundtextures/fire-animation.png"), 0, 0, true, true,
                 new Vector2(10, 1));
         fire.getSprite().setSize(fire.width / 2, fire.height / 2);
         fire.getSprite().setX(GAME_WIDTH / 2 - fire.getSprite().getWidth() / 2 + 100);
@@ -111,13 +112,15 @@ public class MenuScreen implements Screen, Constant {
         fire.y = fire.getSprite().getY();
 
         // Creating notDestroyedShip
-        notDestroyedShip = new GameObject("core/assets/backgroundtextures/ship1.png", 0, 0, true, false, null);
+        notDestroyedShip = new GameObject(new Texture("core/assets/backgroundtextures/ship1.png"), 0, 0, true, false,
+                null);
         notDestroyedShip.getSprite().setSize(notDestroyedShip.width / 2, notDestroyedShip.height / 2);
         notDestroyedShip.getSprite().setX(GAME_WIDTH / 2 - notDestroyedShip.getSprite().getWidth() / 2 + 200);
         notDestroyedShip.getSprite().setY(GAME_HEIGHT / 2 - notDestroyedShip.getSprite().getHeight() / 2 + 320);
 
         // Creating destroyedShip
-        destroyedShip = new GameObject("core/assets/backgroundtextures/ship2.png", 0, 0, true, false, null);
+        destroyedShip = new GameObject(new Texture("core/assets/backgroundtextures/ship2.png"), 0, 0, true, false,
+                null);
         destroyedShip.getSprite().setSize(destroyedShip.width / 2, destroyedShip.height / 2);
         destroyedShip.getSprite().setX(GAME_WIDTH / 2 - destroyedShip.getSprite().getWidth() / 2 - 200);
         destroyedShip.getSprite().setY(GAME_HEIGHT / 2 - destroyedShip.getSprite().getHeight() / 2 + 320);

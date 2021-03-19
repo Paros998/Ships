@@ -5,9 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -22,18 +25,22 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
 
-    // vars mandatory
+    private AssetManager manager;
     private Game game;
     private InputMultiplexer inputMultiplexer;
     private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
     private float runTime;
+    private float progress;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private int gameStage = 1;
     private TiledMap map;
+    private Texture loadingTexture;
+    private boolean createdTextures = false;
     private int[] layers;
+    private float rotateTime;
     // other vars
     private BitmapFont font;
 
@@ -41,18 +48,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     public GameScreen(Game game) {
         this.game = game;
         Gdx.app.log(id, "This class is loaded!");
-    }
-
-    private void createMap() {
-        map = new TmxMapLoader().load("core/assets/map/mp1.tmx");
-        camera = new OrthographicCamera();
-        renderer = new OrthogonalTiledMapRenderer(map);
-        camera.setToOrtho(false, gameWidth_f, gameHeight_f);
-
-        // Map layers
-        layers = new int[2];
-        layers[0] = 0;
-        layers[1] = 1;
     }
 
     private void drawMap() {
@@ -85,6 +80,19 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    private void createMap() {
+        map = (TiledMap) manager.get("core/assets/map/mp1.tmx");
+        camera = new OrthographicCamera();
+        renderer = new OrthogonalTiledMapRenderer(map);
+        camera.setToOrtho(false, gameWidth_f, gameHeight_f);
+
+        // Map layers
+        layers = new int[2];
+        layers[0] = 0;
+        layers[1] = 1;
+        hud = new Hud();
+    }
+
     private void createFonts() {
         font = new BitmapFont();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
@@ -98,18 +106,26 @@ public class GameScreen extends GameEngine implements InputProcessor {
         generator.dispose();
     }
 
+    private void loadAssets() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        manager.load("core/assets/map/mp1.tmx", TiledMap.class);
+        loadGameEngine(manager);
+
+    }
+
     // method to create elements
     private void createGraphics() {
         // Map ,textures,cameras
         createMap();
-        // Fonts and its parameters
-        createFonts();
-
         // changing game stage from loading to Placing ships
-        if (preparation(true))
+        if (preparation(true, manager)) {
             gameStage = 2;
 
         hud = new Hud();
+            createdTextures = true;
+            rotateSound.loop(0.5f);
+            rotateSound.pause();
+        }
     }
 
     private void handleInput(float deltaTime) {
@@ -119,6 +135,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // update logics of game
     private void update(float deltaTime) {
         runTime += deltaTime;
+
+        rotateTime += deltaTime;
+        if (rotateTime >= 0.1f) {
+            rotateTime -= 0.1f;
+            rotateSound.pause();
+        }
         handleInput(deltaTime);
 
         switch (gameStage) {
@@ -137,44 +159,57 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (manager.update()) {
+            // When loading screen disappers
 
-        // Map update and tilemap render
-        camera.update();
-        renderer.setView(camera);
-        drawMap();
-        // update
-        update(deltaTime);
-        // render things below
-        sb.begin();
-        sr.setAutoShapeType(true);
-        sr.begin();
-        // Map First Always kurwa!!!!!!!!!!!!!
-        // Do not place any drawings up!!
+            if (createdTextures == false) {
+                loadingTexture.dispose();
+                createGraphics();
+                Gdx.input.setInputProcessor(this);
+            }
+            // Map update and tilemap render
+            camera.update();
+            renderer.setView(camera);
+            drawMap();
+            // update
+            update(deltaTime);
+            // render things below
+            sb.begin();
+            sr.setAutoShapeType(true);
+            sr.begin();
+            // Map First Always kurwa!!!!!!!!!!!!!
+            // Do not place any drawings up!!
 
-        // Ships // Turrets
-        drawShipsEnTurrets();
+            // Ships // Turrets
+            drawShipsEnTurrets();
 
-        // Texts
-        if (gameStage == 2)
-            drawStage2Text(font, sb);
+            // Texts
+            if (gameStage == 2)
+                drawStage2Text(font, sb);
 
-        hud.render(sb);
-
-        sb.end();
-        sr.end();
-
-        hud.update();
+            sb.end();
+            sr.end();
+            hud.update();
+        } else {
+            // While loading the game assets
+            progress = manager.getProgress();
+            sb.begin();
+            sb.draw(loadingTexture, 0, 0);
+            String load = "Loading " + progress * 100 + "%";
+            font.draw(sb, load, (gameWidth_f / 2f) - 150, (gameHeight_f / 2f) + 43);
+            sb.end();
+        }
     }
 
     @Override
     public void show() {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
-        createGraphics();
-        inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(this);
-        inputMultiplexer.addProcessor(hud.getStage());
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        manager = new AssetManager();
+        loadingTexture = new Texture("core/assets/backgroundtextures/paperTextOld.png");
+        createFonts();
+        loadAssets();
+
     }
 
     @Override
@@ -246,8 +281,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 3)
+        if (gameStage == 2) {
+            rotateSound.resume();
             rotateTurretsWithMouse(screenX, screenY);
+
+        }
         return false;
     }
 

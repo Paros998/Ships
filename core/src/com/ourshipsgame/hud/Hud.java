@@ -1,6 +1,7 @@
 package com.ourshipsgame.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,7 +27,7 @@ public class Hud implements Constant {
         layoutTable.setFillParent(true);
 
         // Main bar
-        uiBar = new GameObject("core/assets/ui/CustomTopBar.bmp", 0, 0, true, false, null);
+        uiBar = new GameObject(new Texture("core/assets/ui/CustomTopBar.bmp"), 0, 0, true, false, null);
         uiBar.getSprite().setX(GAME_WIDTH / 2 - uiBar.getWidth() / 2);
         uiBar.getSprite().setY(uiBar.getHeight() / 84);
         uiBar.getSprite().setScale(3.0f, 1);
