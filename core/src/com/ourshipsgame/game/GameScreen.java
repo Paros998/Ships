@@ -37,8 +37,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private TiledMap map;
     private Texture loadingTexture;
     private boolean createdTextures = false;
+    private boolean shootOrder = false;
     private int[] layers;
     private float rotateTime;
+    private float shootTime;
     // other vars
     private BitmapFont font;
 
@@ -117,7 +119,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         createMap();
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
-            gameStage = 2;
+            gameStage = 3;
             createdTextures = true;
             rotateSound.loop(0.5f);
             rotateSound.pause();
@@ -134,8 +136,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         runTime += deltaTime;
 
         rotateTime += deltaTime;
-        if (rotateTime >= 0.1f) {
-            rotateTime -= 0.1f;
+        if (rotateTime >= 0.2f) {
+            rotateTime -= 0.2f;
             rotateSound.pause();
         }
         handleInput(deltaTime);
@@ -157,7 +159,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (manager.update()) {
             // When loading screen disappers
-
             if (createdTextures == false) {
                 loadingTexture.dispose();
                 createGraphics();
@@ -180,8 +181,25 @@ public class GameScreen extends GameEngine implements InputProcessor {
             drawShipsEnTurrets();
 
             // Texts
-            if (gameStage == 2)
+            switch (gameStage) {
+            case 2:
                 drawStage2Text(font, sb);
+                break;
+            case 3:
+                if (shootOrder) {
+                    shootTime += deltaTime;
+                    if (shootTime <= 1f) {
+                        for (int i = 0; i < sum; i++) {
+                            shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
+                            shootEffect[i].drawAnimation(sb);
+                        }
+                    } else {
+                        shootOrder = false;
+                        shootTime = 0f;
+                    }
+                }
+                break;
+            }
 
             sb.end();
             sr.end();
@@ -258,6 +276,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (gameStage == 2)
             touchDownSprite(screenX, screenY);
+        if (gameStage == 3) {
+            shootOrder = shoot();
+        }
         return false;
     }
 
@@ -277,10 +298,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 2) {
+        if (gameStage == 3) {
             rotateSound.resume();
             rotateTurretsWithMouse(screenX, screenY);
-
         }
         return false;
     }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.objects.ShootParticleEffect;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -97,6 +98,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Texture BigShipTextures[] = new Texture[2];
     protected Texture MediumShipTextures[] = new Texture[2];
     protected Texture SmallShipTextures[] = new Texture[2];
+    // Particles[0] - shooting texture
+    protected Texture Particles[] = new Texture[2];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
     protected Vector2f SecondBoardStart;
@@ -106,8 +109,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float gameWidth_f = GAME_WIDTH_F;
     // Sounds and music
     protected Sound rotateSound;
-    protected boolean rotateSoundPlayed;
-    protected float rotateSoundTime = 5f;
+    protected Sound ShootSounds[];
+    protected Sound WaterExplosionSounds[];
+    protected Sound MetalExplosionSounds[];
     // Other vars
     protected int threeBoxShips = 3;
     protected int twoBoxShips = 4;
@@ -116,6 +120,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Important Objects
     protected GameObject FirstBoardShipsSprites[] = new GameObject[sum];
     protected GameObject SecondBoardShipsSprites[] = new GameObject[sum];
+    protected ShootParticleEffect shootEffect[] = new ShootParticleEffect[sum];
     // more other vars
     protected int activeSpriteDrag = 99;
     protected float xSprite;
@@ -136,6 +141,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/oneship/one/oneshipModel.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
         manager.load("core/assets/sounds/TurretRotation.mp3", Sound.class);
+        manager.load("core/assets/animations/boom3.png", Texture.class);
     }
 
     // game methods below
@@ -153,6 +159,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         SmallShipTextures[0] = manager.get("core/assets/oneship/one/oneshipModel.png", Texture.class);
         SmallShipTextures[1] = manager.get("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
         rotateSound = manager.get("core/assets/sounds/TurretRotation.mp3", Sound.class);
+        Particles[0] = manager.get("core/assets/animations/boom3.png", Texture.class);
 
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);
@@ -165,12 +172,18 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             if (i <= 2) {
                 FirstBoardShipsSprites[i] = new GameObject(BigShipTextures[0], BigShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 191, true, 3, new Vector2(5, 1));
+                shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
+                        FirstBoardShipsSprites[i].turretsAmmount);
             } else if (i > 2 && i <= 6) {
                 FirstBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 127, true, 2, new Vector2(5, 1));
+                shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
+                        FirstBoardShipsSprites[i].turretsAmmount);
             } else
                 FirstBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 63, true, 1, new Vector2(5, 1));
+            shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
+                    FirstBoardShipsSprites[i].turretsAmmount);
         }
         for (int i = 0; i < sum; i++) {
             GameObject actualShip = FirstBoardShipsSprites[i];
@@ -335,5 +348,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             }
 
         }
+    }
+
+    protected boolean shoot() {
+        for (int i = 0; i < sum; i++) {
+            shootEffect[i].setPositions(FirstBoardShipsSprites[i]);
+        }
+        return true;
     }
 }
