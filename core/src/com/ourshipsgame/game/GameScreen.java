@@ -120,13 +120,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         createMap();
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
-<<<<<<< HEAD
-            gameStage = 3;
-=======
             gameStage = 2;
 
             hud = new Hud();
->>>>>>> 32f6055b75d5f748e18487fb834c06ba6c2015c8
             createdTextures = true;
             rotateSound.loop(0.5f);
             rotateSound.pause();
@@ -176,11 +172,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 Gdx.input.setInputProcessor(inputMultiplexer);
             }
             // Map update and tilemap render
-            if(hud.isPasued())
+            if (hud.isPasued())
                 Gdx.input.setInputProcessor(hud.getStage());
             else
                 Gdx.input.setInputProcessor(inputMultiplexer);
-                
+
             camera.update();
             renderer.setView(camera);
             drawMap();
@@ -200,7 +196,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
             switch (gameStage) {
             case 2:
                 drawStage2Text(font, sb);
-<<<<<<< HEAD
                 break;
             case 3:
                 if (shootOrder) {
@@ -217,10 +212,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 }
                 break;
             }
-=======
-            
+
             hud.render(sb);
->>>>>>> 32f6055b75d5f748e18487fb834c06ba6c2015c8
 
             sb.end();
             sr.end();
