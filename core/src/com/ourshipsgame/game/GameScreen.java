@@ -2,6 +2,7 @@ package com.ourshipsgame.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -23,6 +24,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // vars mandatory
     private Game game;
+    private InputMultiplexer inputMultiplexer;
     private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
@@ -51,7 +53,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         layers = new int[2];
         layers[0] = 0;
         layers[1] = 1;
-        hud = new Hud();
     }
 
     private void drawMap() {
@@ -108,17 +109,18 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (preparation(true))
             gameStage = 2;
 
+        hud = new Hud();
     }
 
     private void handleInput(float deltaTime) {
         /// Buttons pressed
-
     }
 
     // update logics of game
     private void update(float deltaTime) {
         runTime += deltaTime;
         handleInput(deltaTime);
+
         switch (gameStage) {
         case 2:
             // if(placement)
@@ -156,9 +158,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (gameStage == 2)
             drawStage2Text(font, sb);
 
+        hud.render(sb);
+
         sb.end();
         sr.end();
-        hud.updateHud();
+
+        hud.update();
     }
 
     @Override
@@ -166,8 +171,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
         createGraphics();
-        Gdx.input.setInputProcessor(this);
-
+        inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(this);
+        inputMultiplexer.addProcessor(hud.getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override

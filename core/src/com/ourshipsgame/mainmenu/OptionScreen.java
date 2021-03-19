@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.GameButton;
+import com.ourshipsgame.GameTextButton;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.game.GameSlider;
 import com.ourshipsgame.handlers.Constant;
@@ -20,7 +20,7 @@ public class OptionScreen implements Screen, Constant {
     // Class Fields
     private Main game;
     private GameSlider musicSliderVolume, soundSilderVolume;
-    private GameButton backButton;
+    private GameTextButton backButton;
     public Stage stage;
     public SpriteBatch batch;
     public TextField soundsVolumeText, musicVolumeText;
@@ -56,7 +56,7 @@ public class OptionScreen implements Screen, Constant {
         soundSilderVolume.setSliderType(2);
 
         // Buttons
-        backButton = new GameButton("Back to Main Menu", GAME_WIDTH / 2 - 600, GAME_HEIGHT / 2 - 300,
+        backButton = new GameTextButton("Back to Main Menu", GAME_WIDTH / 2 - 600, GAME_HEIGHT / 2 - 300,
                 game.menuElements.skin, 6, game);
 
         stage.addActor(backButton);

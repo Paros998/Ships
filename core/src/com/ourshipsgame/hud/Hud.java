@@ -1,49 +1,60 @@
 package com.ourshipsgame.hud;
 
-<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.GameObject;
-=======
 import com.ourshipsgame.game.GameObject;
->>>>>>> 61164429b1c55ceb5e955b46d7c49549e8f5711b
+import com.ourshipsgame.handlers.Constant;
 
-public class Hud {
+public class Hud implements Constant {
 
     // Fields
     private GameObject uiBar;
-<<<<<<< HEAD
+    private GameImageButton gameMenuButton;
     private Table layoutTable;
     private Stage stage;
     private Skin skin;
-=======
->>>>>>> 61164429b1c55ceb5e955b46d7c49549e8f5711b
 
     // Constructor
     public Hud() {
-
-<<<<<<< HEAD
-        layoutTable = new Table();
+        skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
+        layoutTable = new Table(skin);
         layoutTable.bottom();
         layoutTable.setFillParent(true);
-        //layoutTable.setBackground();
 
-        //uiBar = new GameObject("", x, y, createSprite, createAnimator, vector)
+        // Main bar
+        uiBar = new GameObject("core/assets/ui/CustomTopBar.bmp", 0, 0, true, false, null);
+        uiBar.getSprite().setX(GAME_WIDTH / 2 - uiBar.getWidth() / 2);
+        uiBar.getSprite().setY(uiBar.getHeight() / 84);
+        uiBar.getSprite().setScale(3.0f, 1);
 
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+
+        // Close button
+        String[] internalStylePaths = {
+            "core/assets/ui/ui.hud/ui/global/modern/gear.png",
+            "core/assets/ui/ui.hud/ui/global/modern/gear-press.png"
+        };
+        gameMenuButton = new GameImageButton(0, 0, skin, stage, internalStylePaths);
+        gameMenuButton.setOptionsListener();
+
+        layoutTable.add(gameMenuButton).expandX().padTop(10);
         
         stage.addActor(layoutTable);
     }
 
     // Methods
-    public void updateHud() {
+    public void update() {
         stage.act();
         stage.draw();
-=======
->>>>>>> 61164429b1c55ceb5e955b46d7c49549e8f5711b
     }
+
+    public void render(SpriteBatch batch) {
+        uiBar.getSprite().draw(batch);
+    }
+
+    public Stage getStage() { return stage; }
 }
