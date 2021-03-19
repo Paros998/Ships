@@ -2,6 +2,7 @@ package com.ourshipsgame.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
@@ -26,6 +27,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     private AssetManager manager;
     private Game game;
+    private InputMultiplexer inputMultiplexer;
     private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
@@ -90,7 +92,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         layers = new int[2];
         layers[0] = 0;
         layers[1] = 1;
-        hud = new Hud();
     }
 
     private void createFonts() {
@@ -119,7 +120,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
         createMap();
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
+<<<<<<< HEAD
             gameStage = 3;
+=======
+            gameStage = 2;
+
+            hud = new Hud();
+>>>>>>> 32f6055b75d5f748e18487fb834c06ba6c2015c8
             createdTextures = true;
             rotateSound.loop(0.5f);
             rotateSound.pause();
@@ -128,7 +135,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     private void handleInput(float deltaTime) {
         /// Buttons pressed
-
     }
 
     // update logics of game
@@ -141,6 +147,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateSound.pause();
         }
         handleInput(deltaTime);
+
         switch (gameStage) {
         case 2:
             // if(placement)
@@ -157,14 +164,23 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         if (manager.update()) {
             // When loading screen disappers
             if (createdTextures == false) {
                 loadingTexture.dispose();
                 createGraphics();
-                Gdx.input.setInputProcessor(this);
+                inputMultiplexer = new InputMultiplexer();
+                inputMultiplexer.addProcessor(this);
+                inputMultiplexer.addProcessor(hud.getStage());
+                Gdx.input.setInputProcessor(inputMultiplexer);
             }
             // Map update and tilemap render
+            if(hud.isPasued())
+                Gdx.input.setInputProcessor(hud.getStage());
+            else
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                
             camera.update();
             renderer.setView(camera);
             drawMap();
@@ -184,6 +200,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             switch (gameStage) {
             case 2:
                 drawStage2Text(font, sb);
+<<<<<<< HEAD
                 break;
             case 3:
                 if (shootOrder) {
@@ -200,10 +217,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 }
                 break;
             }
+=======
+            
+            hud.render(sb);
+>>>>>>> 32f6055b75d5f748e18487fb834c06ba6c2015c8
 
             sb.end();
             sr.end();
-            hud.updateHud();
+            hud.update();
         } else {
             // While loading the game assets
             progress = manager.getProgress();

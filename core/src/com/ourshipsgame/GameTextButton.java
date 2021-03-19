@@ -6,15 +6,22 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.ourshipsgame.game.GameScreen;
+import com.ourshipsgame.hud.OptionsWindow;
 import com.ourshipsgame.mainmenu.MenuScreen;
 import com.ourshipsgame.mainmenu.OptionScreen;
 
-public class GameButton extends TextButton {
+public class GameTextButton extends TextButton {
 
     public Skin skin;
     Main game;
 
-    public GameButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final Main game) {
+    // While in Game Constructor
+    public GameTextButton(String nameTag, Skin skin, final int buttonNumber) {
+        super(nameTag, skin);
+    }
+
+    // While in Main Menu Constructor
+    public GameTextButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final Main game) {
         super(nameTag, skin);
         this.game = game;
         this.setX(x - this.getWidth() / 2);
@@ -25,6 +32,31 @@ public class GameButton extends TextButton {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 menuOptions(buttonNumber);
                 game.menuElements.clickSound.play(game.menuElements.soundVolume);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+    }
+
+    public void setListener(final int buttonNumber, final OptionsWindow window) {
+        this.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                switch(buttonNumber) {
+                    case 1:
+                        window.hideWindow();
+                        break;
+
+                    case 2:
+                        break;
+
+                    case 3:
+                        Gdx.app.exit();
+                        break;
+                }
             }
 
             @Override

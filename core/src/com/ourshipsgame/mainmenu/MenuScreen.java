@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.GameButton;
+import com.ourshipsgame.GameTextButton;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.game.GameObject;
 import com.ourshipsgame.handlers.Constant;
@@ -23,7 +23,7 @@ public class MenuScreen implements Screen, Constant {
     // Objects in menu
     private GameObject notDestroyedShip, destroyedShip, fire;
     private GameObject[] projectile;
-    private GameButton playButton, helpButon, scoreButton, optionsButton, quitButton;
+    private GameTextButton playButton, helpButon, scoreButton, optionsButton, quitButton;
 
     public MenuScreen(Main game) {
         this.game = game;
@@ -126,16 +126,16 @@ public class MenuScreen implements Screen, Constant {
         destroyedShip.getSprite().setY(GAME_HEIGHT / 2 - destroyedShip.getSprite().getHeight() / 2 + 320);
 
         // Creating buttons
-        playButton = new GameButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, game.menuElements.skin, 1, game);
+        playButton = new GameTextButton("Play", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, game.menuElements.skin, 1, game);
 
-        helpButon = new GameButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2, game.menuElements.skin, 2, game);
+        helpButon = new GameTextButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2, game.menuElements.skin, 2, game);
 
-        scoreButton = new GameButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3, game);
+        scoreButton = new GameTextButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3, game);
 
-        optionsButton = new GameButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4,
+        optionsButton = new GameTextButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4,
                 game);
 
-        quitButton = new GameButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, game.menuElements.skin, 5, game);
+        quitButton = new GameTextButton("Exit", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, game.menuElements.skin, 5, game);
 
         // Adding actors to scene
         stage.addActor(playButton);
