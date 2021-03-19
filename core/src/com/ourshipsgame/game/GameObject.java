@@ -98,6 +98,18 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
+    public int getShipSize() {
+        return this.size;
+    }
+
+    public float getTurretRotation(int index) {
+        return turretSprites[index].getRotation();
+    }
+
+    public Sprite[] getTurrets() {
+        return turretSprites;
+    }
+
     // Method to update simple sprite animation
     public void updateAnimation() {
         animator.update(0);
