@@ -90,7 +90,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         layers = new int[2];
         layers[0] = 0;
         layers[1] = 1;
-        hud = new Hud();
     }
 
     private void createFonts() {
@@ -121,7 +120,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (preparation(true, manager)) {
             gameStage = 2;
 
-        hud = new Hud();
+            hud = new Hud();
             createdTextures = true;
             rotateSound.loop(0.5f);
             rotateSound.pause();
@@ -137,8 +136,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         runTime += deltaTime;
 
         rotateTime += deltaTime;
-        if (rotateTime >= 0.1f) {
-            rotateTime -= 0.1f;
+        if (rotateTime >= 0.2f) {
+            rotateTime -= 0.2f;
             rotateSound.pause();
         }
         handleInput(deltaTime);
@@ -159,15 +158,24 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // buffer screen
         Gdx.gl20.glClearColor(1, 1, 1, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         if (manager.update()) {
             // When loading screen disappers
 
             if (createdTextures == false) {
                 loadingTexture.dispose();
                 createGraphics();
-                Gdx.input.setInputProcessor(this);
+                inputMultiplexer = new InputMultiplexer();
+                inputMultiplexer.addProcessor(this);
+                inputMultiplexer.addProcessor(hud.getStage());
+                Gdx.input.setInputProcessor(inputMultiplexer);
             }
             // Map update and tilemap render
+            if(hud.isPasued())
+                Gdx.input.setInputProcessor(hud.getStage());
+            else
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                
             camera.update();
             renderer.setView(camera);
             drawMap();
@@ -186,6 +194,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
             // Texts
             if (gameStage == 2)
                 drawStage2Text(font, sb);
+            
+            hud.render(sb);
 
             sb.end();
             sr.end();

@@ -15,12 +15,11 @@ public class GameImageButton extends ImageButton {
     private Skin skin;
     private OptionsWindow optionsWindow;
 
-    public GameImageButton(float x, float y, Skin skin, Stage stage, String[] stylePaths) {
+    // Game Menu constructor
+    public GameImageButton(Skin skin, Stage stage, String[] stylePaths) {
         super(skin);
         this.skin = skin;
         this.stage = stage;
-        this.setX(x - this.getWidth() / 2);
-        this.setY(y);
         int imageUp = 0, imageDown = 1;
         this.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(stylePaths[imageUp])));
         this.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(stylePaths[imageDown])));
@@ -52,4 +51,6 @@ public class GameImageButton extends ImageButton {
             }
         });
     }
+
+    public boolean getGameMenuState() { return (boolean) (optionsWindow != null ? optionsWindow.turnedOn : false); }
 }

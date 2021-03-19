@@ -1,6 +1,7 @@
 package com.ourshipsgame.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +22,7 @@ public class Hud implements Constant {
 
     // Constructor
     public Hud() {
+
         skin = new Skin(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json"));
         layoutTable = new Table(skin);
         layoutTable.bottom();
@@ -39,7 +41,7 @@ public class Hud implements Constant {
             "core/assets/ui/ui.hud/ui/global/modern/gear.png",
             "core/assets/ui/ui.hud/ui/global/modern/gear-press.png"
         };
-        gameMenuButton = new GameImageButton(0, 0, skin, stage, internalStylePaths);
+        gameMenuButton = new GameImageButton(skin, stage, internalStylePaths);
         gameMenuButton.setOptionsListener();
 
         layoutTable.add(gameMenuButton).expandX().padTop(10);
@@ -58,4 +60,6 @@ public class Hud implements Constant {
     }
 
     public Stage getStage() { return stage; }
+
+    public boolean isPasued() { return gameMenuButton.getGameMenuState(); }
 }
