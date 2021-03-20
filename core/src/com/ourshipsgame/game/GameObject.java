@@ -302,10 +302,11 @@ public class GameObject extends Rectangle implements Constant {
     // this method also draws the main sprite and its waves if they exist but its
     // also drawing the main sprite rectangle with good colour based on its
     // placement on a board
-    public void drawSprite(SpriteBatch batch, boolean drawRect, ShapeRenderer sr) {
+    public void drawSprite(SpriteBatch batch, boolean drawRect, boolean drawWaves, ShapeRenderer sr) {
         if (this.goodPlacement)
             changeRectColour();
-        this.spriteWave.draw(batch);
+        if (drawWaves)
+            this.spriteWave.draw(batch);
         if (drawRect) {
             sr.rect(alligmentRectangle.x, alligmentRectangle.y, alligmentRectangle.width, alligmentRectangle.height,
                     rectColour, rectColour, rectColour, rectColour);

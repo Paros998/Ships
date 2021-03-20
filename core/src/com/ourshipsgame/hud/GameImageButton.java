@@ -10,17 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameImageButton extends ImageButton {
- 
+
     private Stage stage;
     private OptionsWindow optionsWindow;
 
     // Game Menu constructor
-    public GameImageButton(Skin skin, Stage stage, String[] stylePaths) {
+    public GameImageButton(Skin skin, Stage stage, Texture[] internalStylePaths) {
         super(skin);
         this.stage = stage;
         int imageUp = 0, imageDown = 1;
-        this.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(stylePaths[imageUp])));
-        this.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(stylePaths[imageDown])));
+        this.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(internalStylePaths[imageUp]));
+        this.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(internalStylePaths[imageDown]));
         optionsWindow = new OptionsWindow("Game Menu", skin);
     }
 
@@ -29,7 +29,7 @@ public class GameImageButton extends ImageButton {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 optionsWindow.show(stage);
-                optionsWindow.turnedOn = true;    
+                optionsWindow.turnedOn = true;
             }
 
             @Override
@@ -39,5 +39,7 @@ public class GameImageButton extends ImageButton {
         });
     }
 
-    public boolean getGameMenuState() { return (boolean) (optionsWindow != null ? optionsWindow.turnedOn : false); }
+    public boolean getGameMenuState() {
+        return (boolean) (optionsWindow != null ? optionsWindow.turnedOn : false);
+    }
 }

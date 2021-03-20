@@ -40,6 +40,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private Texture loadingTexture;
     private boolean createdTextures = false;
     private boolean shootOrder = false;
+    private boolean shootSound = false;
+
     private int[] layers;
     private float rotateTime;
     private float shootTime;
@@ -51,6 +53,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         this.game = game;
         Gdx.app.log(id, "This class is loaded!");
     }
+
+    // Draw methods
 
     private void drawMap() {
         switch (gameStage) {
@@ -68,7 +72,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         case 2:
             for (int i = 0; i < sum; i++) {
                 FirstBoardShipsSprites[i].updateTexture();
-                FirstBoardShipsSprites[i].drawSprite(sb, true, sr);
+                FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
             }
             break;
@@ -81,6 +85,31 @@ public class GameScreen extends GameEngine implements InputProcessor {
             break;
         }
     }
+
+    private void drawShootingEffect(float deltaTime) {
+        shootTime += deltaTime;
+        if (shootTime <= 1f) {
+            for (int i = 0; i < sum; i++) {
+                shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
+                shootEffect[i].drawAnimation(sb);
+            }
+        } else {
+            rotateEnabled = true;
+            shootOrder = false;
+            shootTime = 0f;
+        }
+    }
+
+    private void drawLoadingScreen() {
+        progress = manager.getProgress();
+        sb.begin();
+        sb.draw(loadingTexture, 0, 0);
+        String load = "Loading " + progress * 100 + "%";
+        font.draw(sb, load, (gameWidth_f / 2f) - 150, (gameHeight_f / 2f) + 43);
+        sb.end();
+    }
+
+    // Create methods
 
     private void createMap() {
         map = (TiledMap) manager.get("core/assets/map/mp1.tmx");
@@ -101,17 +130,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 43;
         parameter.borderWidth = 2;
-        parameter.borderColor = Color.BROWN;
-        parameter.color = Color.GOLD;
+        parameter.borderColor = Color.WHITE;
+        parameter.color = Color.RED;
         font = generator.generateFont(parameter);
         generator.dispose();
-    }
-
-    private void loadAssets() {
-        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("core/assets/map/mp1.tmx", TiledMap.class);
-        loadGameEngine(manager);
-
     }
 
     // method to create elements
@@ -121,16 +143,62 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
             gameStage = 2;
-
-            hud = new Hud();
+            hud = new Hud(manager);
             createdTextures = true;
-            rotateSound.loop(0.5f);
-            rotateSound.pause();
         }
     }
 
+    // loading method
+    private void loadAssets() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        manager.load("core/assets/map/mp1.tmx", TiledMap.class);
+        loadGameEngine(manager);
+        loadHudAssets(manager);
+    }
+
+    // Sound effects methods
+    private void startRotateSound() {
+        rotateSound.loop(0.5f);
+        rotateSound.pause();
+    }
+
+    private void playShootSound() {
+        if (shootTime >= 0f && shootTime < 0.02) {
+            ShootSounds[0].play(0.5f);
+            ShootSounds[1].play(0.5f);
+            ShootSounds[2].play(0.5f);
+        } else if (shootTime >= 0.02 && shootTime < 0.03) {
+            ShootSounds[3].play(0.6f);
+            ShootSounds[4].play(0.6f);
+            ShootSounds[5].play(0.6f);
+            ShootSounds[6].play(0.7f);
+            ShootSounds[7].play(0.7f);
+        } else if (shootTime >= 0.03 && shootTime < 0.04) {
+            ShootSounds[0].play(0.8f);
+            ShootSounds[1].play(0.8f);
+            ShootSounds[2].play(0.8f);
+
+            ShootSounds[8].play(0.8f);
+            ShootSounds[9].play(0.8f);
+            ShootSounds[10].play(0.9f);
+            ShootSounds[11].play(0.9f);
+        } else if (shootTime >= 1.0f)
+            shootSound = false;
+    }
+
+    // Input and update methods
     private void handleInput(float deltaTime) {
         /// Buttons pressed
+    }
+
+    // Invoked after ready button is pressed in stage 2
+    public void readyButtonCheck() {
+        if (checkAllShips()) {
+            firstBoard.placeShipOnBoard(sum);
+            secondBoard.placeShipOnBoard(sum);
+            gameStage = 3;
+            startRotateSound();
+        }
     }
 
     // update logics of game
@@ -138,16 +206,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
         runTime += deltaTime;
 
         rotateTime += deltaTime;
-        if (rotateTime >= 0.2f) {
-            rotateTime -= 0.2f;
+        if (rotateTime >= 0.3f) {
+            rotateTime -= 0.32f;
             rotateSound.pause();
         }
         handleInput(deltaTime);
 
         switch (gameStage) {
         case 2:
-            // if(placement)
-            // gameStage = 3;
             break;
         case 3:
             break;
@@ -170,6 +236,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 inputMultiplexer.addProcessor(this);
                 inputMultiplexer.addProcessor(hud.getStage());
                 Gdx.input.setInputProcessor(inputMultiplexer);
+                // tmp
+
             }
             // Map update and tilemap render
             if (hud.isPasued())
@@ -186,7 +254,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
             sb.begin();
             sr.setAutoShapeType(true);
             sr.begin();
-            // Map First Always kurwa!!!!!!!!!!!!!
             // Do not place any drawings up!!
 
             // Ships // Turrets
@@ -199,16 +266,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 break;
             case 3:
                 if (shootOrder) {
-                    shootTime += deltaTime;
-                    if (shootTime <= 1f) {
-                        for (int i = 0; i < sum; i++) {
-                            shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
-                            shootEffect[i].drawAnimation(sb);
-                        }
-                    } else {
-                        shootOrder = false;
-                        shootTime = 0f;
+                    rotateEnabled = false;
+                    if (shootSound) {
+                        playShootSound();
                     }
+                    drawShootingEffect(deltaTime);
                 }
                 break;
             }
@@ -220,12 +282,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             hud.update();
         } else {
             // While loading the game assets
-            progress = manager.getProgress();
-            sb.begin();
-            sb.draw(loadingTexture, 0, 0);
-            String load = "Loading " + progress * 100 + "%";
-            font.draw(sb, load, (gameWidth_f / 2f) - 150, (gameHeight_f / 2f) + 43);
-            sb.end();
+            drawLoadingScreen();
         }
     }
 
@@ -292,6 +349,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             touchDownSprite(screenX, screenY);
         if (gameStage == 3) {
             shootOrder = shoot();
+            shootSound = true;
         }
         return false;
     }
@@ -312,10 +370,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 3) {
-            rotateSound.resume();
-            rotateTurretsWithMouse(screenX, screenY);
-        }
+        if (gameStage == 3)
+            if (rotateEnabled) {
+                rotateSound.resume();
+                rotateTurretsWithMouse(screenX, screenY);
+            }
         return false;
     }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.objects.ShootParticleEffect;
 
@@ -109,7 +110,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float gameWidth_f = GAME_WIDTH_F;
     // Sounds and music
     protected Sound rotateSound;
-    protected Sound ShootSounds[];
+    protected Sound[] ShootSounds = new Sound[12];
     protected Sound WaterExplosionSounds[];
     protected Sound MetalExplosionSounds[];
     // Other vars
@@ -127,9 +128,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float ySprite;
     protected float xDiff;
     protected float yDiff;
+    protected boolean rotateEnabled = true;
 
     // loading method
     protected void loadGameEngine(AssetManager manager) {
+        // turrets and ships textures
         manager.load(internalPaths[0], Texture.class);
         manager.load(internalPaths[1], Texture.class);
         manager.load(internalPaths[2], Texture.class);
@@ -140,18 +143,39 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModel.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+        // Turret rotation sound
         manager.load("core/assets/sounds/TurretRotation.mp3", Sound.class);
+        // Shoot effect
         manager.load("core/assets/animations/boom3.png", Texture.class);
+        // Shoot sounds
+        manager.load("core/assets/sounds/shoot/DeathFlash.mp3", Sound.class);
+        manager.load("core/assets/sounds/shoot/explode.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/explodemini.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/ExplosionMetal.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/GunShot.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/GunShotGverb.wav", Sound.class);
+        manager.load("core/assets/sounds/shoot/BangLong.ogg", Sound.class);
+        manager.load("core/assets/sounds/shoot/BangMid.ogg", Sound.class);
+        manager.load("core/assets/sounds/shoot/BangSmall.ogg", Sound.class);
+        manager.load("core/assets/sounds/shoot/rock_breaking.mp3", Sound.class);
+        manager.load("core/assets/sounds/shoot/synthetic_explosion_1.mp3", Sound.class);
+    }
+
+    protected void loadHudAssets(AssetManager manager) {
+        manager.load("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
+        manager.load("core/assets/ui/CustomTopBar.bmp", Texture.class);
+        manager.load("core/assets/ui/ui.hud/ui/global/modern/gear.png", Texture.class);
+        manager.load("core/assets/ui/ui.hud/ui/global/modern/gear-press.png", Texture.class);
     }
 
     // game methods below
     // Stage 1
     protected boolean preparation(boolean computerEnemy, AssetManager manager) {
         boolean done = false;
-        turretTextures[0] = manager.get(internalPaths[0], Texture.class);
-        turretTextures[1] = manager.get(internalPaths[1], Texture.class);
-        turretTextures[2] = manager.get(internalPaths[2], Texture.class);
-        turretTextures[3] = manager.get(internalPaths[3], Texture.class);
+
+        for (int i = 0; i < 4; i++)
+            turretTextures[i] = manager.get(internalPaths[i], Texture.class);
         BigShipTextures[0] = manager.get("core/assets/oneship/three/threeshipModel.png", Texture.class);
         BigShipTextures[1] = manager.get("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
         MediumShipTextures[0] = manager.get("core/assets/oneship/two/twoshipModel.png", Texture.class);
@@ -160,6 +184,18 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         SmallShipTextures[1] = manager.get("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
         rotateSound = manager.get("core/assets/sounds/TurretRotation.mp3", Sound.class);
         Particles[0] = manager.get("core/assets/animations/boom3.png", Texture.class);
+        ShootSounds[0] = manager.get("core/assets/sounds/shoot/DeathFlash.mp3", Sound.class);
+        ShootSounds[1] = manager.get("core/assets/sounds/shoot/explode.wav", Sound.class);
+        ShootSounds[2] = manager.get("core/assets/sounds/shoot/explodemini.wav", Sound.class);
+        ShootSounds[3] = manager.get("core/assets/sounds/shoot/ExplosionMetal.wav", Sound.class);
+        ShootSounds[4] = manager.get("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
+        ShootSounds[5] = manager.get("core/assets/sounds/shoot/GunShot.wav", Sound.class);
+        ShootSounds[6] = manager.get("core/assets/sounds/shoot/GunShotGverb.wav", Sound.class);
+        ShootSounds[7] = manager.get("core/assets/sounds/shoot/BangLong.ogg", Sound.class);
+        ShootSounds[8] = manager.get("core/assets/sounds/shoot/BangMid.ogg", Sound.class);
+        ShootSounds[9] = manager.get("core/assets/sounds/shoot/BangSmall.ogg", Sound.class);
+        ShootSounds[10] = manager.get("core/assets/sounds/shoot/rock_breaking.mp3", Sound.class);
+        ShootSounds[11] = manager.get("core/assets/sounds/shoot/synthetic_explosion_1.mp3", Sound.class);
 
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);
