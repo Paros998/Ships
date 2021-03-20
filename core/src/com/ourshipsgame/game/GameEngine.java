@@ -1,8 +1,11 @@
 package com.ourshipsgame.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -99,6 +102,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Texture BigShipTextures[] = new Texture[2];
     protected Texture MediumShipTextures[] = new Texture[2];
     protected Texture SmallShipTextures[] = new Texture[2];
+    protected Cursor[] crosshairs = new Cursor[3];
+    protected Cursor cursor;
+    protected Pixmap[] crosshairPixmaps = new Pixmap[3];
     // Particles[0] - shooting texture
     protected Texture Particles[] = new Texture[2];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
@@ -160,6 +166,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/sounds/shoot/BangSmall.ogg", Sound.class);
         manager.load("core/assets/sounds/shoot/rock_breaking.mp3", Sound.class);
         manager.load("core/assets/sounds/shoot/synthetic_explosion_1.mp3", Sound.class);
+        // Crosshairs
+        manager.load("core/assets/cursors/crosshairRed.png", Pixmap.class);
+        manager.load("core/assets/cursors/crosshairGreen.png", Pixmap.class);
+        manager.load("core/assets/ui/ui.hud/cursors/test.png", Pixmap.class);
     }
 
     protected void loadHudAssets(AssetManager manager) {
@@ -196,6 +206,24 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         ShootSounds[9] = manager.get("core/assets/sounds/shoot/BangSmall.ogg", Sound.class);
         ShootSounds[10] = manager.get("core/assets/sounds/shoot/rock_breaking.mp3", Sound.class);
         ShootSounds[11] = manager.get("core/assets/sounds/shoot/synthetic_explosion_1.mp3", Sound.class);
+        crosshairPixmaps[0] = manager.get("core/assets/cursors/crosshairRed.png", Pixmap.class);
+        crosshairPixmaps[1] = manager.get("core/assets/cursors/crosshairGreen.png", Pixmap.class);
+        crosshairPixmaps[2] = manager.get("core/assets/ui/ui.hud/cursors/test.png", Pixmap.class);
+
+        int xHot = crosshairPixmaps[0].getWidth() / 2;
+        int yHot = crosshairPixmaps[0].getHeight() / 2;
+        crosshairs[0] = Gdx.graphics.newCursor(crosshairPixmaps[0], xHot, yHot);
+        xHot = crosshairPixmaps[1].getWidth() / 2;
+        yHot = crosshairPixmaps[1].getHeight() / 2;
+        crosshairs[1] = Gdx.graphics.newCursor(crosshairPixmaps[1], xHot, yHot);
+        xHot = crosshairPixmaps[2].getWidth() / 2;
+        yHot = crosshairPixmaps[2].getHeight() / 2;
+        crosshairs[2] = Gdx.graphics.newCursor(crosshairPixmaps[2], xHot, yHot);
+        crosshairPixmaps[0].dispose();
+        crosshairPixmaps[1].dispose();
+        crosshairPixmaps[2].dispose();
+
+        Gdx.graphics.setCursor(crosshairs[2]);
 
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);

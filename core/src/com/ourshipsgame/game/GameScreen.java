@@ -105,7 +105,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         sb.begin();
         sb.draw(loadingTexture, 0, 0);
         String load = "Loading " + progress * 100 + "%";
-        font.draw(sb, load, (gameWidth_f / 2f) - 150, (gameHeight_f / 2f) + 43);
+        font.draw(sb, load, (gameWidth_f / 2f) - 175, (gameHeight_f / 2f) + 43);
         sb.end();
     }
 
@@ -265,6 +265,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 drawStage2Text(font, sb);
                 break;
             case 3:
+
                 if (shootOrder) {
                     rotateEnabled = false;
                     if (shootSound) {

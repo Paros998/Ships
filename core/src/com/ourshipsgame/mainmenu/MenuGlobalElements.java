@@ -8,6 +8,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -20,7 +22,8 @@ public class MenuGlobalElements {
 
     public GlyphLayout layout;
     public BitmapFont font;
-
+    public Pixmap pixmap;
+    public Cursor cursor;
     public GameObject menuTexture;
     public Skin skin;
     public Music music;
@@ -57,6 +60,13 @@ public class MenuGlobalElements {
         font = new BitmapFont(Gdx.files.internal("core/assets/buttons/skins/rusty-robot/raw/font-title-export.fnt"));
         layout = new GlyphLayout();
         layout.setText(font, "Ships Game");
+
+        // Cursor
+        pixmap = new Pixmap(Gdx.files.internal("core/assets/ui/ui.hud/cursors/test.png"));
+        int xHotspot = pixmap.getWidth() / 2;
+        int yHotspot = pixmap.getHeight() / 2;
+        cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+        Gdx.graphics.setCursor(cursor);
     }
 
     // Menu methods
