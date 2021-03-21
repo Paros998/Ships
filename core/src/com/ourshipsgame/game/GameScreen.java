@@ -195,7 +195,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     public void readyButtonCheck() {
         if (checkAllShips()) {
             firstBoard.placeShipOnBoard(sum);
-            secondBoard.placeShipOnBoard(sum);
+            // secondBoard.placeShipOnBoard(sum);
             gameStage = 3;
             startRotateSound();
         }
@@ -239,12 +239,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 // tmp
 
             }
-            // Map update and tilemap render
             if (hud.isPasued())
                 Gdx.input.setInputProcessor(hud.getStage());
             else
                 Gdx.input.setInputProcessor(inputMultiplexer);
 
+            // Map update and tilemap render
             camera.update();
             renderer.setView(camera);
             drawMap();
@@ -328,6 +328,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (Gdx.input.isKeyPressed(Keys.R))
                 if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
                     rotateActualShip();
+            if (Gdx.input.isKeyPressed(Keys.E))
+                readyButtonCheck();
         }
         return false;
     }

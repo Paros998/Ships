@@ -275,6 +275,10 @@ public class GameObject extends Rectangle implements Constant {
         return sprite;
     }
 
+    public int getRotation() {
+        return rotation;
+    }
+
     // This method method is simply used for creating the waves sprite for a ship
     // and place it accordingly to the given ship
     protected void createSpriteWave(Texture texture) {

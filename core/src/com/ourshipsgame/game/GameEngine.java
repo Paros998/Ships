@@ -46,41 +46,26 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 int rotation = actualShip.rotation;
                 int xPos = (int) ((actualShip.getX() - FirstBoardStart.x) / BOX_WIDTH_F);
                 int yPos = (int) ((actualShip.getY() - FirstBoardStart.y) / BOX_HEIGHT_F);
-                BoardShipsPos[i].x = xPos;
-                BoardShipsPos[i].y = yPos;
+                BoardShipsPos[i] = new Vector2(xPos, yPos);
                 switch (actualShip.size) {
                 case 3:
-                    if (rotation == 0) {
+                    if (rotation % 2 == 0) {
                         ShipsPlaced[xPos][yPos] = 1;
                         ShipsPlaced[xPos][yPos + 1] = 1;
                         ShipsPlaced[xPos][yPos + 2] = 1;
-                    } else if (rotation == 1) {
+                    } else if (rotation % 2 == 1) {
                         ShipsPlaced[xPos][yPos] = 1;
                         ShipsPlaced[xPos + 1][yPos] = 1;
                         ShipsPlaced[xPos + 2][yPos] = 1;
-                    } else if (rotation == 2) {
-                        ShipsPlaced[xPos][yPos] = 1;
-                        ShipsPlaced[xPos][yPos - 1] = 1;
-                        ShipsPlaced[xPos][yPos - 2] = 1;
-                    } else {
-                        ShipsPlaced[xPos][yPos] = 1;
-                        ShipsPlaced[xPos - 1][yPos - 1] = 1;
-                        ShipsPlaced[xPos - 2][yPos - 2] = 1;
                     }
                     break;
                 case 2:
-                    if (rotation == 0) {
+                    if (rotation % 2 == 0) {
                         ShipsPlaced[xPos][yPos] = 1;
                         ShipsPlaced[xPos][yPos + 1] = 1;
-                    } else if (rotation == 1) {
+                    } else if (rotation % 2 == 1) {
                         ShipsPlaced[xPos][yPos] = 1;
                         ShipsPlaced[xPos + 1][yPos] = 1;
-                    } else if (rotation == 2) {
-                        ShipsPlaced[xPos][yPos] = 1;
-                        ShipsPlaced[xPos][yPos - 1] = 1;
-                    } else {
-                        ShipsPlaced[xPos][yPos] = 1;
-                        ShipsPlaced[xPos - 1][yPos - 1] = 1;
                     }
                     break;
                 case 1:
