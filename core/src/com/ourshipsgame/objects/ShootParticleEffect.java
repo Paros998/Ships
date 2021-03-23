@@ -31,11 +31,28 @@ public class ShootParticleEffect {
 
     public void setPositions(GameObject actualShip) {
         Sprite[] turrets = actualShip.getTurrets();
+        int rotation = actualShip.getRotation();
         for (int i = 0; i < turretsAmmount; i++) {
             float x = turrets[i].getX();
             float y = turrets[i].getY();
-
             float angle = turrets[i].getRotation();
+
+            switch (rotation) {
+            case 0:
+                break;
+            case 1:
+                angle -= 90;
+                break;
+            case 2:
+                angle -= 180;
+                break;
+            case 3:
+                angle -= 270;
+                break;
+            }
+            if (angle < 0)
+                angle += 360;
+
             if (angle >= 0 && angle <= 45) {
                 x += 4;
                 y -= 12;
@@ -57,20 +74,20 @@ public class ShootParticleEffect {
             } else if (angle > 270 && angle <= 315) {
                 x -= 12;
                 y -= 4;
-            } else {
+            } else if (angle > 315 && angle <= 360) {
                 x -= 4;
                 y -= 12;
             }
             if (angle >= 0 && angle < 90) {
                 this.sprites[i].flip(false, true);
-                this.sprites[i].setY(sprites[i].getY() - 65f);
+                this.sprites[i].setY(sprites[i].getY() - 50f);
             } else if (angle >= 90 && angle < 180)
                 this.sprites[i].flip(false, false);
             else if (angle >= 180 && angle < 270)
                 this.sprites[i].flip(true, false);
             else if (angle >= 270 && angle < 360) {
-                this.sprites[i].flip(false, true);
-                this.sprites[i].setY(sprites[i].getY() - 65f);
+                this.sprites[i].flip(true, true);
+                this.sprites[i].setY(sprites[i].getY() - 50f);
             }
             this.sprites[i].setPosition(x - 53, y - 30);
         }
@@ -80,21 +97,36 @@ public class ShootParticleEffect {
         this.animator.update();
         Sprite[] turrets = actualShip.getTurrets();
         TextureRegion region = this.animator.getCurrentFrame();
+        int rotation = actualShip.getRotation();
         for (int i = 0; i < turretsAmmount; i++) {
             this.sprites[i].setRegion(region);
             float angle = turrets[i].getRotation();
-            if (angle >= 0 && angle < 90) {
+
+            switch (rotation) {
+            case 0:
+                break;
+            case 1:
+                angle -= 90;
+                break;
+            case 2:
+                angle -= 180;
+                break;
+            case 3:
+                angle -= 270;
+                break;
+            }
+
+            if (angle < 0)
+                angle += 360;
+
+            if (angle >= 0 && angle < 90)
                 this.sprites[i].flip(false, true);
-                this.sprites[i].setY(turrets[i].getY() - 65f);
-            } else if (angle >= 90 && angle < 180)
+            else if (angle >= 90 && angle < 180)
                 this.sprites[i].flip(false, false);
             else if (angle >= 180 && angle < 270)
                 this.sprites[i].flip(true, false);
-            else if (angle >= 270 && angle < 360) {
+            else if (angle >= 270 && angle < 360)
                 this.sprites[i].flip(true, true);
-                this.sprites[i].setY(turrets[i].getY() - 65f);
-            }
-
         }
     }
 
