@@ -74,6 +74,59 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 }
             }
         }
+
+        protected void hitShip(int xPos, int yPos) {
+            GameObject actualShip;
+            switch (BoardNumber) {
+            case 1:
+                for (int i = 0; i < sum; i++) {
+                    actualShip = FirstBoardShipsSprites[i];
+                    if (actualShip.rotation % 2 == 0) {
+                        if (actualShip.size == 3) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos)
+                                actualShip.destroyElement();
+                        } else if (actualShip.size == 2) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                actualShip.destroyElement();
+                        } else {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        }
+                    } else {
+                        if (actualShip.size == 3) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        } else if (actualShip.size == 2) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        } else {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        }
+                    }
+                    actualShip.checkDestroyment();
+                }
+                break;
+            case 2:
+                for (int i = 0; i < sum; i++) {
+
+                }
+
+                break;
+            }
+        }
     }
 
     // Important vars
@@ -94,7 +147,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Texture Particles[] = new Texture[2];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
-    protected Vector2f SecondBoardStart;
+    protected Vector2f SecondBoardStart = new Vector2f(32 * BOX_WIDTH_F * BoardBoxToTile,
+            8 * BOX_HEIGHT_F * BoardBoxToTile);
     protected int gameHeight = GAME_HEIGHT;
     protected int gameWidth = GAME_WIDTH;
     protected float gameHeight_f = GAME_HEIGHT_F;
@@ -102,8 +156,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Sounds and music
     protected Sound rotateSound;
     protected Sound[] ShootSounds = new Sound[12];
-    protected Sound WaterExplosionSounds[];
-    protected Sound MetalExplosionSounds[];
+    protected Sound WaterExplosionSounds;
+    protected Sound MetalExplosionSounds;
     // Other vars
     protected int threeBoxShips = 3;
     protected int twoBoxShips = 4;
@@ -119,7 +173,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float ySprite;
     protected float xDiff;
     protected float yDiff;
-    protected boolean rotateEnabled = true;
+    protected boolean rotateEnabled = false;
+    protected boolean shootingEnabled = false;
+    protected boolean hitted = false;
+    protected Vector2 hitPos = new Vector2();
+    protected Vector2 missPos = new Vector2();
 
     // loading method
     protected void loadGameEngine(AssetManager manager) {
@@ -208,7 +266,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         crosshairPixmaps[1].dispose();
         crosshairPixmaps[2].dispose();
 
-        Gdx.graphics.setCursor(crosshairs[1]);
+        Gdx.graphics.setCursor(crosshairs[2]);
 
         firstBoard = new Board(sum, 1);
         secondBoard = new Board(sum, 2);
@@ -399,10 +457,108 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    protected boolean shoot() {
-        for (int i = 0; i < sum; i++) {
-            shootEffect[i].setPositions(FirstBoardShipsSprites[i]);
+    protected void checkHit(int turn, int xPos, int yPos) {
+        int tx = xPos, ty = yPos;
+        switch (turn) {
+        case 0:
+            if (secondBoard.ShipsPlaced[xPos][yPos] == 1) {
+                hitted = true;
+                xPos *= BOX_WIDTH_F;
+                xPos += SecondBoardStart.x + 32;
+                yPos *= BOX_HEIGHT_F;
+                yPos += SecondBoardStart.y + 32;
+                hitPos.set(xPos, yPos);
+                // HitEffect.setPosition(hitPos);
+            } else {
+                hitted = false;
+                xPos *= BOX_WIDTH_F;
+                xPos += SecondBoardStart.x + 32;
+                yPos *= BOX_HEIGHT_F;
+                yPos += SecondBoardStart.y + 32;
+                missPos.set(xPos, yPos);
+                // MissEffect.setPosition(missPos);
+            }
+            if (hitted) {
+                secondBoard.hitShip(tx, ty);
+            }
+
+            break;
+        case 1:
+            if (firstBoard.ShipsPlaced[xPos][yPos] == 1) {
+                hitted = true;
+                xPos *= BOX_WIDTH_F;
+                xPos += FirstBoardStart.x + 32;
+                yPos *= BOX_HEIGHT_F;
+                yPos += FirstBoardStart.y + 32;
+                hitPos.set(xPos, yPos);
+                // HitEffect.setPosition(hitPos);
+            } else {
+                hitted = false;
+                xPos *= BOX_WIDTH_F;
+                xPos += FirstBoardStart.x + 32;
+                yPos *= BOX_HEIGHT_F;
+                yPos += FirstBoardStart.y + 32;
+                missPos.set(xPos, yPos);
+                // MissEffect.setPosition(missPos);
+            }
+            if (hitted) {
+                firstBoard.hitShip(tx, ty);
+            }
+            break;
         }
-        return true;
+    }
+
+    protected boolean shoot(int screenX, int screenY, int turn) {
+        if (shootingEnabled) {
+            int xPos, yPos;
+            switch (turn) {
+            case 0:
+                for (int i = 0; i < sum; i++)
+                    shootEffect[i].setPositions(FirstBoardShipsSprites[i]);
+                screenY = (int) gameHeight_f - screenY;
+                xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+
+                FirstPlayerShotsDone[xPos][yPos] = 1;
+
+                checkHit(turn, xPos, yPos);
+                break;
+            case 1:
+                screenY = (int) gameHeight_f - screenY;
+                xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+
+                SecondPlayerShotsDone[xPos][yPos] = 1;
+
+                checkHit(turn, xPos, yPos);
+                break;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected void checkEnemyBoard(int screenX, int screenY) {
+        Rectangle board = new Rectangle(SecondBoardStart.x, SecondBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
+                BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
+        screenY = (int) gameHeight_f - screenY;
+        if (board.contains(screenX, screenY)) {
+            int xPos = (int) ((screenX - SecondBoardStart.x - 1) / BOX_WIDTH_F);
+            int yPos = (int) ((screenY - SecondBoardStart.y - 1) / BOX_HEIGHT_F);
+            if (FirstPlayerShotsDone[xPos][yPos] == 1) {
+                shootingEnabled = false;
+                rotateEnabled = true;
+                Gdx.graphics.setCursor(crosshairs[0]);
+            } else {
+                shootingEnabled = true;
+                rotateEnabled = true;
+                Gdx.graphics.setCursor(crosshairs[1]);
+            }
+
+        } else {
+            Gdx.graphics.setCursor(crosshairs[2]);
+            shootingEnabled = false;
+            rotateEnabled = false;
+        }
     }
 }

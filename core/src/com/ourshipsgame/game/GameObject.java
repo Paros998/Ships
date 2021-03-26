@@ -399,16 +399,25 @@ public class GameObject extends Rectangle implements Constant {
         this.goodPlacement = isIt;
     }
 
+    public void destroyElement() {
+        for (int i = 0; i < size; i++)
+            if (destroyed[i] == 0) {
+                destroyed[i] = 1;
+                return;
+            }
+    }
+
+    public void checkDestroyment() {
+        for (int i = 0; i < size; i++) {
+            if (destroyed[i] == 0)
+                break;
+        }
+        shipDestroyed = true;
+    }
+
     // this method return true or false wheter the whole ship is destroyed
     public boolean isDestroyed() {
-        int destroyed = 0;
-        for (int i = 0; i < size; i++)
-            if (this.destroyed[i] == 1)
-                destroyed++;
-
-        if (destroyed == size)
-            return true;
-        return false;
+        return shipDestroyed;
     }
 
     // this method check if this sprite is colliding with another when they have the
