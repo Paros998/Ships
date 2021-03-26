@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -24,7 +25,6 @@ import com.ourshipsgame.hud.Hud;
 public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
-
     private AssetManager manager;
     private Game game;
     private InputMultiplexer inputMultiplexer;
@@ -118,9 +118,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         camera.setToOrtho(false, gameWidth_f, gameHeight_f);
 
         // Map layers
-        layers = new int[2];
+        layers = new int[3];
         layers[0] = 0;
         layers[1] = 1;
+        layers[2] = 2;
     }
 
     private void createFonts() {
@@ -265,13 +266,17 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 drawStage2Text(font, sb);
                 break;
             case 3:
-
                 if (shootOrder) {
                     rotateEnabled = false;
                     if (shootSound) {
                         playShootSound();
                     }
                     drawShootingEffect(deltaTime);
+                    if (hitted) {
+                        // drawHit(deltaTime);
+                    }
+                    // else
+                    // drawMiss(deltaTime);
                 }
                 break;
             }
@@ -348,11 +353,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (gameStage == 2)
-            touchDownSprite(screenX, screenY);
-        if (gameStage == 3) {
-            shootOrder = shoot();
-            shootSound = true;
+        if (button == Buttons.LEFT) {
+            if (gameStage == 2)
+                touchDownSprite(screenX, screenY);
+            if (gameStage == 3) {
+                shootOrder = shoot(screenX, screenY, 0);
+                shootSound = true;
+            }
         }
         return false;
     }
@@ -373,11 +380,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 3)
+        if (gameStage == 3) {
+            checkEnemyBoard(screenX, screenY);
             if (rotateEnabled) {
                 rotateSound.resume();
                 rotateTurretsWithMouse(screenX, screenY);
             }
+
+        }
         return false;
     }
 
