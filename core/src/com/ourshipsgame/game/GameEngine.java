@@ -201,8 +201,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         xHot = crosshairPixmaps[1].getWidth() / 2;
         yHot = crosshairPixmaps[1].getHeight() / 2;
         crosshairs[1] = Gdx.graphics.newCursor(crosshairPixmaps[1], xHot, yHot);
-        xHot = crosshairPixmaps[2].getWidth() / 2;
-        yHot = crosshairPixmaps[2].getHeight() / 2;
+        xHot = 0;
+        yHot = 0;
         crosshairs[2] = Gdx.graphics.newCursor(crosshairPixmaps[2], xHot, yHot);
         crosshairPixmaps[0].dispose();
         crosshairPixmaps[1].dispose();

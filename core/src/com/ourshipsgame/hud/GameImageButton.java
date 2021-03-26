@@ -1,34 +1,31 @@
 package com.ourshipsgame.hud;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class GameImageButton extends ImageButton {
 
-    private Stage stage;
+    private Hud hud;
     private OptionsWindow optionsWindow;
 
     // Game Menu constructor
-    public GameImageButton(Skin skin, Stage stage, Texture[] internalStylePaths) {
-        super(skin);
-        this.stage = stage;
-        int imageUp = 0, imageDown = 1;
-        this.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(internalStylePaths[imageUp]));
-        this.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(internalStylePaths[imageDown]));
-        optionsWindow = new OptionsWindow("Game Menu", skin);
+    public GameImageButton(Hud hud, Sprite[] buttonStyles) {
+        super(new SpriteDrawable(buttonStyles[0]), 
+            new SpriteDrawable(buttonStyles[1]));
+
+        this.hud = hud;
+        optionsWindow = new OptionsWindow("Game Menu", hud);
     }
 
     public void setOptionsListener() {
         this.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                optionsWindow.show(stage);
+                hud.gameSettings.playSound();
+                optionsWindow.show(hud.getStage());
                 optionsWindow.turnedOn = true;
             }
 

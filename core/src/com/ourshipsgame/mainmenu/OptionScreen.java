@@ -68,8 +68,8 @@ public class OptionScreen implements Screen, Constant {
 
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
-        musicSliderVolume.setVisualPercent(game.menuElements.sliderMusicPercent);
-        soundSilderVolume.setVisualPercent(game.menuElements.sliderSoundPercent);
+        musicSliderVolume.setVisualPercent(game.menuElements.gameSettings.sliderMusicPercent);
+        soundSilderVolume.setVisualPercent(game.menuElements.gameSettings.sliderSoundPercent);
         stage.act();
     }
 

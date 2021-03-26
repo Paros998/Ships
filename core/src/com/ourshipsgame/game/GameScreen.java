@@ -1,6 +1,5 @@
 package com.ourshipsgame.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.ourshipsgame.Main;
 import com.ourshipsgame.hud.Hud;
 
 public class GameScreen extends GameEngine implements InputProcessor {
@@ -26,7 +26,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private final String id = getClass().getName();
 
     private AssetManager manager;
-    private Game game;
+    private Main game;
     private InputMultiplexer inputMultiplexer;
     private Hud hud;
     private SpriteBatch sb;
@@ -49,7 +49,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private BitmapFont font;
 
     // constructor
-    public GameScreen(Game game) {
+    public GameScreen(Main game) {
         this.game = game;
         Gdx.app.log(id, "This class is loaded!");
     }
@@ -146,6 +146,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
             hud = new Hud(manager);
             createdTextures = true;
         }
+        hud.gameSettings = game.menuElements.gameSettings;
+        // Deleting GlobalMenuElements object
+        game.menuElements = null;
     }
 
     // loading method
@@ -295,7 +298,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         loadingTexture = new Texture("core/assets/backgroundtextures/paperTextOld.png");
         createFonts();
         loadAssets();
-
     }
 
     @Override
