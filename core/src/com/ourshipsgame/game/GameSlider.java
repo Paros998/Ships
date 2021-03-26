@@ -24,25 +24,25 @@ public class GameSlider extends Slider implements Constant {
         switch (option) {
 
         case 1:
-            this.setVisualPercent(game.menuElements.sliderMusicPercent);
+            this.setVisualPercent(game.menuElements.gameSettings.sliderMusicPercent);
             this.addListener(new ChangeListener() {
 
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    game.menuElements.sliderMusicPercent = sliderTmp.getPercent();
-                    game.menuElements.music.setVolume(sliderTmp.getPercent() / 5.0f);
+                    game.menuElements.gameSettings.sliderMusicPercent = sliderTmp.getPercent();
+                    game.menuElements.gameSettings.music.setVolume(sliderTmp.getPercent() / 5.0f);
                 }
             });
             break;
 
         case 2:
-            this.setVisualPercent(game.menuElements.sliderSoundPercent);
+            this.setVisualPercent(game.menuElements.gameSettings.sliderSoundPercent);
             this.addListener(new ChangeListener() {
 
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    game.menuElements.sliderSoundPercent = sliderTmp.getPercent();
-                    game.menuElements.soundVolume = sliderTmp.getPercent() / 5.0f;
+                    game.menuElements.gameSettings.sliderSoundPercent = sliderTmp.getPercent();
+                    game.menuElements.gameSettings.soundVolume = sliderTmp.getPercent() / 5.0f;
                 }
             });
             break;

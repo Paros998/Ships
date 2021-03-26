@@ -2,7 +2,6 @@ package com.ourshipsgame.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class OptionsWindow extends Dialog {
@@ -14,10 +13,12 @@ public class OptionsWindow extends Dialog {
 
     private Table layoutTable;
     public boolean turnedOn;
+    private Hud hud;
     
     // Constructor
-    public OptionsWindow(String windowName, Skin skin) {
-        super(windowName, skin);
+    public OptionsWindow(String windowName, Hud hud) {
+        super(windowName, hud.getSkin());
+        this.hud = hud;
         turnedOn = false;
 
         layoutTable = new Table();
@@ -36,16 +37,19 @@ public class OptionsWindow extends Dialog {
         Actions action = Actions.valueOf(act.toString());
         switch(action) {
             case RESUME_GAME:
+                hud.gameSettings.playSound();
                 hide();
                 turnedOn = false;
                 break;
 
             case OPTIONS: // temporary
+                hud.gameSettings.playSound();
                 hide();
                 turnedOn = false;
                 break;
             
             case EXIT_GAME:
+                hud.gameSettings.playSound();
                 Gdx.app.exit();
                 break;
         }
