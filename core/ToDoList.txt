@@ -1,3 +1,3 @@
 hud i przyciski w nim
 textury zniszczonych statków oraz jakąś tablice do ich rysowania 
-dzwięki wieżyczek obrotu 
+

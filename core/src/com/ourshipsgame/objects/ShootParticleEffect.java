@@ -25,54 +25,81 @@ public class ShootParticleEffect {
         for (int i = 0; i < turretsAmmount; i++) {
             this.sprites[i] = new Sprite(particleTexture);
             this.sprites[i].setScale(0.3f);
+            this.sprites[i].setOriginCenter();
         }
 
     }
 
     public void setPositions(GameObject actualShip) {
         Sprite[] turrets = actualShip.getTurrets();
+        int rotation = actualShip.getRotation();
         for (int i = 0; i < turretsAmmount; i++) {
             float x = turrets[i].getX();
             float y = turrets[i].getY();
-
             float angle = turrets[i].getRotation();
-            if (angle >= 0 && angle <= 45) {
+
+            angle -= rotation * 90;
+            if (angle < 0)
+                angle += 360;
+            // 0-90
+            if (angle >= 0 && angle <= 30) {
                 x += 4;
                 y -= 12;
-            } else if (angle > 45 && angle <= 90) {
+            } else if (angle > 30 && angle <= 60) {
+                x += 8;
+                y -= 8;
+            } else if (angle > 60 && angle <= 90) {
                 x += 12;
                 y -= 4;
-            } else if (angle > 90 && angle <= 135) {
+                // 90-180
+            } else if (angle > 90 && angle <= 120) {
                 x += 12;
                 y += 4;
-            } else if (angle > 135 && angle <= 180) {
+            } else if (angle > 120 && angle <= 150) {
+                x += 8;
+                y += 8;
+            } else if (angle > 150 && angle <= 180) {
                 x += 4;
                 y += 12;
-            } else if (angle > 180 && angle <= 225) {
+                // 180-270
+            } else if (angle > 180 && angle <= 210) {
                 x -= 4;
                 y += 12;
-            } else if (angle > 225 && angle <= 270) {
+            } else if (angle > 210 && angle <= 240) {
+                x -= 8;
+                y += 8;
+            } else if (angle > 240 && angle <= 270) {
                 x -= 12;
                 y += 4;
-            } else if (angle > 270 && angle <= 315) {
+                // 270-360
+            } else if (angle > 270 && angle <= 300) {
                 x -= 12;
                 y -= 4;
-            } else {
+            } else if (angle > 300 && angle <= 330) {
+                x -= 8;
+                y -= 8;
+            } else if (angle > 330 && angle <= 360) {
                 x -= 4;
                 y -= 12;
             }
+
+            if (rotation % 2 == 0) {
+                this.sprites[i].setPosition(x - 53, y - 30);
+            } else {
+                this.sprites[i].setPosition(x - 45, y - 40);
+            }
+
             if (angle >= 0 && angle < 90) {
                 this.sprites[i].flip(false, true);
-                this.sprites[i].setY(sprites[i].getY() - 65f);
+                this.sprites[i].setY(sprites[i].getY() - 30f);
             } else if (angle >= 90 && angle < 180)
                 this.sprites[i].flip(false, false);
             else if (angle >= 180 && angle < 270)
                 this.sprites[i].flip(true, false);
             else if (angle >= 270 && angle < 360) {
-                this.sprites[i].flip(false, true);
-                this.sprites[i].setY(sprites[i].getY() - 65f);
+                this.sprites[i].flip(true, true);
+                this.sprites[i].setY(sprites[i].getY() - 30f);
             }
-            this.sprites[i].setPosition(x - 53, y - 30);
         }
     }
 
@@ -80,21 +107,36 @@ public class ShootParticleEffect {
         this.animator.update();
         Sprite[] turrets = actualShip.getTurrets();
         TextureRegion region = this.animator.getCurrentFrame();
+        int rotation = actualShip.getRotation();
         for (int i = 0; i < turretsAmmount; i++) {
             this.sprites[i].setRegion(region);
             float angle = turrets[i].getRotation();
-            if (angle >= 0 && angle < 90) {
+
+            switch (rotation) {
+            case 0:
+                break;
+            case 1:
+                angle -= 90;
+                break;
+            case 2:
+                angle -= 180;
+                break;
+            case 3:
+                angle -= 270;
+                break;
+            }
+
+            if (angle < 0)
+                angle += 360;
+
+            if (angle >= 0 && angle < 90)
                 this.sprites[i].flip(false, true);
-                this.sprites[i].setY(turrets[i].getY() - 65f);
-            } else if (angle >= 90 && angle < 180)
+            else if (angle >= 90 && angle < 180)
                 this.sprites[i].flip(false, false);
             else if (angle >= 180 && angle < 270)
                 this.sprites[i].flip(true, false);
-            else if (angle >= 270 && angle < 360) {
+            else if (angle >= 270 && angle < 360)
                 this.sprites[i].flip(true, true);
-                this.sprites[i].setY(turrets[i].getY() - 65f);
-            }
-
         }
     }
 

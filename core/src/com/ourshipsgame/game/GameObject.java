@@ -593,8 +593,10 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     public void rotateTurret(float degrees, int index) {
-        if (this.turretSprites != null)
+        if (this.turretSprites != null) {
+            turretSprites[index].setOriginCenter();
             turretSprites[index].setRotation(degrees);
+        }
     }
 
     public Vector2f getVectorPos(int i) {
