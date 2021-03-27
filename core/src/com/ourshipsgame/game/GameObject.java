@@ -118,51 +118,53 @@ public class GameObject extends Rectangle implements Constant {
 
     // Method to update ship waves animation and calculate it for rotation of ship
     public void updateTexture() {
-        this.animator.update(0);
-        this.spriteWave.setRegion(this.animator.getCurrentFrame());
-        this.spriteWave.setScale(1.5f, 1.5f);
+        if (spriteWave != null) {
+            this.animator.update(0);
+            this.spriteWave.setRegion(this.animator.getCurrentFrame());
+            this.spriteWave.setScale(1.5f, 1.5f);
 
-        for (int i = 0; i < rotation; i++)
-            this.spriteWave.rotate90(true);
+            for (int i = 0; i < rotation; i++)
+                this.spriteWave.rotate90(true);
 
-        switch (rotation) {
-        case 0: {
-            if (size == 3)
-                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.2f);
-            else if (size == 2)
-                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.3f);
-            else
-                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.5f);
-            break;
-        }
-        case 1: {
-            if (size == 3)
-                this.spriteWave.setOrigin(sprite.getWidth() / 1.2f, sprite.getHeight() / 2f);
-            else if (size == 2)
-                this.spriteWave.setOrigin(sprite.getWidth() / 1.3f, sprite.getHeight() / 2f);
-            else
-                this.spriteWave.setOrigin(sprite.getWidth() / 1.5f, sprite.getHeight() / 2f);
-            break;
-        }
-        case 2: {
-            if (size == 3)
-                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
-            else if (size == 2)
-                this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
-            else
-                this.spriteWave.setOrigin(sprite.getWidth() / 1.7f, sprite.getHeight() / 4.5f);
-            break;
+            switch (rotation) {
+            case 0: {
+                if (size == 3)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.2f);
+                else if (size == 2)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.3f);
+                else
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 1.5f);
+                break;
+            }
+            case 1: {
+                if (size == 3)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 1.2f, sprite.getHeight() / 2f);
+                else if (size == 2)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 1.3f, sprite.getHeight() / 2f);
+                else
+                    this.spriteWave.setOrigin(sprite.getWidth() / 1.5f, sprite.getHeight() / 2f);
+                break;
+            }
+            case 2: {
+                if (size == 3)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
+                else if (size == 2)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2f, sprite.getHeight() / 4.5f);
+                else
+                    this.spriteWave.setOrigin(sprite.getWidth() / 1.7f, sprite.getHeight() / 4.5f);
+                break;
 
-        }
-        case 3: {
-            if (size == 3)
-                this.spriteWave.setOrigin(sprite.getWidth() / 4.2f, sprite.getHeight() / 2f);
-            else if (size == 2)
-                this.spriteWave.setOrigin(sprite.getWidth() / 3.4f, sprite.getHeight() / 2f);
-            else
-                this.spriteWave.setOrigin(sprite.getWidth() / 2.9f, sprite.getHeight() / 2f);
-            break;
-        }
+            }
+            case 3: {
+                if (size == 3)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 4.2f, sprite.getHeight() / 2f);
+                else if (size == 2)
+                    this.spriteWave.setOrigin(sprite.getWidth() / 3.4f, sprite.getHeight() / 2f);
+                else
+                    this.spriteWave.setOrigin(sprite.getWidth() / 2.9f, sprite.getHeight() / 2f);
+                break;
+            }
+            }
         }
     }
 
@@ -265,6 +267,15 @@ public class GameObject extends Rectangle implements Constant {
                 this.turretSprites[i].draw(batch);
     }
 
+    // this method will draw with a parameter batch every single ship turret if they
+    // exist
+    public void drawTurrets(SpriteBatch batch, boolean enemy) {
+        if (this.shipDestroyed)
+            if (this.turretSprites != null)
+                for (int i = 0; i < this.turretsAmmount; i++)
+                    this.turretSprites[i].draw(batch);
+    }
+
     // this method simply return the main sprite texture
     public Texture getTexture() {
         return texture;
@@ -297,10 +308,37 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     // this method draws the main sprite and its waves if they exist
+    public void drawSprite(SpriteBatch batch, boolean enemy) {
+        if (this.shipDestroyed) {
+            if (spriteWave != null)
+                this.spriteWave.draw(batch);
+            this.sprite.draw(batch);
+        }
+    }
+
+    // this method draws the main sprite and its waves if they exist
     public void drawSprite(SpriteBatch batch) {
         if (spriteWave != null)
             this.spriteWave.draw(batch);
         this.sprite.draw(batch);
+
+    }
+
+    // this method also draws the main sprite and its waves if they exist but its
+    // also drawing the main sprite rectangle with good colour based on its
+    // placement on a board
+    public void drawSprite(SpriteBatch batch, boolean drawRect, boolean drawWaves, ShapeRenderer sr, boolean enemy) {
+        if (this.shipDestroyed) {
+            if (this.goodPlacement)
+                changeRectColour();
+            if (drawWaves)
+                this.spriteWave.draw(batch);
+            if (drawRect) {
+                sr.rect(alligmentRectangle.x, alligmentRectangle.y, alligmentRectangle.width, alligmentRectangle.height,
+                        rectColour, rectColour, rectColour, rectColour);
+            }
+            this.sprite.draw(batch);
+        }
     }
 
     // this method also draws the main sprite and its waves if they exist but its
@@ -316,6 +354,7 @@ public class GameObject extends Rectangle implements Constant {
                     rectColour, rectColour, rectColour, rectColour);
         }
         this.sprite.draw(batch);
+
     }
 
     // this method is used to change the whole gameObject position , its main sprite
@@ -479,7 +518,7 @@ public class GameObject extends Rectangle implements Constant {
         for (int i = 0; i < size; i++)
             if (destroyed[i] == 0) {
                 destroyed[i] = 1;
-                return;
+                break;
             }
     }
 
@@ -497,9 +536,9 @@ public class GameObject extends Rectangle implements Constant {
     public void checkDestroyment() {
         for (int i = 0; i < size; i++) {
             if (destroyed[i] == 0)
-                break;
+                return;
         }
-        shipDestroyed = true;
+        this.shipDestroyed = true;
     }
 
     // this method return true or false wheter the whole ship is destroyed
@@ -776,5 +815,9 @@ public class GameObject extends Rectangle implements Constant {
 
     public Vector2f getVectorPos(int i) {
         return new Vector2f(turretSprites[i].getX(), turretSprites[i].getY());
+    }
+
+    public Vector2f getPosition() {
+        return new Vector2f(x, y);
     }
 }

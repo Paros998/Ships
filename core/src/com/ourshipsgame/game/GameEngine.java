@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.objects.BoomEffect;
 import com.ourshipsgame.objects.ShootParticleEffect;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -122,6 +123,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                     }
                     actualShip.checkDestroyment();
                     if (actualShip.shipDestroyed) {
+                        destroyed = true;
+                        destroymentEffect.setPos(actualShip.getPosition(), actualShip.rotation, actualShip.size);
                         if (actualShip.size == 3)
                             actualShip.changeDestroyTexture(BigShipTextures[2]);
                         else if (actualShip.size == 2)
@@ -133,9 +136,54 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 break;
             case 2:
                 for (int i = 0; i < sum; i++) {
-
+                    actualShip = SecondBoardShipsSprites[i];
+                    if (actualShip.rotation % 2 == 0) {
+                        if (actualShip.size == 3) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos)
+                                actualShip.destroyElement();
+                        } else if (actualShip.size == 2) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                actualShip.destroyElement();
+                        } else {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        }
+                    } else {
+                        if (actualShip.size == 3) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        } else if (actualShip.size == 2) {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        } else {
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                                actualShip.destroyElement();
+                        }
+                    }
+                    actualShip.checkDestroyment();
+                    if (actualShip.shipDestroyed) {
+                        destroyed = true;
+                        destroymentEffect.setPos(actualShip.getPosition(), actualShip.rotation, actualShip.size);
+                        if (actualShip.size == 3)
+                            actualShip.changeDestroyTexture(BigShipTextures[2]);
+                        else if (actualShip.size == 2)
+                            actualShip.changeDestroyTexture(MediumShipTextures[2]);
+                        else
+                            actualShip.changeDestroyTexture(SmallShipTextures[2]);
+                    }
                 }
-
                 break;
             }
         }
@@ -155,8 +203,14 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Cursor[] crosshairs = new Cursor[3];
     protected Cursor cursor;
     protected Pixmap[] crosshairPixmaps = new Pixmap[3];
+    protected BoomEffect hitEffect;
+    protected BoomEffect missEffect;
+    protected BoomEffect destroymentEffect;
+    protected Texture hitTexture;
+    protected Texture missTexture;
+    protected Texture destroymentTexture;
     // Particles[0] - shooting texture
-    protected Texture Particles[] = new Texture[2];
+    protected Texture Particles[] = new Texture[1];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
     protected Vector2f SecondBoardStart = new Vector2f(32 * BOX_WIDTH_F * BoardBoxToTile,
@@ -170,6 +224,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Sound[] ShootSounds = new Sound[12];
     protected Sound WaterExplosionSounds;
     protected Sound MetalExplosionSounds;
+    protected Sound DestroymentExplosionSounds;
     // Other vars
     protected int threeBoxShips = 3;
     protected int twoBoxShips = 4;
@@ -188,8 +243,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected boolean rotateEnabled = false;
     protected boolean shootingEnabled = false;
     protected boolean hitted = false;
-    protected Vector2 hitPos = new Vector2();
-    protected Vector2 missPos = new Vector2();
+    protected boolean destroyed = false;
+    protected Vector2f hitPos = new Vector2f();
+    protected Vector2f missPos = new Vector2f();
+    protected Vector2f destroymentPos = new Vector2f();
 
     // loading method
     protected void loadGameEngine(AssetManager manager) {
@@ -224,6 +281,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/sounds/shoot/BangSmall.ogg", Sound.class);
         manager.load("core/assets/sounds/shoot/rock_breaking.mp3", Sound.class);
         manager.load("core/assets/sounds/shoot/synthetic_explosion_1.mp3", Sound.class);
+        // Animations sounds
+        manager.load("core/assets/sounds/explosion/Chunky Explosion.mp3", Sound.class);
+        manager.load("core/assets/sounds/miss/WaterSurfaceExplosion08.wav", Sound.class);
+        // Animations textures
+        manager.load("core/assets/animations/hitExplosion.png", Texture.class);
+        manager.load("core/assets/animations/missExplosion.png", Texture.class);
+        manager.load("core/assets/animations/shipDestroyedExplosion.png", Texture.class);
         // Crosshairs
         manager.load("core/assets/cursors/crosshairRed.png", Pixmap.class);
         manager.load("core/assets/cursors/crosshairGreen.png", Pixmap.class);
@@ -270,6 +334,16 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         crosshairPixmaps[0] = manager.get("core/assets/cursors/crosshairRed.png", Pixmap.class);
         crosshairPixmaps[1] = manager.get("core/assets/cursors/crosshairGreen.png", Pixmap.class);
         crosshairPixmaps[2] = manager.get("core/assets/ui/ui.hud/cursors/test.png", Pixmap.class);
+        hitTexture = manager.get("core/assets/animations/hitExplosion.png", Texture.class);
+        missTexture = manager.get("core/assets/animations/missExplosion.png", Texture.class);
+        destroymentTexture = manager.get("core/assets/animations/shipDestroyedExplosion.png", Texture.class);
+        WaterExplosionSounds = manager.get("core/assets/sounds/miss/WaterSurfaceExplosion08.wav", Sound.class);
+        MetalExplosionSounds = manager.get("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
+        DestroymentExplosionSounds = manager.get("core/assets/sounds/explosion/Chunky Explosion.mp3", Sound.class);
+
+        hitEffect = new BoomEffect(MetalExplosionSounds, hitTexture);
+        missEffect = new BoomEffect(WaterExplosionSounds, missTexture);
+        destroymentEffect = new BoomEffect(DestroymentExplosionSounds, destroymentTexture, true);
 
         int xHot = crosshairPixmaps[0].getWidth() / 2;
         int yHot = crosshairPixmaps[0].getHeight() / 2;
@@ -639,7 +713,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos *= BOX_HEIGHT_F;
                 yPos += SecondBoardStart.y + 32;
                 hitPos.set(xPos, yPos);
-                // HitEffect.setPosition(hitPos);
+                hitEffect.setPos(hitPos);
             } else {
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
@@ -647,7 +721,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos *= BOX_HEIGHT_F;
                 yPos += SecondBoardStart.y + 32;
                 missPos.set(xPos, yPos);
-                // MissEffect.setPosition(missPos);
+                missEffect.setPos(missPos);
             }
             if (hitted) {
                 secondBoard.hitShip(tx, ty);
@@ -662,7 +736,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos *= BOX_HEIGHT_F;
                 yPos += FirstBoardStart.y + 32;
                 hitPos.set(xPos, yPos);
-                // HitEffect.setPosition(hitPos);
+                hitEffect.setPos(hitPos);
             } else {
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
@@ -670,7 +744,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos *= BOX_HEIGHT_F;
                 yPos += FirstBoardStart.y + 32;
                 missPos.set(xPos, yPos);
-                // MissEffect.setPosition(missPos);
+                missEffect.setPos(missPos);
             }
             if (hitted) {
                 firstBoard.hitShip(tx, ty);

@@ -41,10 +41,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean createdTextures = false;
     private boolean shootOrder = false;
     private boolean shootSound = false;
+    private boolean hitMissSound = false;
+    private boolean destroymentSound = false;
 
     private int[] layers;
     private float rotateTime;
     private float shootTime;
+    private float destroyTime;
     // other vars
     private BitmapFont font;
 
@@ -75,8 +78,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
                 SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr);
-                SecondBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
+                SecondBoardShipsSprites[i].drawTurrets(sb, true);
             }
             break;
         case 3:
@@ -85,10 +88,37 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
                 SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb);
-                SecondBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].drawSprite(sb, true);
+                SecondBoardShipsSprites[i].drawTurrets(sb, true);
             }
             break;
+        }
+    }
+
+    private void drawHit(float deltaTime) {
+        if (shootTime <= 1f) {
+            hitEffect.updateAnimation();
+            hitEffect.drawEffect(sb);
+        }
+        hitMissSound = false;
+    }
+
+    private void drawMiss(float deltaTime) {
+        if (shootTime <= 1f) {
+            missEffect.updateAnimation();
+            missEffect.drawEffect(sb);
+        }
+        hitMissSound = false;
+    }
+
+    private void drawDestroyment(float deltaTime) {
+        destroyTime += deltaTime;
+        if (deltaTime >= 0.2f && destroyTime <= 1.2f) {
+            destroymentEffect.updateAnimation(true);
+            destroymentEffect.drawEffect(sb, true);
+        } else {
+            destroyed = false;
+            destroymentSound = false;
         }
     }
 
@@ -284,11 +314,22 @@ public class GameScreen extends GameEngine implements InputProcessor {
                         playShootSound();
                     }
                     drawShootingEffect(deltaTime);
+
                     if (hitted) {
-                        // drawHit(deltaTime);
+                        if (hitMissSound)
+                            hitEffect.playSound();
+                        drawHit(deltaTime);
+                    } else {
+                        if (hitMissSound)
+                            missEffect.playSound();
+                        drawMiss(deltaTime);
                     }
-                    // else
-                    // drawMiss(deltaTime);
+
+                }
+                if (destroyed) {
+                    if (destroymentSound)
+                        destroymentEffect.playSound();
+                    drawDestroyment(deltaTime);
                 }
                 break;
             }
@@ -372,6 +413,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (gameStage == 3) {
                 shootOrder = shoot(screenX, screenY, 0);
                 shootSound = true;
+                hitMissSound = true;
             }
         }
         return false;
