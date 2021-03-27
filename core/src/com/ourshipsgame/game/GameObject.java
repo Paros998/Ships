@@ -328,6 +328,81 @@ public class GameObject extends Rectangle implements Constant {
             this.alligmentRectangle.setPosition(vector2);
         this.x = vector2.x;
         this.y = vector2.y;
+        for (int i = 0; i < turretsAmmount; i++)
+            if (turretSprites[i] != null) {
+                switch (this.rotation) {
+                case 0:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].y - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].y - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 1:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 2:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + this.sprite.getHeight() - TurretsPos3[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + this.sprite.getWidth() - TurretsPos3[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + this.sprite.getHeight() - TurretsPos2[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + this.sprite.getWidth() - TurretsPos2[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + this.sprite.getHeight() - TurretsPos1[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + this.sprite.getWidth() - TurretsPos1[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 3:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos3[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos2[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos1[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                }
+                turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
+            }
     }
 
     // This method is used to move the whole game object
@@ -399,6 +474,7 @@ public class GameObject extends Rectangle implements Constant {
         this.goodPlacement = isIt;
     }
 
+    // this method destroys one element of ship
     public void destroyElement() {
         for (int i = 0; i < size; i++)
             if (destroyed[i] == 0) {
@@ -407,6 +483,17 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
+    public void changeDestroyTexture(Texture textureD) {
+        this.spriteWave = null;
+        if (this.size == 3)
+            this.sprite.setTexture(textureD);
+        else if (this.size == 2)
+            this.sprite.setTexture(textureD);
+        else
+            this.sprite.setTexture(textureD);
+    }
+
+    // this method checks if the whole ship is destroyed
     public void checkDestroyment() {
         for (int i = 0; i < size; i++) {
             if (destroyed[i] == 0)
@@ -510,12 +597,12 @@ public class GameObject extends Rectangle implements Constant {
         if (rotation > 3)
             rotation = 0;
 
-        if (turretSprites != null) {
-            for (int i = 0; i < turretsAmmount; i++) {
-                turretSprites[i].rotate90(true);
+        for (int i = 0; i < turretsAmmount; i++)
+            if (turretSprites[i] != null) {
 
                 float tmpHeight = turretSprites[i].getHeight();
                 float tmpWidth = turretSprites[i].getWidth();
+                turretSprites[i].rotate90(true);
                 turretSprites[i].setSize(tmpHeight, tmpWidth);
 
                 switch (rotation) {
@@ -591,7 +678,6 @@ public class GameObject extends Rectangle implements Constant {
                 }
                 turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
             }
-        }
 
         float tmp = this.height;
         this.height = width;
@@ -601,11 +687,91 @@ public class GameObject extends Rectangle implements Constant {
         alligmentRectangle.setSize(width, height);
     }
 
+    public void placeTurretsAccordingly() {
+        for (int i = 0; i < turretsAmmount; i++)
+            if (turretSprites[i] != null) {
+
+                switch (rotation) {
+                case 0:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].y - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].y - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].x - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].y - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 1:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos3[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos2[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() + TurretsPos1[i].y - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 2:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos3[i].x
+                                        - turretSprites[i].getWidth() / 2 - 128,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos3[i].y
+                                        - turretSprites[i].getHeight() / 2 + 128);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos2[i].x
+                                        - turretSprites[i].getWidth() / 2 - 64,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos2[i].y
+                                        - turretSprites[i].getHeight() / 2 + 64);
+                    } else {
+                        turretSprites[i].setPosition(
+                                (this.sprite.getX() + this.sprite.getHeight()) - TurretsPos1[i].x
+                                        - turretSprites[i].getWidth() / 2,
+                                (this.sprite.getY() + this.sprite.getWidth()) - TurretsPos1[i].y
+                                        - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                case 3:
+                    if (size == 3) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos3[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2 + 128,
+                                this.sprite.getY() + TurretsPos3[i].x - turretSprites[i].getHeight() / 2);
+                    } else if (size == 2) {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos2[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2 + 64,
+                                this.sprite.getY() + TurretsPos2[i].x - turretSprites[i].getHeight() / 2);
+                    } else {
+                        turretSprites[i].setPosition(
+                                this.sprite.getX() - TurretsPos1[i].y + this.sprite.getHeight()
+                                        - turretSprites[i].getWidth() / 2,
+                                this.sprite.getY() + TurretsPos1[i].x - turretSprites[i].getHeight() / 2);
+                    }
+                    break;
+                }
+                turretSprites[i].setOrigin(turretSprites[i].getWidth() / 2, turretSprites[i].getHeight() / 2);
+            }
+    }
+
     public void rotateTurret(float degrees, int index) {
-        if (this.turretSprites != null) {
-            turretSprites[index].setOriginCenter();
-            turretSprites[index].setRotation(degrees);
-        }
+        if (!this.shipDestroyed)
+            if (this.turretSprites != null) {
+                turretSprites[index].setOriginCenter();
+                turretSprites[index].setRotation(degrees);
+            }
     }
 
     public Vector2f getVectorPos(int i) {

@@ -74,6 +74,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].updateTexture();
+                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr);
+                SecondBoardShipsSprites[i].drawTurrets(sb);
             }
             break;
         case 3:
@@ -81,6 +84,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].updateTexture();
+                SecondBoardShipsSprites[i].drawSprite(sb);
+                SecondBoardShipsSprites[i].drawTurrets(sb);
             }
             break;
         }
@@ -90,6 +96,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         shootTime += deltaTime;
         if (shootTime <= 1f) {
             for (int i = 0; i < sum; i++) {
+                if (FirstBoardShipsSprites[i].shipDestroyed)
+                    continue;
                 shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
                 shootEffect[i].drawAnimation(sb);
             }
@@ -259,7 +267,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
             sr.setAutoShapeType(true);
             sr.begin();
             // Do not place any drawings up!!
-
+            // font.draw(sb, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, GAME_HEIGHT_F
+            // );
             // Ships // Turrets
             drawShipsEnTurrets();
 
@@ -337,6 +346,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     rotateActualShip();
             if (Gdx.input.isKeyPressed(Keys.E))
                 readyButtonCheck();
+            if (Gdx.input.isKeyPressed(Keys.Q))
+                generateAndPlaceShipsOnBoard(1, true);
         }
         return false;
     }

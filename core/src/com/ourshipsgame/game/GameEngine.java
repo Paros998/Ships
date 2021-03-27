@@ -1,5 +1,7 @@
 package com.ourshipsgame.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -29,6 +31,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
 
         protected Board(int numberOfShips, int BoardNumber) {
             this.BoardShipsPos = new Vector2[numberOfShips];
+            for (int i = 0; i < numberOfShips; i++)
+                this.BoardShipsPos[i] = new Vector2();
             this.BoardNumber = BoardNumber;
         }
 
@@ -117,6 +121,14 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                         }
                     }
                     actualShip.checkDestroyment();
+                    if (actualShip.shipDestroyed) {
+                        if (actualShip.size == 3)
+                            actualShip.changeDestroyTexture(BigShipTextures[2]);
+                        else if (actualShip.size == 2)
+                            actualShip.changeDestroyTexture(MediumShipTextures[2]);
+                        else
+                            actualShip.changeDestroyTexture(SmallShipTextures[2]);
+                    }
                 }
                 break;
             case 2:
@@ -137,9 +149,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
             "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png" };
     protected Texture turretTextures[] = new Texture[4];
-    protected Texture BigShipTextures[] = new Texture[2];
-    protected Texture MediumShipTextures[] = new Texture[2];
-    protected Texture SmallShipTextures[] = new Texture[2];
+    protected Texture BigShipTextures[] = new Texture[3];
+    protected Texture MediumShipTextures[] = new Texture[3];
+    protected Texture SmallShipTextures[] = new Texture[3];
     protected Cursor[] crosshairs = new Cursor[3];
     protected Cursor cursor;
     protected Pixmap[] crosshairPixmaps = new Pixmap[3];
@@ -188,10 +200,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load(internalPaths[3], Texture.class);
         manager.load("core/assets/oneship/three/threeshipModel.png", Texture.class);
         manager.load("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
+        manager.load("core/assets/oneship/three/threeshipModelDestroyed.png", Texture.class);
         manager.load("core/assets/oneship/two/twoshipModel.png", Texture.class);
         manager.load("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
+        manager.load("core/assets/oneship/two/twoshipModelDestroyed.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModel.png", Texture.class);
         manager.load("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+        manager.load("core/assets/oneship/one/oneshipModelDestroyed.png", Texture.class);
         // Turret rotation sound
         manager.load("core/assets/sounds/TurretRotation.mp3", Sound.class);
         // Shoot effect
@@ -231,10 +246,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             turretTextures[i] = manager.get(internalPaths[i], Texture.class);
         BigShipTextures[0] = manager.get("core/assets/oneship/three/threeshipModel.png", Texture.class);
         BigShipTextures[1] = manager.get("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
+        BigShipTextures[2] = manager.get("core/assets/oneship/three/threeshipModelDestroyed.png", Texture.class);
         MediumShipTextures[0] = manager.get("core/assets/oneship/two/twoshipModel.png", Texture.class);
         MediumShipTextures[1] = manager.get("core/assets/oneship/two/twoshipModelwaves.png", Texture.class);
+        MediumShipTextures[2] = manager.get("core/assets/oneship/two/twoshipModelDestroyed.png", Texture.class);
         SmallShipTextures[0] = manager.get("core/assets/oneship/one/oneshipModel.png", Texture.class);
         SmallShipTextures[1] = manager.get("core/assets/oneship/one/oneshipModelwaves.png", Texture.class);
+        SmallShipTextures[2] = manager.get("core/assets/oneship/one/oneshipModelDestroyed.png", Texture.class);
         rotateSound = manager.get("core/assets/sounds/TurretRotation.mp3", Sound.class);
         Particles[0] = manager.get("core/assets/animations/boom3.png", Texture.class);
         ShootSounds[0] = manager.get("core/assets/sounds/shoot/DeathFlash.mp3", Sound.class);
@@ -279,22 +297,47 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             if (i <= 2) {
                 FirstBoardShipsSprites[i] = new GameObject(BigShipTextures[0], BigShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 191, true, 3, new Vector2(5, 1));
+
                 shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
                         FirstBoardShipsSprites[i].turretsAmmount);
+
+                SecondBoardShipsSprites[i] = new GameObject(BigShipTextures[0], BigShipTextures[1], turretTextures,
+                        SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 191, true, 3,
+                        new Vector2(5, 1));
             } else if (i > 2 && i <= 6) {
                 FirstBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 127, true, 2, new Vector2(5, 1));
+
                 shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
                         FirstBoardShipsSprites[i].turretsAmmount);
-            } else
+
+                SecondBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1],
+                        turretTextures, SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 127, true, 2,
+                        new Vector2(5, 1));
+            } else {
                 FirstBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 63, true, 1, new Vector2(5, 1));
-            shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
-                    FirstBoardShipsSprites[i].turretsAmmount);
+
+                shootEffect[i] = new ShootParticleEffect(Particles[0], 0, 0, new Vector2(8, 8),
+                        FirstBoardShipsSprites[i].turretsAmmount);
+
+                SecondBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
+                        SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 63, true, 1,
+                        new Vector2(5, 1));
+            }
         }
+
+        // Generating random positions on enemy board and placing ships while enemy is a
+        // computer
+        if (computerEnemy) {
+            for (int i = 0; i < sum; i++)
+                secondBoard.BoardShipsPos[i] = new Vector2();
+            generateAndPlaceShipsOnBoard(2, false);
+        }
+
         for (int i = 0; i < sum; i++) {
             GameObject actualShip = FirstBoardShipsSprites[i];
-            if (isShipPlacedGood(actualShip)) {
+            if (isShipPlacedGood(actualShip, 1)) {
                 actualShip.setGoodPlacement(true);
             } else
                 actualShip.setGoodPlacement(false);
@@ -311,6 +354,107 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return done;
     }
 
+    protected void generateAndPlaceShipsOnBoard(int BoardNumber, boolean resetPos) {
+        GameObject actualShip;
+        Board board;
+        if (BoardNumber == 1)
+            board = firstBoard;
+        else
+            board = secondBoard;
+        if (resetPos) {
+            for (int i = 0; i <= 9; i++)
+                for (int j = 0; j <= 9; j++)
+                    board.ShipsPlaced[i][j] = 0;
+            for (int k = 0; k < sum; k++)
+                board.BoardShipsPos[k] = new Vector2();
+        }
+        Random generator = new Random();
+        int xPos, yPos;
+        for (int i = 0; i < sum; i++) {
+            if (BoardNumber == 1)
+                actualShip = FirstBoardShipsSprites[i];
+            else
+                actualShip = SecondBoardShipsSprites[i];
+
+            int rotation = generator.nextInt(4);
+            for (int j = 0; j < rotation; j++)
+                actualShip.rotate90();
+            xPos = generator.nextInt(10);
+            yPos = generator.nextInt(10);
+
+            switch (actualShip.size) {
+            case 3:
+                if (actualShip.rotation % 2 == 0) {
+                    while ((yPos + 2) > 9 || board.ShipsPlaced[xPos][yPos] == 1
+                            || board.ShipsPlaced[xPos][yPos + 1] == 1 || board.ShipsPlaced[xPos][yPos + 2] == 1) {
+                        xPos = generator.nextInt(10);
+                        yPos = generator.nextInt(10);
+                    }
+                    board.BoardShipsPos[i].set(xPos, yPos);
+                    board.ShipsPlaced[xPos][yPos] = 1;
+                    board.ShipsPlaced[xPos][yPos + 1] = 1;
+                    board.ShipsPlaced[xPos][yPos + 2] = 1;
+                } else {
+                    while ((xPos + 2) > 9 || board.ShipsPlaced[xPos][yPos] == 1
+                            || board.ShipsPlaced[xPos + 1][yPos] == 1 || board.ShipsPlaced[xPos + 2][yPos] == 1) {
+                        xPos = generator.nextInt(10);
+                        yPos = generator.nextInt(10);
+                    }
+                    board.BoardShipsPos[i].set(xPos, yPos);
+                    board.ShipsPlaced[xPos][yPos] = 1;
+                    board.ShipsPlaced[xPos + 1][yPos] = 1;
+                    board.ShipsPlaced[xPos + 2][yPos] = 1;
+                }
+                break;
+            case 2:
+                if (actualShip.rotation % 2 == 0) {
+                    while ((yPos + 1) > 9 || board.ShipsPlaced[xPos][yPos] == 1
+                            || board.ShipsPlaced[xPos][yPos + 1] == 1) {
+                        xPos = generator.nextInt(10);
+                        yPos = generator.nextInt(10);
+                    }
+                    board.BoardShipsPos[i].set(xPos, yPos);
+                    board.ShipsPlaced[xPos][yPos] = 1;
+                    board.ShipsPlaced[xPos][yPos + 1] = 1;
+                } else {
+                    while ((xPos + 1) > 9 || board.ShipsPlaced[xPos][yPos] == 1
+                            || board.ShipsPlaced[xPos + 1][yPos] == 1) {
+                        xPos = generator.nextInt(10);
+                        yPos = generator.nextInt(10);
+                    }
+                    board.BoardShipsPos[i].set(xPos, yPos);
+                    board.ShipsPlaced[xPos][yPos] = 1;
+                    board.ShipsPlaced[xPos + 1][yPos] = 1;
+                }
+                break;
+            case 1:
+                while (board.ShipsPlaced[xPos][yPos] == 1) {
+                    xPos = generator.nextInt(10);
+                    yPos = generator.nextInt(10);
+                }
+                board.BoardShipsPos[i].set(xPos, yPos);
+                board.ShipsPlaced[xPos][yPos] = 1;
+                break;
+            }
+
+            if (BoardNumber == 1)
+                actualShip.setSpritePos(new Vector2(xPos * BOX_WIDTH_F + FirstBoardStart.x + 1,
+                        yPos * BOX_HEIGHT_F + FirstBoardStart.y + 1));
+            else
+                actualShip.setSpritePos(new Vector2(xPos * BOX_WIDTH_F + SecondBoardStart.x + 1,
+                        yPos * BOX_HEIGHT_F + SecondBoardStart.y + 1));
+            actualShip.placeTurretsAccordingly();
+
+        }
+        if (BoardNumber == 1)
+            for (int i = 0; i < sum; i++)
+                FirstBoardShipsSprites[i].goodPlacement = isShipPlacedGood(FirstBoardShipsSprites[i], 1);
+        else
+            for (int i = 0; i < sum; i++)
+                SecondBoardShipsSprites[i].goodPlacement = isShipPlacedGood(SecondBoardShipsSprites[i], 2);
+        generator = null;
+    }
+
     // Stage 2 methods to place ships on board
     protected void touchDownSprite(int screenX, int screenY) {
         for (int i = 0; i < sum; i++) {
@@ -324,7 +468,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
             GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
 
-            if (isShipPlacedGood(actualShip)) {
+            if (isShipPlacedGood(actualShip, 1)) {
                 actualShip.setGoodPlacement(true);
             } else
                 actualShip.setGoodPlacement(false);
@@ -376,30 +520,55 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    protected boolean isShipPlacedGood(GameObject actualShip) {
+    protected boolean isShipPlacedGood(GameObject actualShip, int boardNumber) {
         // Checking if ship is dropped on good position not colliding with anything
-        Rectangle board = new Rectangle(FirstBoardStart.x, FirstBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
-                BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
-        if (board.contains(actualShip.alligmentRectangle)) {
-            for (int i = 0; i < sum; i++) {
-                if (actualShip == FirstBoardShipsSprites[i])
-                    continue;
-                // Need change Work in progress But working great actually
-                boolean actualShipRotatedVertically = actualShip.rotation % 2 == 1;
-                boolean otherShipRotatedVertically = FirstBoardShipsSprites[i].rotation % 2 == 1;
-                //
-                if (actualShipRotatedVertically != otherShipRotatedVertically) {
-                    if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle, true,
-                            actualShipRotatedVertically))
-                        return false;
-                } else {
-                    if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle))
-                        return false;
+        if (boardNumber == 1) {
+            Rectangle board = new Rectangle(FirstBoardStart.x, FirstBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
+                    BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
+            if (board.contains(actualShip.alligmentRectangle)) {
+                for (int i = 0; i < sum; i++) {
+                    if (actualShip == FirstBoardShipsSprites[i])
+                        continue;
+                    // Need change Work in progress But working great actually
+                    boolean actualShipRotatedVertically = actualShip.rotation % 2 == 1;
+                    boolean otherShipRotatedVertically = FirstBoardShipsSprites[i].rotation % 2 == 1;
+                    //
+                    if (actualShipRotatedVertically != otherShipRotatedVertically) {
+                        if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle, true,
+                                actualShipRotatedVertically))
+                            return false;
+                    } else {
+                        if (actualShip.collide(FirstBoardShipsSprites[i].alligmentRectangle))
+                            return false;
+                    }
                 }
-            }
-            return true;
-        } else
-            return false;
+                return true;
+            } else
+                return false;
+        } else {
+            Rectangle board = new Rectangle(SecondBoardStart.x, SecondBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
+                    BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
+            if (board.contains(actualShip.alligmentRectangle)) {
+                for (int i = 0; i < sum; i++) {
+                    if (actualShip == SecondBoardShipsSprites[i])
+                        continue;
+                    // Need change Work in progress But working great actually
+                    boolean actualShipRotatedVertically = actualShip.rotation % 2 == 1;
+                    boolean otherShipRotatedVertically = SecondBoardShipsSprites[i].rotation % 2 == 1;
+                    //
+                    if (actualShipRotatedVertically != otherShipRotatedVertically) {
+                        if (actualShip.collide(SecondBoardShipsSprites[i].alligmentRectangle, true,
+                                actualShipRotatedVertically))
+                            return false;
+                    } else {
+                        if (actualShip.collide(SecondBoardShipsSprites[i].alligmentRectangle))
+                            return false;
+                    }
+                }
+                return true;
+            } else
+                return false;
+        }
     }
 
     protected void rotateActualShip() {
@@ -420,7 +589,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
 
     protected boolean checkAllShips() {
         for (int i = 0; i < sum; i++) {
-            if (isShipPlacedGood(FirstBoardShipsSprites[i]) == false)
+            if (isShipPlacedGood(FirstBoardShipsSprites[i], 1) == false)
                 return false;
         }
         return true;
@@ -433,6 +602,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
 
         for (int j = 0; j < sum; j++) {
             GameObject actualShip = FirstBoardShipsSprites[j];
+            if (actualShip.shipDestroyed == true)
+                continue;
             for (int i = 0; i < actualShip.turretsAmmount; i++) {
                 Vector2f turretPos = actualShip.getVectorPos(i);
                 angle = MathUtils.radiansToDegrees * MathUtils.atan2(screenX - turretPos.x, turretPos.y - screenY);
@@ -513,14 +684,18 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             int xPos, yPos;
             switch (turn) {
             case 0:
-                for (int i = 0; i < sum; i++)
+                for (int i = 0; i < sum; i++) {
+                    if (FirstBoardShipsSprites[i].shipDestroyed)
+                        continue;
                     shootEffect[i].setPositions(FirstBoardShipsSprites[i]);
+                }
                 screenY = (int) gameHeight_f - screenY;
                 xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
                 yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
 
                 FirstPlayerShotsDone[xPos][yPos] = 1;
-
+                shootingEnabled = false;
+                Gdx.graphics.setCursor(crosshairs[0]);
                 checkHit(turn, xPos, yPos);
                 break;
             case 1:
@@ -529,7 +704,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
 
                 SecondPlayerShotsDone[xPos][yPos] = 1;
-
+                shootingEnabled = false;
+                Gdx.graphics.setCursor(crosshairs[0]);
                 checkHit(turn, xPos, yPos);
                 break;
             }
@@ -543,8 +719,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
         screenY = (int) gameHeight_f - screenY;
         if (board.contains(screenX, screenY)) {
-            int xPos = (int) ((screenX - SecondBoardStart.x - 1) / BOX_WIDTH_F);
-            int yPos = (int) ((screenY - SecondBoardStart.y - 1) / BOX_HEIGHT_F);
+            int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+            int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+            if (xPos == 10 || yPos == 10)
+                return;
             if (FirstPlayerShotsDone[xPos][yPos] == 1) {
                 shootingEnabled = false;
                 rotateEnabled = true;
