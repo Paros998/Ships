@@ -82,12 +82,12 @@ public class BoomEffect {
 
     public boolean playSound(boolean multiple) {
         for (int i = 0; i < radius; i++)
-            this.sound.play(0.5f + (i * 0.1f));
+            this.sound.play(0.8f + (i * 0.1f));
         return false;
     }
 
     public void playSound() {
-        this.sound.play(0.8f);
+        this.sound.play(0.7f);
     }
 
 }

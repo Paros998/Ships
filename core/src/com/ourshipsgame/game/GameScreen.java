@@ -160,10 +160,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
         camera.setToOrtho(false, gameWidth_f, gameHeight_f);
 
         // Map layers
-        layers = new int[3];
+        layers = new int[4];
         layers[0] = 0;
         layers[1] = 1;
         layers[2] = 2;
+        layers[3] = 3;
     }
 
     private void createFonts() {
@@ -210,20 +211,20 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     private void playShootSound() {
         if (shootTime <= 1f) {
-            ShootSounds[0].play(0.5f);
-            ShootSounds[1].play(0.5f);
-            ShootSounds[2].play(0.5f);
+            ShootSounds[0].play(0.3f);
+            ShootSounds[1].play(0.3f);
+            ShootSounds[2].play(0.3f);
 
-            ShootSounds[3].play(0.6f);
-            ShootSounds[4].play(0.6f);
-            ShootSounds[5].play(0.6f);
-            ShootSounds[6].play(0.7f);
-            ShootSounds[7].play(0.7f);
+            ShootSounds[3].play(0.3f);
+            ShootSounds[4].play(0.3f);
+            ShootSounds[5].play(0.3f);
+            ShootSounds[6].play(0.3f);
+            ShootSounds[7].play(0.3f);
 
-            ShootSounds[8].play(0.5f);
-            ShootSounds[9].play(0.5f);
-            ShootSounds[10].play(0.5f);
-            ShootSounds[11].play(0.5f);
+            ShootSounds[8].play(0.3f);
+            ShootSounds[9].play(0.3f);
+            ShootSounds[10].play(0.3f);
+            ShootSounds[11].play(0.3f);
         }
         shootSound = false;
     }
