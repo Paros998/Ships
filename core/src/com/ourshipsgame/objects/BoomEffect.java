@@ -51,10 +51,10 @@ public class BoomEffect {
         }
         if (rotation % 2 == 0) {
             for (int i = 0; i < radius; i++)
-                this.sprites[i].setPosition(vector2f.x + 32, vector2f.y + 32 + (i * 64));
+                this.sprites[i].setPosition(vector2f.x, vector2f.y + (i * 64));
         } else {
             for (int i = 0; i < radius; i++)
-                this.sprites[i].setPosition(vector2f.x + 32 + (i * 64), vector2f.y + 32);
+                this.sprites[i].setPosition(vector2f.x + (i * 64), vector2f.y);
         }
     }
 
@@ -80,8 +80,14 @@ public class BoomEffect {
             this.sprites[i].draw(batch);
     }
 
+    public boolean playSound(boolean multiple) {
+        for (int i = 0; i < radius; i++)
+            this.sound.play(0.5f + (i * 0.1f));
+        return false;
+    }
+
     public void playSound() {
-        this.sound.play(0.5f);
+        this.sound.play(0.8f);
     }
 
 }

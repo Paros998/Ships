@@ -81,57 +81,88 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
 
         protected void hitShip(int xPos, int yPos) {
-            GameObject actualShip;
+            GameObject actualShip = FirstBoardShipsSprites[0];
+            GameObject hittedShip = FirstBoardShipsSprites[0];
             switch (BoardNumber) {
             case 1:
                 for (int i = 0; i < sum; i++) {
                     actualShip = FirstBoardShipsSprites[i];
                     if (actualShip.rotation % 2 == 0) {
                         if (actualShip.size == 3) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else if (actualShip.size == 2) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         }
                     } else {
                         if (actualShip.size == 3) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else if (actualShip.size == 2) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         }
                     }
-                    actualShip.checkDestroyment();
-                    if (actualShip.shipDestroyed) {
-                        destroyed = true;
-                        destroymentEffect.setPos(actualShip.getPosition(), actualShip.rotation, actualShip.size);
-                        if (actualShip.size == 3)
-                            actualShip.changeDestroyTexture(BigShipTextures[2]);
-                        else if (actualShip.size == 2)
-                            actualShip.changeDestroyTexture(MediumShipTextures[2]);
-                        else
-                            actualShip.changeDestroyTexture(SmallShipTextures[2]);
-                    }
+                }
+                hittedShip.checkDestroyment();
+                if (hittedShip.shipDestroyed) {
+                    destroyed = true;
+                    destroymentEffect.setPos(hittedShip.getPosition(), hittedShip.rotation, hittedShip.size);
+                    if (hittedShip.size == 3)
+                        hittedShip.changeDestroyTexture(BigShipTextures[2]);
+                    else if (hittedShip.size == 2)
+                        hittedShip.changeDestroyTexture(MediumShipTextures[2]);
+                    else
+                        hittedShip.changeDestroyTexture(SmallShipTextures[2]);
                 }
                 break;
             case 2:
@@ -139,50 +170,81 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                     actualShip = SecondBoardShipsSprites[i];
                     if (actualShip.rotation % 2 == 0) {
                         if (actualShip.size == 3) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 2 == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else if (actualShip.size == 2) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y + 1 == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         }
                     } else {
                         if (actualShip.size == 3) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 2 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else if (actualShip.size == 2) {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
-                            else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos)
+                                hittedShip = actualShip;
+                                break;
+                            } else if (BoardShipsPos[i].x + 1 == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         } else {
-                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos)
+                            if (BoardShipsPos[i].x == xPos && BoardShipsPos[i].y == yPos) {
                                 actualShip.destroyElement();
+                                hittedShip = actualShip;
+                                break;
+                            }
                         }
                     }
-                    actualShip.checkDestroyment();
-                    if (actualShip.shipDestroyed) {
-                        destroyed = true;
-                        destroymentEffect.setPos(actualShip.getPosition(), actualShip.rotation, actualShip.size);
-                        if (actualShip.size == 3)
-                            actualShip.changeDestroyTexture(BigShipTextures[2]);
-                        else if (actualShip.size == 2)
-                            actualShip.changeDestroyTexture(MediumShipTextures[2]);
-                        else
-                            actualShip.changeDestroyTexture(SmallShipTextures[2]);
-                    }
+                }
+                hittedShip.checkDestroyment();
+                if (hittedShip.shipDestroyed) {
+                    destroyed = true;
+                    destroymentSound = true;
+                    destroymentEffect.setPos(hittedShip.getPosition(), hittedShip.rotation, hittedShip.size);
+                    if (hittedShip.size == 3)
+                        hittedShip.changeDestroyTexture(BigShipTextures[2]);
+                    else if (hittedShip.size == 2)
+                        hittedShip.changeDestroyTexture(MediumShipTextures[2]);
+                    else
+                        hittedShip.changeDestroyTexture(SmallShipTextures[2]);
                 }
                 break;
             }
@@ -243,7 +305,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected boolean rotateEnabled = false;
     protected boolean shootingEnabled = false;
     protected boolean hitted = false;
+    protected boolean missed = false;
     protected boolean destroyed = false;
+    protected boolean destroymentSound = false;
     protected Vector2f hitPos = new Vector2f();
     protected Vector2f missPos = new Vector2f();
     protected Vector2f destroymentPos = new Vector2f();
@@ -708,6 +772,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         case 0:
             if (secondBoard.ShipsPlaced[xPos][yPos] == 1) {
                 hitted = true;
+                missed = false;
                 xPos *= BOX_WIDTH_F;
                 xPos += SecondBoardStart.x + 32;
                 yPos *= BOX_HEIGHT_F;
@@ -715,6 +780,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 hitPos.set(xPos, yPos);
                 hitEffect.setPos(hitPos);
             } else {
+                missed = true;
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
                 xPos += SecondBoardStart.x + 32;
@@ -731,6 +797,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         case 1:
             if (firstBoard.ShipsPlaced[xPos][yPos] == 1) {
                 hitted = true;
+                missed = false;
                 xPos *= BOX_WIDTH_F;
                 xPos += FirstBoardStart.x + 32;
                 yPos *= BOX_HEIGHT_F;
@@ -738,6 +805,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 hitPos.set(xPos, yPos);
                 hitEffect.setPos(hitPos);
             } else {
+                missed = true;
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
                 xPos += FirstBoardStart.x + 32;

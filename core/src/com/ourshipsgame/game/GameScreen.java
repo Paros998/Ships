@@ -42,7 +42,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean shootOrder = false;
     private boolean shootSound = false;
     private boolean hitMissSound = false;
-    private boolean destroymentSound = false;
 
     private int[] layers;
     private float rotateTime;
@@ -99,6 +98,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (shootTime <= 1f) {
             hitEffect.updateAnimation();
             hitEffect.drawEffect(sb);
+        } else {
+            hitted = false;
         }
         hitMissSound = false;
     }
@@ -107,18 +108,21 @@ public class GameScreen extends GameEngine implements InputProcessor {
         if (shootTime <= 1f) {
             missEffect.updateAnimation();
             missEffect.drawEffect(sb);
+        } else {
+            missed = false;
         }
         hitMissSound = false;
     }
 
     private void drawDestroyment(float deltaTime) {
         destroyTime += deltaTime;
-        if (deltaTime >= 0.2f && destroyTime <= 1.2f) {
+        if (destroyTime <= 1f) {
             destroymentEffect.updateAnimation(true);
             destroymentEffect.drawEffect(sb, true);
         } else {
             destroyed = false;
             destroymentSound = false;
+            destroyTime = 0f;
         }
     }
 
@@ -205,27 +209,23 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     private void playShootSound() {
-        if (shootTime >= 0f && shootTime < 0.02) {
+        if (shootTime <= 1f) {
             ShootSounds[0].play(0.5f);
             ShootSounds[1].play(0.5f);
             ShootSounds[2].play(0.5f);
-        } else if (shootTime >= 0.02 && shootTime < 0.03) {
+
             ShootSounds[3].play(0.6f);
             ShootSounds[4].play(0.6f);
             ShootSounds[5].play(0.6f);
             ShootSounds[6].play(0.7f);
             ShootSounds[7].play(0.7f);
-        } else if (shootTime >= 0.03 && shootTime < 0.04) {
-            ShootSounds[0].play(0.8f);
-            ShootSounds[1].play(0.8f);
-            ShootSounds[2].play(0.8f);
 
-            ShootSounds[8].play(0.8f);
-            ShootSounds[9].play(0.8f);
-            ShootSounds[10].play(0.9f);
-            ShootSounds[11].play(0.9f);
-        } else if (shootTime >= 1.0f)
-            shootSound = false;
+            ShootSounds[8].play(0.5f);
+            ShootSounds[9].play(0.5f);
+            ShootSounds[10].play(0.5f);
+            ShootSounds[11].play(0.5f);
+        }
+        shootSound = false;
     }
 
     // Input and update methods
@@ -319,7 +319,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                         if (hitMissSound)
                             hitEffect.playSound();
                         drawHit(deltaTime);
-                    } else {
+                    }
+                    if (missed) {
                         if (hitMissSound)
                             missEffect.playSound();
                         drawMiss(deltaTime);
@@ -327,8 +328,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
                 }
                 if (destroyed) {
+                    hitted = false;
+                    missed = false;
+                    hitMissSound = false;
+                    shootSound = false;
                     if (destroymentSound)
-                        destroymentEffect.playSound();
+                        destroymentSound = destroymentEffect.playSound(true);
                     drawDestroyment(deltaTime);
                 }
                 break;
