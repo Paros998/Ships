@@ -42,7 +42,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean shootOrder = false;
     private boolean shootSound = false;
     private boolean hitMissSound = false;
-
+    private long sid;
     private int[] layers;
     private float rotateTime;
     private float shootTime;
@@ -208,7 +208,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // Sound effects methods
     private void startRotateSound() {
-        rotateSound.loop(hud.gameSettings.soundVolume);
+        sid = rotateSound.loop(hud.gameSettings.soundVolume);
         rotateSound.pause();
     }
 
@@ -258,7 +258,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateSound.pause();
         }
         handleInput(deltaTime);
-
+        rotateSound.setVolume(sid, hud.gameSettings.soundVolume);
         if (gameStage == 3) {
             // Update AI info
             if (shootOrder)
