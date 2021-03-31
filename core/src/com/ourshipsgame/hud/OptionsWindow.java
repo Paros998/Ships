@@ -1,5 +1,8 @@
 package com.ourshipsgame.hud;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +21,7 @@ public class OptionsWindow extends Dialog implements Constant {
     public boolean turnedOn;
     private Hud hud;
     private OptionsWindow backReference = this;
+    private GameSlider soundSlider, musicSlider;
     
     // Constructor
     public OptionsWindow(String windowName, Hud hud) {
@@ -36,6 +40,13 @@ public class OptionsWindow extends Dialog implements Constant {
         layoutTable.add(this).expandX().padBottom(10);
     }
 
+    private void saveSettings() throws IOException {
+        FileWriter savingPrintWriter;
+        savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
+        savingPrintWriter.write(musicSlider.getPercent() + "\n" + soundSlider.getPercent());
+        savingPrintWriter.close();
+    }
+
     // Method
     @Override
     protected void result(final Object act) {
@@ -52,33 +63,31 @@ public class OptionsWindow extends Dialog implements Constant {
                 new Dialog("Options", hud.getSkin()) {
 
                     {
-                        GameSlider soundSlider, musicSlider;
-                        Label musicVolumeText, soundsVolumeText;
-
-                        musicVolumeText = new Label("Music Volume:", hud.getSkin());
-                        soundsVolumeText = new Label("Sounds Volume:", hud.getSkin());
-
                         soundSlider = new GameSlider(0, 100, 1, false, this.getSkin());
                         musicSlider = new GameSlider(0, 100, 1, false, this.getSkin());
 
                         musicSlider.setSliderType(1, hud.gameSettings);
                         soundSlider.setSliderType(2, hud.gameSettings);
                         
-                        this.add(musicVolumeText).expandX();
-                        //this.add(soundsVolumeText).expandX();
+                        this.text("Music Volume");
                         this.row();
-                        this.add(musicSlider).expandX();
-                        this.add(soundSlider).expandX();
+                        this.add(musicSlider).expandX().padLeft(20);
                         this.row();
-                        this.button("Back");
+                        this.text("SFX Volume");
+                        this.add(soundSlider).expandX().padLeft(20);
+                        this.row();
+                        this.getCells().removeIndex(1);
                         this.add(this.getButtonTable());
-                        this.getCells().shuffle();
-                        this.debugActor();
+                        this.button("Back");
                     }
 
                     @Override
                     protected void result(final Object act) {
                         hud.gameSettings.playSound();
+
+                        try { saveSettings(); } 
+                        catch (IOException e) { e.printStackTrace(); }
+                        
                         backReference.show(hud.getStage());
                     }
 
