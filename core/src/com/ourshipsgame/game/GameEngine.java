@@ -21,9 +21,11 @@ import com.ourshipsgame.objects.ShootParticleEffect;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import inteligentSystems.ComputerPlayerAi;
+
 public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Board class
-    protected class Board {
+    public class Board {
         protected int[][] ShipsPlaced = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
         // Vector index is a ship index
         // x and y are dimensions in ShipsPlaced where is the ship beginning
@@ -252,6 +254,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     // Important vars
+    protected ComputerPlayerAi enemyComputerPlayerAi;
+    protected int PlayerTurn;
     protected Board firstBoard;
     protected Board secondBoard;
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
@@ -311,6 +315,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Vector2f hitPos = new Vector2f();
     protected Vector2f missPos = new Vector2f();
     protected Vector2f destroymentPos = new Vector2f();
+
+    protected void switchTurn() {
+        if (PlayerTurn == 1)
+            PlayerTurn = 2;
+        else
+            PlayerTurn = 1;
+    }
 
     // loading method
     protected void loadGameEngine(AssetManager manager) {
@@ -405,6 +416,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         MetalExplosionSounds = manager.get("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
         DestroymentExplosionSounds = manager.get("core/assets/sounds/explosion/Chunky Explosion.mp3", Sound.class);
 
+        PlayerTurn = 1;
         hitEffect = new BoomEffect(MetalExplosionSounds, hitTexture);
         missEffect = new BoomEffect(WaterExplosionSounds, missTexture);
         destroymentEffect = new BoomEffect(DestroymentExplosionSounds, destroymentTexture, true);
@@ -471,6 +483,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             for (int i = 0; i < sum; i++)
                 secondBoard.BoardShipsPos[i] = new Vector2();
             generateAndPlaceShipsOnBoard(2, false);
+            enemyComputerPlayerAi = new ComputerPlayerAi(SecondPlayerShotsDone);
         }
 
         for (int i = 0; i < sum; i++) {
@@ -738,38 +751,66 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         screenY = gameHeight_f - screenY;
         float angle;
 
-        for (int j = 0; j < sum; j++) {
-            GameObject actualShip = FirstBoardShipsSprites[j];
-            if (actualShip.shipDestroyed == true)
-                continue;
-            for (int i = 0; i < actualShip.turretsAmmount; i++) {
-                Vector2f turretPos = actualShip.getVectorPos(i);
-                angle = MathUtils.radiansToDegrees * MathUtils.atan2(screenX - turretPos.x, turretPos.y - screenY);
-                if (angle < 0)
-                    angle += 360;
-                switch (actualShip.rotation) {
-                case 0:
-                    break;
-                case 1:
-                    angle += 90;
-                    break;
-                case 2:
-                    angle += 180;
-                    break;
-                case 3:
-                    angle += 270;
-                    break;
+        if (PlayerTurn == 1) {
+            for (int j = 0; j < sum; j++) {
+                GameObject actualShip = FirstBoardShipsSprites[j];
+                if (actualShip.shipDestroyed == true)
+                    continue;
+                for (int i = 0; i < actualShip.turretsAmmount; i++) {
+                    Vector2f turretPos = actualShip.getVectorPos(i);
+                    angle = MathUtils.radiansToDegrees * MathUtils.atan2(screenX - turretPos.x, turretPos.y - screenY);
+                    if (angle < 0)
+                        angle += 360;
+                    switch (actualShip.rotation) {
+                    case 0:
+                        break;
+                    case 1:
+                        angle += 90;
+                        break;
+                    case 2:
+                        angle += 180;
+                        break;
+                    case 3:
+                        angle += 270;
+                        break;
+                    }
+                    actualShip.rotateTurret(angle, i);
                 }
-                actualShip.rotateTurret(angle, i);
             }
 
+        } else {
+            for (int j = 0; j < sum; j++) {
+                GameObject actualShip = SecondBoardShipsSprites[j];
+                if (actualShip.shipDestroyed == true)
+                    continue;
+                for (int i = 0; i < actualShip.turretsAmmount; i++) {
+                    Vector2f turretPos = actualShip.getVectorPos(i);
+                    angle = MathUtils.radiansToDegrees * MathUtils.atan2(screenX - turretPos.x, turretPos.y - screenY);
+                    if (angle < 0)
+                        angle += 360;
+                    switch (actualShip.rotation) {
+                    case 0:
+                        break;
+                    case 1:
+                        angle += 90;
+                        break;
+                    case 2:
+                        angle += 180;
+                        break;
+                    case 3:
+                        angle += 270;
+                        break;
+                    }
+                    actualShip.rotateTurret(angle, i);
+                }
+            }
         }
     }
 
-    protected void checkHit(int turn, int xPos, int yPos) {
+    protected void checkHit(int xPos, int yPos) {
         int tx = xPos, ty = yPos;
-        switch (turn) {
-        case 0:
+        switch (PlayerTurn) {
+        case 1:
             if (secondBoard.ShipsPlaced[xPos][yPos] == 1) {
                 hitted = true;
                 missed = false;
@@ -794,7 +835,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             }
 
             break;
-        case 1:
+        case 2:
             if (firstBoard.ShipsPlaced[xPos][yPos] == 1) {
                 hitted = true;
                 missed = false;
@@ -821,11 +862,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    protected boolean shoot(int screenX, int screenY, int turn) {
+    protected boolean shoot(int screenX, int screenY) {
         if (shootingEnabled) {
             int xPos, yPos;
-            switch (turn) {
-            case 0:
+            switch (PlayerTurn) {
+            case 1:
                 for (int i = 0; i < sum; i++) {
                     if (FirstBoardShipsSprites[i].shipDestroyed)
                         continue;
@@ -834,21 +875,18 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 screenY = (int) gameHeight_f - screenY;
                 xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
                 yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+                shootingEnabled = false;
 
                 FirstPlayerShotsDone[xPos][yPos] = 1;
-                shootingEnabled = false;
                 Gdx.graphics.setCursor(crosshairs[0]);
-                checkHit(turn, xPos, yPos);
+                checkHit(xPos, yPos);
                 break;
-            case 1:
-                screenY = (int) gameHeight_f - screenY;
-                xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
-                yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
-
+            case 2:
+                xPos = screenX;
+                yPos = screenY;
                 SecondPlayerShotsDone[xPos][yPos] = 1;
                 shootingEnabled = false;
-                Gdx.graphics.setCursor(crosshairs[0]);
-                checkHit(turn, xPos, yPos);
+                checkHit(xPos, yPos);
                 break;
             }
             return true;
