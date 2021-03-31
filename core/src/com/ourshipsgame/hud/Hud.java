@@ -17,6 +17,7 @@ public class Hud implements Constant {
     // Fields
     private GameObject uiBar;
     private GameImageButton gameMenuButton;
+    private float buttonsWidth, buttonsHeight;
     private Table layoutTable;
     private Stage stage;
     private Skin skin;
@@ -29,13 +30,6 @@ public class Hud implements Constant {
         layoutTable = new Table();
         layoutTable.setFillParent(true);
 
-        // Main bar
-        Texture uiTexture = manager.get("core/assets/ui/CustomTopBar.bmp", Texture.class);
-        uiBar = new GameObject((uiTexture), 0, 0, true, false, null);
-        uiBar.getSprite().setX(GAME_WIDTH / 2 - uiBar.getWidth() / 2);
-        uiBar.getSprite().setY(uiBar.getHeight() / 84);
-        uiBar.getSprite().setScale(3.0f, 1);
-
         stage = new Stage(new ScreenViewport());
 
         // Close button
@@ -44,17 +38,17 @@ public class Hud implements Constant {
         buttonStyles[1] = manager.get("core/assets/ui/ui.hud/ui/global/modern/gear-press.png", Texture.class);
 
         Sprite[] buttonStylesSprites = new Sprite[2];
+
         for (int i = 0; i < buttonStylesSprites.length; i++) {
             buttonStylesSprites[i] = new Sprite(buttonStyles[i]);
             buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.25f, buttonStylesSprites[i].getHeight() / 1.25f);
         }
 
+        buttonsWidth = buttonStylesSprites[0].getWidth();
+        buttonsHeight = buttonStylesSprites[0].getHeight();
+
         gameMenuButton = new GameImageButton(this, buttonStylesSprites);
         gameMenuButton.setOptionsListener();
-
-        // Ships buttons
-        //...
-        
 
         // Adding actors to Table
         layoutTable.bottom();
@@ -64,13 +58,20 @@ public class Hud implements Constant {
     }
 
     // Methods
+    private void setButtonsSprites(Texture[] textures, Sprite[] sprites) {
+        for(int i = 0; i < sprites.length; i++) {
+            sprites[i] = new Sprite(textures[i]);
+            sprites[i].setSize(buttonsWidth, buttonsHeight);
+        }
+    }
+
     public void update() {
         stage.act();
         stage.draw();
     }
 
     public void render(SpriteBatch batch) {
-        uiBar.getSprite().draw(batch);
+       // uiBar.getSprite().draw(batch);
     }
 
     public Stage getStage() {

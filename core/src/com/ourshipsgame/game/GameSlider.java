@@ -18,6 +18,41 @@ public class GameSlider extends Slider implements Constant {
         this.setY(y);
     }
 
+    public GameSlider(float min, float max, float stepSize, boolean vertical, Skin skin) {
+        super(min, max, stepSize, vertical, skin);
+    }
+
+    public void setSliderType(int option, final GameSettings settings) {
+        final Slider sliderTmp = this;
+
+        if(option == 1) {
+            this.setVisualPercent(settings.sliderMusicPercent);
+            this.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    settings.sliderMusicPercent = sliderTmp.getPercent();
+                    settings.music.setVolume(sliderTmp.getPercent() / 5.0f);
+                }
+                
+            });
+        }
+
+        else if(option == 2) {
+            this.setVisualPercent(settings.sliderSoundPercent);
+            this.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    settings.sliderSoundPercent = sliderTmp.getPercent();
+                    settings.soundVolume = sliderTmp.getPercent() / 5.0f;
+                }
+                
+            });
+        }
+
+    }
+
     public void setSliderType(int option) {
         final Slider sliderTmp = this;
 
