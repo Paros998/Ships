@@ -3,6 +3,7 @@ package com.ourshipsgame.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -24,7 +25,6 @@ import com.ourshipsgame.hud.Hud;
 public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
-
     private AssetManager manager;
     private Main game;
     private InputMultiplexer inputMultiplexer;
@@ -41,10 +41,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean createdTextures = false;
     private boolean shootOrder = false;
     private boolean shootSound = false;
+    private boolean hitMissSound = false;
 
     private int[] layers;
     private float rotateTime;
     private float shootTime;
+    private float destroyTime;
     // other vars
     private BitmapFont font;
 
@@ -74,6 +76,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].updateTexture();
+                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
+                SecondBoardShipsSprites[i].drawTurrets(sb, true);
             }
             break;
         case 3:
@@ -81,22 +86,63 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].updateTexture();
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
+                SecondBoardShipsSprites[i].updateTexture();
+                SecondBoardShipsSprites[i].drawSprite(sb, true);
+                SecondBoardShipsSprites[i].drawTurrets(sb, true);
             }
             break;
+        }
+    }
+
+    private void drawHit(float deltaTime) {
+        if (shootTime <= 1f) {
+            hitEffect.updateAnimation();
+            hitEffect.drawEffect(sb);
+        } else {
+            hitted = false;
+        }
+        hitMissSound = false;
+    }
+
+    private void drawMiss(float deltaTime) {
+        if (shootTime <= 1f) {
+            missEffect.updateAnimation();
+            missEffect.drawEffect(sb);
+        } else {
+            missed = false;
+        }
+        hitMissSound = false;
+    }
+
+    private void drawDestroyment(float deltaTime) {
+        destroyTime += deltaTime;
+        if (destroyTime <= 1f) {
+            destroymentEffect.updateAnimation(true);
+            destroymentEffect.drawEffect(sb, true);
+        } else {
+            destroyed = false;
+            destroymentSound = false;
+            destroyTime = 0f;
         }
     }
 
     private void drawShootingEffect(float deltaTime) {
         shootTime += deltaTime;
         if (shootTime <= 1f) {
-            for (int i = 0; i < sum; i++) {
-                shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
-                shootEffect[i].drawAnimation(sb);
+            if (PlayerTurn == 1) {
+                for (int i = 0; i < sum; i++) {
+                    if (FirstBoardShipsSprites[i].shipDestroyed)
+                        continue;
+                    shootEffect[i].updateAnimation(FirstBoardShipsSprites[i]);
+                    shootEffect[i].drawAnimation(sb);
+                }
             }
         } else {
+            if (missed)
+                switchTurn();
             rotateEnabled = true;
-            shootOrder = false;
             shootTime = 0f;
+            shootOrder = false;
         }
     }
 
@@ -110,7 +156,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // Create methods
-
     private void createMap() {
         map = (TiledMap) manager.get("core/assets/map/mp1.tmx");
         camera = new OrthographicCamera();
@@ -118,9 +163,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
         camera.setToOrtho(false, gameWidth_f, gameHeight_f);
 
         // Map layers
-        layers = new int[2];
+        layers = new int[4];
         layers[0] = 0;
         layers[1] = 1;
+        layers[2] = 2;
+        layers[3] = 3;
     }
 
     private void createFonts() {
@@ -166,27 +213,24 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     private void playShootSound() {
-        if (shootTime >= 0f && shootTime < 0.02) {
-            ShootSounds[0].play(0.5f);
-            ShootSounds[1].play(0.5f);
-            ShootSounds[2].play(0.5f);
-        } else if (shootTime >= 0.02 && shootTime < 0.03) {
-            ShootSounds[3].play(0.6f);
-            ShootSounds[4].play(0.6f);
-            ShootSounds[5].play(0.6f);
-            ShootSounds[6].play(0.7f);
-            ShootSounds[7].play(0.7f);
-        } else if (shootTime >= 0.03 && shootTime < 0.04) {
-            ShootSounds[0].play(0.8f);
-            ShootSounds[1].play(0.8f);
-            ShootSounds[2].play(0.8f);
-
-            ShootSounds[8].play(0.8f);
-            ShootSounds[9].play(0.8f);
-            ShootSounds[10].play(0.9f);
-            ShootSounds[11].play(0.9f);
-        } else if (shootTime >= 1.0f)
-            shootSound = false;
+        if (shootTime <= 1f) {
+            if (PlayerTurn == 1) {
+                int j = 0;
+                for (int i = 0; i < sum; i++)
+                    if (!FirstBoardShipsSprites[i].shipDestroyed)
+                        j++;
+                for (int i = 0; i < j; i++)
+                    ShootSounds[i].play(0.3f);
+            } else {
+                int j = 0;
+                for (int i = 0; i < sum; i++)
+                    if (!SecondBoardShipsSprites[i].shipDestroyed)
+                        j++;
+                for (int i = 0; i < j; i++)
+                    ShootSounds[i].play(0.3f);
+            }
+        }
+        shootSound = false;
     }
 
     // Input and update methods
@@ -215,11 +259,26 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
         handleInput(deltaTime);
 
-        switch (gameStage) {
-        case 2:
-            break;
-        case 3:
-            break;
+        if (gameStage == 3) {
+            // Update AI info
+            if (shootOrder)
+                return;
+            else {
+                if (PlayerTurn == 2) {
+                    Gdx.graphics.setCursor(crosshairs[2]);
+                    if (enemyComputerPlayerAi != null) {
+                        shootingEnabled = true;
+                        shootOrder = enemyComputerPlayerAi.attackEnemy(deltaTime);
+                        if (shootOrder) {
+                            shoot((int) enemyComputerPlayerAi.getX(), (int) enemyComputerPlayerAi.getY());
+                            shootSound = true;
+                            hitMissSound = true;
+                            enemyComputerPlayerAi.update(missed, hitted, destroyed, SecondPlayerShotsDone);
+                            shootingEnabled = false;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -240,7 +299,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 inputMultiplexer.addProcessor(hud.getStage());
                 Gdx.input.setInputProcessor(inputMultiplexer);
                 // tmp
-
             }
             if (hud.isPasued())
                 Gdx.input.setInputProcessor(hud.getStage());
@@ -258,7 +316,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
             sr.setAutoShapeType(true);
             sr.begin();
             // Do not place any drawings up!!
-
+            // font.draw(sb, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, GAME_HEIGHT_F
+            // );
             // Ships // Turrets
             drawShipsEnTurrets();
 
@@ -268,13 +327,33 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 drawStage2Text(font, sb);
                 break;
             case 3:
-
                 if (shootOrder) {
+                    shootingEnabled = false;
                     rotateEnabled = false;
                     if (shootSound) {
                         playShootSound();
                     }
                     drawShootingEffect(deltaTime);
+                    Gdx.graphics.setCursor(crosshairs[0]);
+                    if (hitted == true && destroyed == false) {
+                        if (hitMissSound)
+                            hitEffect.playSound();
+                        drawHit(deltaTime);
+                    }
+                    if (missed) {
+                        if (hitMissSound)
+                            missEffect.playSound();
+                        drawMiss(deltaTime);
+                    }
+
+                }
+                if (destroyed) {
+                    missed = false;
+                    hitMissSound = false;
+                    shootSound = false;
+                    if (destroymentSound)
+                        destroymentSound = destroymentEffect.playSound(true);
+                    drawDestroyment(deltaTime);
                 }
                 break;
             }
@@ -332,6 +411,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     rotateActualShip();
             if (Gdx.input.isKeyPressed(Keys.E))
                 readyButtonCheck();
+            if (Gdx.input.isKeyPressed(Keys.Q))
+                generateAndPlaceShipsOnBoard(1, true);
         }
         return false;
     }
@@ -350,11 +431,16 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (gameStage == 2)
-            touchDownSprite(screenX, screenY);
-        if (gameStage == 3) {
-            shootOrder = shoot();
-            shootSound = true;
+        if (button == Buttons.LEFT) {
+            if (gameStage == 2)
+                touchDownSprite(screenX, screenY);
+            if (gameStage == 3) {
+                if (PlayerTurn == 1) {
+                    shootOrder = shoot(screenX, screenY);
+                    shootSound = true;
+                    hitMissSound = true;
+                }
+            }
         }
         return false;
     }
@@ -375,11 +461,17 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (gameStage == 3)
-            if (rotateEnabled) {
-                rotateSound.resume();
-                rotateTurretsWithMouse(screenX, screenY);
+        if (gameStage == 3) {
+            if (PlayerTurn == 1) {
+                if (!shootOrder)
+                    checkEnemyBoard(screenX, screenY);
+                if (rotateEnabled) {
+                    rotateSound.resume();
+                    rotateTurretsWithMouse(screenX, screenY);
+                }
             }
+
+        }
         return false;
     }
 
