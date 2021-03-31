@@ -208,7 +208,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // Sound effects methods
     private void startRotateSound() {
-        rotateSound.loop(0.5f);
+        rotateSound.loop(hud.gameSettings.soundVolume);
         rotateSound.pause();
     }
 
@@ -220,14 +220,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     if (!FirstBoardShipsSprites[i].shipDestroyed)
                         j++;
                 for (int i = 0; i < j; i++)
-                    ShootSounds[i].play(0.3f);
+                    ShootSounds[i].play(hud.gameSettings.soundVolume);
             } else {
                 int j = 0;
                 for (int i = 0; i < sum; i++)
                     if (!SecondBoardShipsSprites[i].shipDestroyed)
                         j++;
                 for (int i = 0; i < j; i++)
-                    ShootSounds[i].play(0.3f);
+                    ShootSounds[i].play(hud.gameSettings.soundVolume);
             }
         }
         shootSound = false;
@@ -337,12 +337,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     Gdx.graphics.setCursor(crosshairs[0]);
                     if (hitted == true && destroyed == false) {
                         if (hitMissSound)
-                            hitEffect.playSound();
+                            hitEffect.playSound(hud.gameSettings.soundVolume);
                         drawHit(deltaTime);
                     }
                     if (missed) {
                         if (hitMissSound)
-                            missEffect.playSound();
+                            missEffect.playSound(hud.gameSettings.soundVolume);
                         drawMiss(deltaTime);
                     }
 
@@ -352,7 +352,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     hitMissSound = false;
                     shootSound = false;
                     if (destroymentSound)
-                        destroymentSound = destroymentEffect.playSound(true);
+                        destroymentSound = destroymentEffect.playSound(true, hud.gameSettings.soundVolume);
                     drawDestroyment(deltaTime);
                 }
                 break;

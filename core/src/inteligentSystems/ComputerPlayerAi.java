@@ -13,7 +13,7 @@ public class ComputerPlayerAi {
     private Vector2[] LastHitPositions;
     private Vector2 TargetPos;
     private int[] direction;
-    private float attackTime = 3f;
+    private float attackTime = 1f;
     private float actualTime;
     private int index, dirIndex;
     private int[][] SecondPlayerShotsDone;
@@ -50,12 +50,12 @@ public class ComputerPlayerAi {
             return false;
         } else {
             actualTime = 0f;
-            if (missed)
-                Missed();
-            else if (hittedNdestroyed)
+            if (hittedNdestroyed)
                 HittedNdestroyed();
             else if (hitted)
                 HittedAndNotDestroyed();
+            else if (missed)
+                Missed();
             return true;
         }
     }
@@ -84,36 +84,41 @@ public class ComputerPlayerAi {
 
     private void HittedAndNotDestroyed() {
         hittedOnce = true;
-        LastHitPositions[index] = TargetPos;
+        float x = TargetPos.x;
+        float y = TargetPos.y;
+        Vector2 NewPos = new Vector2(x, y);
+        LastHitPositions[index] = new Vector2(x, y);
         index++;
-        if (index == 0) {
+        if (index == 1) {
             if (dirIndex == 0) {
                 direction[dirIndex] = findNextSpot(1);
                 if (direction[dirIndex] == 0) {
-                    TargetPos.y++;
+                    NewPos.y++;
                 } else if (direction[dirIndex] == 1) {
-                    TargetPos.x++;
+                    NewPos.x++;
                 } else if (direction[dirIndex] == 2) {
-                    TargetPos.y--;
+                    NewPos.y--;
                 } else {
-                    TargetPos.x--;
+                    NewPos.x--;
                 }
                 dirIndex++;
             } else {
                 direction[dirIndex] = findNextSpot(2);
                 if (direction[dirIndex] == 0) {
                     if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x)
-                        TargetPos.y++;
+                        NewPos.y++;
                     else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y)
-                        TargetPos.x++;
+                        NewPos.x++;
                 } else {
                     if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x)
-                        TargetPos.y--;
+                        NewPos.y--;
                     else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y)
-                        TargetPos.x--;
+                        NewPos.x--;
                 }
+                dirIndex++;
             }
         }
+        TargetPos = NewPos;
     }
 
     private int findNextSpot(int numberofHits) {
@@ -121,9 +126,14 @@ public class ComputerPlayerAi {
         Random ran = new Random();
         if (numberofHits == 1) {
             int dir = ran.nextInt(4);
-            Vector2 tmp = LastHitPositions[index - 1];
+            float x = LastHitPositions[index - 1].x;
+            float y = LastHitPositions[index - 1].y;
+            Vector2 tmp = new Vector2(x, y);
             while (tmp.x > 9 || tmp.x < 0 || tmp.y > 9 || tmp.y < 0
                     || SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] == 1) {
+                tmp.x = x;
+                tmp.y = y;
+                dir = ran.nextInt(4);
                 if (dir == 0)
                     tmp.y++;
                 else if (dir == 1)
@@ -132,14 +142,16 @@ public class ComputerPlayerAi {
                     tmp.y--;
                 } else
                     tmp.x--;
-                tmp = LastHitPositions[index - 1];
-                dir = ran.nextInt(4);
             }
             val = dir;
         } else {
             int dir = ran.nextInt(2);
-            Vector2 tmp = LastHitPositions[index - 2];
-            Vector2 tmp2 = LastHitPositions[index - 1];
+            float x = LastHitPositions[index - 1].x;
+            float y = LastHitPositions[index - 1].y;
+            float x2 = LastHitPositions[index - 2].x;
+            float y2 = LastHitPositions[index - 2].y;
+            Vector2 tmp = new Vector2(x, y);
+            Vector2 tmp2 = new Vector2(x2, y2);
             Vector2 tmp3 = new Vector2();
 
             if (tmp.x == tmp2.x) {
@@ -169,6 +181,7 @@ public class ComputerPlayerAi {
                         tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
                 }
             }
+            val = dir;
         }
         return val;
     }
