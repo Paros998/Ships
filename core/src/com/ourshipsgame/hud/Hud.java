@@ -18,7 +18,6 @@ public class Hud implements Constant {
     private GameObject uiBar;
     private GameImageButton gameMenuButton;
     private float buttonsWidth, buttonsHeight;
-    private Table layoutTable;
     private Stage stage;
     private Skin skin;
     public GameSettings gameSettings;
@@ -27,8 +26,6 @@ public class Hud implements Constant {
     public Hud(AssetManager manager) {
         skin = new Skin();
         skin = manager.get("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
-        layoutTable = new Table();
-        layoutTable.setFillParent(true);
 
         stage = new Stage(new ScreenViewport());
 
@@ -41,20 +38,17 @@ public class Hud implements Constant {
 
         for (int i = 0; i < buttonStylesSprites.length; i++) {
             buttonStylesSprites[i] = new Sprite(buttonStyles[i]);
-            buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.25f, buttonStylesSprites[i].getHeight() / 1.25f);
+            buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.55f, buttonStylesSprites[i].getHeight() / 1.55f);
         }
 
         buttonsWidth = buttonStylesSprites[0].getWidth();
         buttonsHeight = buttonStylesSprites[0].getHeight();
 
-        gameMenuButton = new GameImageButton(this, buttonStylesSprites);
+        gameMenuButton = new GameImageButton(GAME_WIDTH - 10, GAME_HEIGHT - 3, this, buttonStylesSprites);
         gameMenuButton.setOptionsListener();
 
-        // Adding actors to Table
-        layoutTable.bottom();
-        layoutTable.add(gameMenuButton).expandX().padBottom(13);
-
-        stage.addActor(layoutTable);
+        
+        stage.addActor(gameMenuButton);
     }
 
     // Methods
