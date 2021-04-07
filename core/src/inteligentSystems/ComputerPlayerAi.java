@@ -12,7 +12,6 @@ public class ComputerPlayerAi {
     private boolean hittedNdestroyed;
     private boolean missed;
     private boolean hitted;
-    private boolean hittedOnce;
     private Vector2[] LastHitPositions;
     private Vector2 TargetPos;
     private int[] direction;
@@ -205,7 +204,6 @@ public class ComputerPlayerAi {
                 direction[i] = 0;
             index = 0;
             dirIndex = 0;
-            hittedOnce = false;
             Missed();
         } else
             HittedAndNotDestroyed(hitsLeft);
@@ -214,7 +212,6 @@ public class ComputerPlayerAi {
     private void HittedAndNotDestroyed(boolean foundAnotherhit) {
         Vector2 NewPos;
         if (!foundAnotherhit) {
-            hittedOnce = true;
             float x = TargetPos.x;
             float y = TargetPos.y;
             NewPos = new Vector2(x, y);

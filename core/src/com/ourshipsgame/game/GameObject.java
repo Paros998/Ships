@@ -522,14 +522,31 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
-    public void changeDestroyTexture(Texture textureD) {
+    public void changeDestroyTexture(Texture textureD, Texture[] turrets) {
         this.spriteWave = null;
-        if (this.size == 3)
+        if (this.size == 3) {
             this.sprite.setTexture(textureD);
-        else if (this.size == 2)
+            turretSprites[0].setTexture(turrets[4]);
+            turretSprites[1].setTexture(turrets[5]);
+            turretSprites[2].setTexture(turrets[4]);
+            turretSprites[3].setTexture(turrets[4]);
+            turretSprites[4].setTexture(turrets[6]);
+            turretSprites[5].setTexture(turrets[4]);
+            turretSprites[6].setTexture(turrets[6]);
+            turretSprites[7].setTexture(turrets[7]);
+            turretSprites[8].setTexture(turrets[6]);
+            turretSprites[9].setTexture(turrets[5]);
+        } else if (this.size == 2) {
             this.sprite.setTexture(textureD);
-        else
+            turretSprites[0].setTexture(turrets[5]);
+            turretSprites[1].setTexture(turrets[6]);
+            turretSprites[2].setTexture(turrets[5]);
+            turretSprites[3].setTexture(turrets[6]);
+        } else {
             this.sprite.setTexture(textureD);
+            turretSprites[0].setTexture(turrets[6]);
+            turretSprites[1].setTexture(turrets[6]);
+        }
     }
 
     // this method checks if the whole ship is destroyed

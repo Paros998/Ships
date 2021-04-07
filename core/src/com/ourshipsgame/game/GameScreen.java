@@ -66,6 +66,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         case 3:
             renderer.render(layers);
             break;
+        case 4:
+            renderer.render(layers);
+            break;
         }
     }
 
@@ -87,6 +90,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
                 SecondBoardShipsSprites[i].updateTexture();
+                SecondBoardShipsSprites[i].drawSprite(sb, true);
+                SecondBoardShipsSprites[i].drawTurrets(sb, true);
+            }
+            break;
+        case 4:
+            for (int i = 0; i < sum; i++) {
+                FirstBoardShipsSprites[i].drawSprite(sb);
+                FirstBoardShipsSprites[i].drawTurrets(sb);
                 SecondBoardShipsSprites[i].drawSprite(sb, true);
                 SecondBoardShipsSprites[i].drawTurrets(sb, true);
             }
@@ -146,6 +157,44 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    private void drawMarks(SpriteBatch batch) {
+        float xpos, ypos;
+        if (PlayerTurn == 1) {
+            if (!shootOrder && !destroyed)
+                for (int i = 0; i < 10; i++)
+                    for (int j = 0; j < 10; j++) {
+                        if (FirstPlayerShotsDone[i][j] == -1) {
+                            xpos = i * 64f + SecondBoardStart.x;
+                            ypos = j * 64f + SecondBoardStart.y;
+                            batch.draw(shootMarks[0], xpos, ypos);
+                        } else if (FirstPlayerShotsDone[i][j] == 1) {
+                            xpos = i * 64f + SecondBoardStart.x;
+                            ypos = j * 64f + SecondBoardStart.y;
+                            batch.draw(shootMarks[1], xpos, ypos);
+                        }
+                    }
+        } else
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++) {
+                    if (FirstPlayerShotsDone[i][j] == -1) {
+                        xpos = i * 64f + SecondBoardStart.x;
+                        ypos = j * 64f + SecondBoardStart.y;
+                        batch.draw(shootMarks[0], xpos, ypos);
+                    } else if (FirstPlayerShotsDone[i][j] == 1) {
+                        xpos = i * 64f + SecondBoardStart.x;
+                        ypos = j * 64f + SecondBoardStart.y;
+                        batch.draw(shootMarks[1], xpos, ypos);
+                    }
+                }
+    }
+
+    private void drawScores(SpriteBatch batch) {
+        PlayerOne.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, FirstBoardThreeShipsLeft, FirstBoardTwoShipsLeft,
+                FirstBoardOneShipsLeft, shipIcons);
+        PlayerTwo.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, SecondBoardThreeShipsLeft,
+                SecondBoardTwoShipsLeft, SecondBoardOneShipsLeft, shipIcons);
+    }
+
     private void drawLoadingScreen() {
         progress = manager.getProgress();
         sb.begin();
@@ -180,6 +229,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         parameter.borderColor = Color.WHITE;
         parameter.color = Color.RED;
         font = generator.generateFont(parameter);
+        parameter.size = 16;
+        parameter.borderWidth = 0;
+        hudFont = generator.generateFont(parameter);
         generator.dispose();
     }
 
@@ -193,6 +245,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             hud = new Hud(manager);
             createdTextures = true;
         }
+
         hud.gameSettings = game.menuElements.gameSettings;
         // Deleting GlobalMenuElements object
         game.menuElements = null;
@@ -252,6 +305,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private void update(float deltaTime) {
         runTime += deltaTime;
 
+        if (FirstBoardShipsDestroyed == sum) {
+            gameStage = 4;
+        } else if (SecondBoardShipsDestroyed == sum) {
+            gameStage = 4;
+        }
+
         rotateTime += deltaTime;
         if (rotateTime >= 0.3f) {
             rotateTime -= 0.32f;
@@ -260,6 +319,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
         handleInput(deltaTime);
         rotateSound.setVolume(sid, hud.gameSettings.soundVolume);
         if (gameStage == 3) {
+            // Update Scores
+            if (PlayerTurn == 1) {
+                PlayerOne.update(FirstPlayerShotsDone, deltaTime);
+            } else {
+                PlayerTwo.update(SecondPlayerShotsDone, deltaTime);
+            }
+
             // Update AI info
             if (shootOrder)
                 return;
@@ -331,6 +397,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 drawStage2Text(font, sb);
                 break;
             case 3:
+                drawScores(sb);
+                drawMarks(sb);
                 if (shootOrder) {
                     shootingEnabled = false;
                     rotateEnabled = false;

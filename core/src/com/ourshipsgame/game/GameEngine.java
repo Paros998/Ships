@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.handlers.Score;
 import com.ourshipsgame.objects.BoomEffect;
 import com.ourshipsgame.objects.ShootParticleEffect;
 
@@ -157,14 +158,24 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 }
                 hittedShip.checkDestroyment();
                 if (hittedShip.shipDestroyed) {
+
+                    FirstBoardShipsDestroyed++;
+                    if (hittedShip.size == 3)
+                        FirstBoardThreeShipsLeft--;
+                    else if (hittedShip.size == 2)
+                        FirstBoardTwoShipsLeft--;
+                    else
+                        FirstBoardOneShipsLeft--;
+                    destroymentSound = true;
                     destroyed = true;
+                    PlayerTwo.addPointsForDestroy(hittedShip.size);
                     destroymentEffect.setPos(hittedShip.getPosition(), hittedShip.rotation, hittedShip.size);
                     if (hittedShip.size == 3)
-                        hittedShip.changeDestroyTexture(BigShipTextures[2]);
+                        hittedShip.changeDestroyTexture(BigShipTextures[2], turretTextures);
                     else if (hittedShip.size == 2)
-                        hittedShip.changeDestroyTexture(MediumShipTextures[2]);
+                        hittedShip.changeDestroyTexture(MediumShipTextures[2], turretTextures);
                     else
-                        hittedShip.changeDestroyTexture(SmallShipTextures[2]);
+                        hittedShip.changeDestroyTexture(SmallShipTextures[2], turretTextures);
                 }
                 break;
             case 2:
@@ -238,15 +249,45 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 }
                 hittedShip.checkDestroyment();
                 if (hittedShip.shipDestroyed) {
+                    xPos = (int) ((int) (hittedShip.getX() - SecondBoardStart.x) / 64f);
+                    yPos = (int) ((int) (hittedShip.getY() - SecondBoardStart.y) / 64f);
+                    SecondBoardShipsDestroyed++;
+                    if (hittedShip.size == 3) {
+                        if (hittedShip.rotation % 2 == 0) {
+                            FirstPlayerShotsDone[xPos][yPos] = 2;
+                            FirstPlayerShotsDone[xPos][yPos + 1] = 2;
+                            FirstPlayerShotsDone[xPos][yPos + 2] = 2;
+                        } else {
+                            FirstPlayerShotsDone[xPos][yPos] = 2;
+                            FirstPlayerShotsDone[xPos + 1][yPos] = 2;
+                            FirstPlayerShotsDone[xPos + 2][yPos] = 2;
+                        }
+                        SecondBoardThreeShipsLeft--;
+
+                    } else if (hittedShip.size == 2) {
+                        if (hittedShip.rotation % 2 == 0) {
+                            FirstPlayerShotsDone[xPos][yPos] = 2;
+                            FirstPlayerShotsDone[xPos][yPos + 1] = 2;
+                        } else {
+                            FirstPlayerShotsDone[xPos][yPos] = 2;
+                            FirstPlayerShotsDone[xPos + 1][yPos] = 2;
+                        }
+                        SecondBoardTwoShipsLeft--;
+                    } else {
+                        FirstPlayerShotsDone[xPos][yPos] = 2;
+                        SecondBoardOneShipsLeft--;
+                    }
+
+                    PlayerOne.addPointsForDestroy(hittedShip.size);
                     destroyed = true;
                     destroymentSound = true;
                     destroymentEffect.setPos(hittedShip.getPosition(), hittedShip.rotation, hittedShip.size);
                     if (hittedShip.size == 3)
-                        hittedShip.changeDestroyTexture(BigShipTextures[2]);
+                        hittedShip.changeDestroyTexture(BigShipTextures[2], turretTextures);
                     else if (hittedShip.size == 2)
-                        hittedShip.changeDestroyTexture(MediumShipTextures[2]);
+                        hittedShip.changeDestroyTexture(MediumShipTextures[2], turretTextures);
                     else
-                        hittedShip.changeDestroyTexture(SmallShipTextures[2]);
+                        hittedShip.changeDestroyTexture(SmallShipTextures[2], turretTextures);
                 }
                 break;
             }
@@ -254,6 +295,16 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     // Important vars
+    protected Score PlayerOne = new Score(1);
+    protected Score PlayerTwo = new Score(2);
+    protected int FirstBoardShipsDestroyed;
+    protected int SecondBoardShipsDestroyed;
+    protected int FirstBoardThreeShipsLeft;
+    protected int SecondBoardThreeShipsLeft;
+    protected int FirstBoardTwoShipsLeft;
+    protected int SecondBoardTwoShipsLeft;
+    protected int FirstBoardOneShipsLeft;
+    protected int SecondBoardOneShipsLeft;
     protected ComputerPlayerAi enemyComputerPlayerAi;
     protected int PlayerTurn;
     protected Board firstBoard;
@@ -261,8 +312,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
     protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
-            "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png" };
-    protected Texture turretTextures[] = new Texture[4];
+            "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png",
+            "core/assets/turrets/ship_gun_red_destroyed.png", "core/assets/turrets/ship_big_gun_destroyed.png",
+            "core/assets/turrets/ship_big_gun_dual_destroyed.png", "core/assets/turrets/ship_gun_huge_destroyed.png" };
+    protected Texture turretTextures[] = new Texture[8];
+    protected Texture[] shootMarks = new Texture[2];
     protected Texture BigShipTextures[] = new Texture[3];
     protected Texture MediumShipTextures[] = new Texture[3];
     protected Texture SmallShipTextures[] = new Texture[3];
@@ -275,6 +329,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected Texture hitTexture;
     protected Texture missTexture;
     protected Texture destroymentTexture;
+    protected Texture[] shipIcons = new Texture[3];
     // Particles[0] - shooting texture
     protected Texture Particles[] = new Texture[1];
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
@@ -285,6 +340,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected int gameWidth = GAME_WIDTH;
     protected float gameHeight_f = GAME_HEIGHT_F;
     protected float gameWidth_f = GAME_WIDTH_F;
+    protected BitmapFont hudFont;
     // Sounds and music
     protected Sound rotateSound;
     protected Sound[] ShootSounds = new Sound[12];
@@ -326,10 +382,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     // loading method
     protected void loadGameEngine(AssetManager manager) {
         // turrets and ships textures
-        manager.load(internalPaths[0], Texture.class);
-        manager.load(internalPaths[1], Texture.class);
-        manager.load(internalPaths[2], Texture.class);
-        manager.load(internalPaths[3], Texture.class);
+        for (int i = 0; i < 8; i++)
+            manager.load(internalPaths[i], Texture.class);
+
         manager.load("core/assets/oneship/three/threeshipModel.png", Texture.class);
         manager.load("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
         manager.load("core/assets/oneship/three/threeshipModelDestroyed.png", Texture.class);
@@ -367,6 +422,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/cursors/crosshairRed.png", Pixmap.class);
         manager.load("core/assets/cursors/crosshairGreen.png", Pixmap.class);
         manager.load("core/assets/ui/ui.hud/cursors/test.png", Pixmap.class);
+        // Icons
+        manager.load("core/assets/oneship/three/threeshipModelIcon.png", Texture.class);
+        manager.load("core/assets/oneship/two/twoshipModelIcon.png", Texture.class);
+        manager.load("core/assets/oneship/one/oneshipModelIcon.png", Texture.class);
+        // Marks
+        manager.load("core/assets/backgroundtextures/blackcross.png", Texture.class);
+        manager.load("core/assets/backgroundtextures/redcross.png", Texture.class);
     }
 
     protected void loadHudAssets(AssetManager manager) {
@@ -381,7 +443,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected boolean preparation(boolean computerEnemy, AssetManager manager) {
         boolean done = false;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 8; i++)
             turretTextures[i] = manager.get(internalPaths[i], Texture.class);
         BigShipTextures[0] = manager.get("core/assets/oneship/three/threeshipModel.png", Texture.class);
         BigShipTextures[1] = manager.get("core/assets/oneship/three/threeshipModelwaves.png", Texture.class);
@@ -415,7 +477,14 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         WaterExplosionSounds = manager.get("core/assets/sounds/miss/WaterSurfaceExplosion08.wav", Sound.class);
         MetalExplosionSounds = manager.get("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
         DestroymentExplosionSounds = manager.get("core/assets/sounds/explosion/Chunky Explosion.mp3", Sound.class);
+        shipIcons[0] = manager.get("core/assets/oneship/three/threeshipModelIcon.png", Texture.class);
+        shipIcons[1] = manager.get("core/assets/oneship/two/twoshipModelIcon.png", Texture.class);
+        shipIcons[2] = manager.get("core/assets/oneship/one/oneshipModelIcon.png", Texture.class);
+        shootMarks[0] = manager.get("core/assets/backgroundtextures/blackcross.png", Texture.class);
+        shootMarks[1] = manager.get("core/assets/backgroundtextures/redcross.png", Texture.class);
 
+        PlayerOne.setPlayerName("TemplateName");
+        PlayerTwo.setPlayerName("Computer");
         PlayerTurn = 1;
         hitEffect = new BoomEffect(MetalExplosionSounds, hitTexture);
         missEffect = new BoomEffect(WaterExplosionSounds, missTexture);
@@ -454,6 +523,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 SecondBoardShipsSprites[i] = new GameObject(BigShipTextures[0], BigShipTextures[1], turretTextures,
                         SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 191, true, 3,
                         new Vector2(5, 1));
+                FirstBoardThreeShipsLeft++;
+                SecondBoardThreeShipsLeft++;
             } else if (i > 2 && i <= 6) {
                 FirstBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 127, true, 2, new Vector2(5, 1));
@@ -464,6 +535,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 SecondBoardShipsSprites[i] = new GameObject(MediumShipTextures[0], MediumShipTextures[1],
                         turretTextures, SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 127, true, 2,
                         new Vector2(5, 1));
+                FirstBoardTwoShipsLeft++;
+                SecondBoardTwoShipsLeft++;
             } else {
                 FirstBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
                         FirstBoardStart.x + (i * BOX_WIDTH_F) + 1, FirstBoardStart.y - 63, true, 1, new Vector2(5, 1));
@@ -474,6 +547,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 SecondBoardShipsSprites[i] = new GameObject(SmallShipTextures[0], SmallShipTextures[1], turretTextures,
                         SecondBoardStart.x + (i * BOX_WIDTH_F) + 1, SecondBoardStart.y - 63, true, 1,
                         new Vector2(5, 1));
+                FirstBoardOneShipsLeft++;
+                SecondBoardOneShipsLeft++;
             }
         }
 
@@ -813,6 +888,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         case 1:
             if (secondBoard.ShipsPlaced[xPos][yPos] == 1) {
                 FirstPlayerShotsDone[xPos][yPos] = 1;
+                PlayerOne.increaseCombo();
+                PlayerOne.addPointsForHit();
                 hitted = true;
                 missed = false;
                 xPos *= BOX_WIDTH_F;
@@ -822,6 +899,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 hitPos.set(xPos, yPos);
                 hitEffect.setPos(hitPos);
             } else {
+                PlayerOne.zeroCombo();
                 missed = true;
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
@@ -839,6 +917,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         case 2:
             if (firstBoard.ShipsPlaced[xPos][yPos] == 1) {
                 SecondPlayerShotsDone[xPos][yPos] = 1;
+                PlayerTwo.increaseCombo();
+                PlayerTwo.addPointsForHit();
                 hitted = true;
                 missed = false;
                 xPos *= BOX_WIDTH_F;
@@ -848,6 +928,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 hitPos.set(xPos, yPos);
                 hitEffect.setPos(hitPos);
             } else {
+                PlayerTwo.zeroCombo();
                 missed = true;
                 hitted = false;
                 xPos *= BOX_WIDTH_F;
@@ -879,7 +960,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
                 shootingEnabled = false;
 
-                FirstPlayerShotsDone[xPos][yPos] = 1;
+                FirstPlayerShotsDone[xPos][yPos] = -1;
                 Gdx.graphics.setCursor(crosshairs[0]);
                 checkHit(xPos, yPos);
                 break;
@@ -905,7 +986,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
             if (xPos == 10 || yPos == 10)
                 return;
-            if (FirstPlayerShotsDone[xPos][yPos] == 1) {
+            if (FirstPlayerShotsDone[xPos][yPos] != 0) {
                 shootingEnabled = false;
                 rotateEnabled = true;
                 Gdx.graphics.setCursor(crosshairs[0]);

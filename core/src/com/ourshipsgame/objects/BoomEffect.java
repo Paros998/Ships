@@ -19,7 +19,7 @@ public class BoomEffect {
 
     public BoomEffect(Sound sound, Texture texture) {
         this.sound = sound;
-        this.animator = new Animator(texture, new Vector2(4, 4), 1 / 16f);
+        this.animator = new Animator(texture, new Vector2(4, 4), 1.0f / 16f);
         this.texture = texture;
         this.sprite = new Sprite(this.texture);
         this.sprite.setSize(64, 64);
@@ -29,7 +29,7 @@ public class BoomEffect {
 
     public BoomEffect(Sound sound, Texture texture, boolean multiple) {
         this.sound = sound;
-        this.animator = new Animator(texture, new Vector2(4, 4), 1 / 16f);
+        this.animator = new Animator(texture, new Vector2(4, 4), 1.0f / 16f);
         this.texture = texture;
         this.sprites = new Sprite[1];
         this.sprites[0] = new Sprite(this.texture);
