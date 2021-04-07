@@ -12,9 +12,12 @@ public class GameImageButton extends ImageButton {
     private OptionsWindow optionsWindow;
 
     // Game Menu constructor
-    public GameImageButton(Hud hud, Sprite[] buttonStyles) {
+    public GameImageButton(float x, float y, Hud hud, Sprite[] buttonStyles) {
         super(new SpriteDrawable(buttonStyles[0]), 
             new SpriteDrawable(buttonStyles[1]));
+        
+        this.setX(x - this.getWidth());
+        this.setY(y - this.getHeight());
 
         this.hud = hud;
         optionsWindow = new OptionsWindow("Game Menu", hud);
