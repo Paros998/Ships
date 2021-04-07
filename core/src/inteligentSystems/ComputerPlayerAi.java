@@ -3,6 +3,9 @@ package inteligentSystems;
 import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
+import com.ourshipsgame.game.GameObject;
+
+import org.lwjgl.util.vector.Vector2f;
 
 public class ComputerPlayerAi {
     private Random random;
@@ -26,11 +29,48 @@ public class ComputerPlayerAi {
         return TargetPos.y;
     }
 
-    public void update(boolean missed, boolean hitted, boolean destroyed, int[][] ShotsDone) {
+    public void update(boolean missed, boolean hitted, boolean destroyed, int[][] ShotsDone, GameObject[] ships,
+            Vector2f firstboard, int shipsAmmount) {
         this.missed = missed;
         this.hitted = hitted;
         this.hittedNdestroyed = destroyed;
         this.SecondPlayerShotsDone = ShotsDone;
+        int i = 0;
+        while (i < shipsAmmount) {
+            if (ships[i].isDestroyed()) {
+                int size, rotation, xpos, ypos;
+
+                rotation = ships[i].getRotation();
+                size = ships[i].getShipSize();
+                xpos = (int) ((ships[i].x - firstboard.x) / 64.0f);
+                ypos = (int) ((ships[i].y - firstboard.y) / 64.0f);
+
+                if (rotation % 2 == 0) {
+                    if (size == 3) {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                        SecondPlayerShotsDone[xpos][ypos + 1] = 2;
+                        SecondPlayerShotsDone[xpos][ypos + 2] = 2;
+                    } else if (size == 2) {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                        SecondPlayerShotsDone[xpos][ypos + 1] = 2;
+                    } else {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                    }
+                } else {
+                    if (size == 3) {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                        SecondPlayerShotsDone[xpos + 1][ypos] = 2;
+                        SecondPlayerShotsDone[xpos + 2][ypos] = 2;
+                    } else if (size == 2) {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                        SecondPlayerShotsDone[xpos + 1][ypos] = 2;
+                    } else {
+                        SecondPlayerShotsDone[xpos][ypos] = 2;
+                    }
+                }
+            }
+            i++;
+        }
     }
 
     public ComputerPlayerAi(int[][] ShotsDone) {
@@ -53,7 +93,7 @@ public class ComputerPlayerAi {
             if (hittedNdestroyed)
                 HittedNdestroyed();
             else if (hitted)
-                HittedAndNotDestroyed();
+                HittedAndNotDestroyed(false);
             else if (missed)
                 Missed();
             return true;
@@ -61,34 +101,132 @@ public class ComputerPlayerAi {
     }
 
     private void Missed() {
-        int x, y;
-        x = random.nextInt(10);
-        y = random.nextInt(10);
-        while (SecondPlayerShotsDone[x][y] == 1) {
+        boolean hitsLeft = false;
+        for (int j = 0; j < 10; j++)
+            for (int k = 0; k < 10; k++)
+                if (SecondPlayerShotsDone[j][k] == 1) {
+                    hitsLeft = true;
+                    for (int i = 0; i <= index; i++)
+                        LastHitPositions[i] = null;
+                    LastHitPositions[0] = new Vector2();
+                    for (int i = 0; i < 4; i++)
+                        direction[i] = 0;
+                    index = 0;
+                    dirIndex = 0;
+                    LastHitPositions[index] = new Vector2(j, k);
+                    if (j > 0 && j < 9) {
+                        if (SecondPlayerShotsDone[j + 1][k] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j + 1, k);
+                            direction[dirIndex] = 1;
+                            dirIndex++;
+                        } else if (SecondPlayerShotsDone[j - 1][k] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j - 1, k);
+                            direction[dirIndex] = 3;
+                            dirIndex++;
+                        }
+                    }
+                    if (k > 0 && k < 9) {
+                        if (SecondPlayerShotsDone[j][k + 1] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j, k + 1);
+                            direction[dirIndex] = 0;
+                            dirIndex++;
+                        } else if (SecondPlayerShotsDone[j][k - 1] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j, k - 1);
+                            direction[dirIndex] = 2;
+                            dirIndex++;
+                        }
+                    }
+
+                }
+        if (!hitsLeft) {
+            int x, y;
             x = random.nextInt(10);
             y = random.nextInt(10);
-        }
-        TargetPos.set(x, y);
+            while (SecondPlayerShotsDone[x][y] != 0) {
+                x = random.nextInt(10);
+                y = random.nextInt(10);
+            }
+            TargetPos.set(x, y);
+        } else
+            HittedAndNotDestroyed(hitsLeft);
     }
 
     private void HittedNdestroyed() {
-        for (int i = 0; i <= index; i++)
-            LastHitPositions[i] = new Vector2();
-        for (int i = 0; i < 4; i++)
-            direction[i] = 0;
-        index = 0;
-        dirIndex = 0;
-        hittedOnce = false;
-        Missed();
+        boolean hitsLeft = false;
+        for (int j = 0; j < 10; j++)
+            for (int k = 0; k < 10; k++)
+                if (SecondPlayerShotsDone[j][k] == 1) {
+                    hitsLeft = true;
+                    for (int i = 0; i <= index; i++)
+                        LastHitPositions[i] = null;
+                    LastHitPositions[0] = new Vector2();
+                    for (int i = 0; i < 4; i++)
+                        direction[i] = 0;
+                    index = 0;
+                    dirIndex = 0;
+                    LastHitPositions[index] = new Vector2(j, k);
+                    if (j > 0 && j < 9) {
+                        if (SecondPlayerShotsDone[j + 1][k] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j + 1, k);
+                            direction[dirIndex] = 1;
+                            dirIndex++;
+                        } else if (SecondPlayerShotsDone[j - 1][k] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j - 1, k);
+                            direction[dirIndex] = 3;
+                            dirIndex++;
+                        }
+                    }
+                    if (k > 0 && k < 9) {
+                        if (SecondPlayerShotsDone[j][k + 1] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j, k + 1);
+                            direction[dirIndex] = 0;
+                            dirIndex++;
+                        } else if (SecondPlayerShotsDone[j][k - 1] == 1) {
+                            index++;
+                            LastHitPositions[index] = new Vector2(j, k - 1);
+                            direction[dirIndex] = 2;
+                            dirIndex++;
+                        }
+                    }
+
+                }
+        if (!hitsLeft) {
+            for (int i = 0; i <= index; i++)
+                LastHitPositions[i] = null;
+            LastHitPositions[0] = new Vector2();
+            for (int i = 0; i < 4; i++)
+                direction[i] = 0;
+            index = 0;
+            dirIndex = 0;
+            hittedOnce = false;
+            Missed();
+        } else
+            HittedAndNotDestroyed(hitsLeft);
     }
 
-    private void HittedAndNotDestroyed() {
-        hittedOnce = true;
-        float x = TargetPos.x;
-        float y = TargetPos.y;
-        Vector2 NewPos = new Vector2(x, y);
-        LastHitPositions[index] = new Vector2(x, y);
-        index++;
+    private void HittedAndNotDestroyed(boolean foundAnotherhit) {
+        Vector2 NewPos;
+        if (!foundAnotherhit) {
+            hittedOnce = true;
+            float x = TargetPos.x;
+            float y = TargetPos.y;
+            NewPos = new Vector2(x, y);
+            LastHitPositions[index] = new Vector2(x, y);
+            index++;
+        } else {
+            float x = LastHitPositions[index].x;
+            float y = LastHitPositions[index].y;
+            NewPos = new Vector2(x, y);
+            index++;
+        }
+
         if (index == 1) {
             if (dirIndex == 0) {
                 direction[dirIndex] = findNextSpot(1);
@@ -130,7 +268,7 @@ public class ComputerPlayerAi {
             float y = LastHitPositions[index - 1].y;
             Vector2 tmp = new Vector2(x, y);
             while (tmp.x > 9 || tmp.x < 0 || tmp.y > 9 || tmp.y < 0
-                    || SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] == 1) {
+                    || SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] != 0) {
                 tmp.x = x;
                 tmp.y = y;
                 dir = ran.nextInt(4);
@@ -160,7 +298,7 @@ public class ComputerPlayerAi {
                     tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
                 else
                     tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
-                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] == 1) {
+                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
@@ -173,7 +311,7 @@ public class ComputerPlayerAi {
                     tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
                 else
                     tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
-                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] == 1) {
+                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;

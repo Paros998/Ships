@@ -273,7 +273,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
                             shoot((int) enemyComputerPlayerAi.getX(), (int) enemyComputerPlayerAi.getY());
                             shootSound = true;
                             hitMissSound = true;
-                            enemyComputerPlayerAi.update(missed, hitted, destroyed, SecondPlayerShotsDone);
+                            enemyComputerPlayerAi.update(missed, hitted, destroyed, SecondPlayerShotsDone,
+                                    FirstBoardShipsSprites, FirstBoardStart, sum);
+                            float x, y;
+                            x = (enemyComputerPlayerAi.getX() * 64.0f) + FirstBoardStart.x;
+                            y = (enemyComputerPlayerAi.getY() * 64.0f) + FirstBoardStart.y;
+                            rotateTurretsWithMouse(x, y);
                             shootingEnabled = false;
                         }
                     }
@@ -316,8 +321,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             sr.setAutoShapeType(true);
             sr.begin();
             // Do not place any drawings up!!
-            // font.draw(sb, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, GAME_HEIGHT_F
-            // );
+
             // Ships // Turrets
             drawShipsEnTurrets();
 

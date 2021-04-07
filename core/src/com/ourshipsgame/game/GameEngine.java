@@ -812,6 +812,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         switch (PlayerTurn) {
         case 1:
             if (secondBoard.ShipsPlaced[xPos][yPos] == 1) {
+                FirstPlayerShotsDone[xPos][yPos] = 1;
                 hitted = true;
                 missed = false;
                 xPos *= BOX_WIDTH_F;
@@ -837,6 +838,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             break;
         case 2:
             if (firstBoard.ShipsPlaced[xPos][yPos] == 1) {
+                SecondPlayerShotsDone[xPos][yPos] = 1;
                 hitted = true;
                 missed = false;
                 xPos *= BOX_WIDTH_F;
@@ -884,7 +886,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             case 2:
                 xPos = screenX;
                 yPos = screenY;
-                SecondPlayerShotsDone[xPos][yPos] = 1;
+                SecondPlayerShotsDone[xPos][yPos] = -1;
                 shootingEnabled = false;
                 checkHit(xPos, yPos);
                 break;

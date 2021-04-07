@@ -820,4 +820,5 @@ public class GameObject extends Rectangle implements Constant {
     public Vector2f getPosition() {
         return new Vector2f(x, y);
     }
+
 }
