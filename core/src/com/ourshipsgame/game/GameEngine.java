@@ -5,12 +5,17 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -346,6 +351,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float gameHeight_f = GAME_HEIGHT_F;
     protected float gameWidth_f = GAME_WIDTH_F;
     protected BitmapFont hudFont;
+    protected BitmapFont turnFont;
+    protected BitmapFont turnFontActive;
     // Sounds and music
     protected Sound[] endSounds = new Sound[2];
     protected Sound rotateSound;
@@ -455,6 +462,24 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         // Repeat button
         manager.load("core/assets/ui/reverse-button-pressed.png", Texture.class);
         manager.load("core/assets/ui/reverse-button.png", Texture.class);
+        // TTF Font
+        manager.setLoader(FreeTypeFontGenerator.class,
+                new FreeTypeFontGeneratorLoader(new InternalFileHandleResolver()));
+        manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(new InternalFileHandleResolver()));
+        FreetypeFontLoader.FreeTypeFontLoaderParameter param = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        param.fontFileName = "core/assets/fonts/nunito.light.ttf";
+        param.fontParameters.size = 28;
+        param.fontParameters.color = Color.GRAY;
+        param.fontParameters.borderColor = Color.DARK_GRAY;
+        param.fontParameters.borderWidth = 2;
+        manager.load("core/assets/fonts/nunito.light.ttf", BitmapFont.class, param);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter param2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        param2.fontFileName = "core/assets/fonts/nunito.light2.ttf";
+        param2.fontParameters.size = 28;
+        param2.fontParameters.color = Color.GOLD;
+        param2.fontParameters.borderColor = Color.DARK_GRAY;
+        param2.fontParameters.borderWidth = 2;
+        manager.load("core/assets/fonts/nunito.light2.ttf", BitmapFont.class, param2);
     }
 
     // game methods below
@@ -503,7 +528,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         shootMarks[1] = manager.get("core/assets/backgroundtextures/redcross.png", Texture.class);
         endSounds[0] = manager.get("core/assets/sounds/won.mp3", Sound.class);
         endSounds[1] = manager.get("core/assets/sounds/lose.mp3", Sound.class);
-
+        turnFont = manager.get("core/assets/fonts/nunito.light.ttf", BitmapFont.class);
+        turnFontActive = manager.get("core/assets/fonts/nunito.light2.ttf", BitmapFont.class);
         PlayerOne.setPlayerName("TemplateName");
         PlayerTwo.setPlayerName("Computer");
         PlayerTurn = 1;

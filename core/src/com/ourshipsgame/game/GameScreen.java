@@ -265,10 +265,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 SecondBoardTwoShipsLeft, SecondBoardOneShipsLeft, shipIcons);
         switch (PlayerTurn) {
         case 1:
-            font.draw(batch, "Your Turn!", gameWidth_f / 2 - 60, gameHeight_f - 140);
+            turnFontActive.draw(batch, "Your Turn!", gameWidth_f / 2 - 250, gameHeight_f - 140);
+            turnFont.draw(batch, "Enemy Turn!", gameWidth_f / 2 + 90, gameHeight_f - 140);
             break;
         case 2:
-            font.draw(batch, "Enemy Turn!", gameWidth_f / 2 - 70, gameHeight_f - 140);
+            turnFont.draw(batch, "Your Turn!", gameWidth_f / 2 - 250, gameHeight_f - 140);
+            turnFontActive.draw(batch, "Enemy Turn!", gameWidth_f / 2 + 90, gameHeight_f - 140);
             break;
         }
     }
