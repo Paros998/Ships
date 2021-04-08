@@ -33,7 +33,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
-    private float runTime;
     private float progress;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -275,7 +274,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 readyButtonCheck();
-                if(gameStage == 3)
+                if (gameStage == 3)
                     hud.getStage().getActors().pop();
             }
 
@@ -351,8 +350,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // update logics of game
     private void update(float deltaTime) {
-        runTime += deltaTime;
-
         if (FirstBoardShipsDestroyed == sum) {
             gameStage = 4;
             PlayerOneLost = true;
@@ -532,10 +529,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (Gdx.input.isKeyPressed(Keys.R))
                 if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
                     rotateActualShip();
-            /*if (Gdx.input.isKeyPressed(Keys.E))
-                readyButtonCheck();
-            if (Gdx.input.isKeyPressed(Keys.Q))
-                generateAndPlaceShipsOnBoard(1, true);*/
+            /*
+             * if (Gdx.input.isKeyPressed(Keys.E)) readyButtonCheck(); if
+             * (Gdx.input.isKeyPressed(Keys.Q)) generateAndPlaceShipsOnBoard(1, true);
+             */
         }
         return false;
     }
