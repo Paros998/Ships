@@ -1,10 +1,14 @@
 package com.ourshipsgame.game;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
@@ -21,15 +25,19 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.hud.Hud;
+import com.ourshipsgame.mainmenu.MenuGlobalElements;
+import com.ourshipsgame.mainmenu.MenuScreen;
 
 public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
     private AssetManager manager;
     private Main game;
+    private GameScreen GameScreen;
     private InputMultiplexer inputMultiplexer;
     private Hud hud;
     private SpriteBatch sb;
@@ -44,6 +52,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean shootOrder = false;
     private boolean shootSound = false;
     private boolean hitMissSound = false;
+    private boolean createDialog = false;
     private long sid;
     private int[] layers;
     private int[] endlayers;
@@ -55,6 +64,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // constructor
     public GameScreen(Main game) {
+        this.GameScreen = this;
         this.game = game;
         Gdx.app.log(id, "This class is loaded!");
     }
@@ -101,8 +111,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
             for (int i = 0; i < sum; i++) {
                 FirstBoardShipsSprites[i].drawSprite(sb);
                 FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].drawSprite(sb, false);
-                SecondBoardShipsSprites[i].drawTurrets(sb, false);
+                SecondBoardShipsSprites[i].drawSprite(sb);
+                SecondBoardShipsSprites[i].drawTurrets(sb);
             }
             break;
         }
@@ -193,11 +203,74 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    private void createDialog() {
+        new Dialog("Do you wish to save score?", hud.getSkin()) {
+            {
+                this.button("Yes", "Yes");
+                this.button("No", "No");
+            }
+
+            @Override
+            protected void result(Object object) {
+                switch (object.toString()) {
+                case "Yes":
+                    File file = new File("core/assets/files/scores.txt");
+                    if (!file.exists())
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    try {
+                        FileWriter writer = new FileWriter(file, true);
+                        writer.write(PlayerOne.getPlayerName() + " ");
+                        writer.write(Float.toString(PlayerOne.getScoreValue()) + " ");
+                        writer.write(Float.toString(PlayerOne.getTimeElapsed()) + " ");
+                        writer.write(Float.toString(PlayerOne.getAccuracyRatio()) + " ");
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                case "No":
+                    new Dialog("What now?", hud.getSkin()) {
+                        {
+                            this.button("Main menu!", "menu");
+                            this.button("Exit game!", "game");
+                        }
+
+                        @Override
+                        protected void result(Object object) {
+                            switch (object.toString()) {
+                            case "menu":
+                                GameScreen.dispose();
+                                game.menuElements = new MenuGlobalElements(game);
+                                game.setScreen(new MenuScreen(game));
+                                break;
+                            case "game":
+                                Gdx.app.exit();
+                                break;
+                            }
+                        }
+                    }.show(hud.getStage());
+                    break;
+                }
+            }
+        }.show(hud.getStage());
+    }
+
     private void drawScores(SpriteBatch batch) {
         PlayerOne.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, FirstBoardThreeShipsLeft, FirstBoardTwoShipsLeft,
                 FirstBoardOneShipsLeft, shipIcons);
         PlayerTwo.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, SecondBoardThreeShipsLeft,
                 SecondBoardTwoShipsLeft, SecondBoardOneShipsLeft, shipIcons);
+        switch (PlayerTurn) {
+        case 1:
+            font.draw(batch, "Your Turn!", gameWidth_f / 2 - 60, gameHeight_f - 140);
+            break;
+        case 2:
+            font.draw(batch, "Enemy Turn!", gameWidth_f / 2 - 70, gameHeight_f - 140);
+            break;
+        }
     }
 
     private void drawLoadingScreen() {
@@ -213,10 +286,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         String msg;
         if (PlayerOneLost) {
             msg = "You 've Lost!! Better luck next time!";
-            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - 350, gameHeight_f / 2 + 400);
         } else if (PlayerTwoLost) {
             msg = "You 've Won!! Keep it up!!";
-            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - 250, gameHeight_f / 2 + 400);
         }
     }
 
@@ -234,10 +307,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         layers[2] = 2;
         layers[3] = 3;
 
-        endlayers = new int[3];
+        endlayers = new int[2];
         endlayers[0] = 0;
         endlayers[1] = 1;
-        endlayers[2] = 2;
     }
 
     private void createFonts() {
@@ -276,7 +348,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 readyButtonCheck();
-                if(gameStage == 3) {
+                if (gameStage == 3) {
                     hud.getStage().getActors().pop();
                     hud.getPlayersSetNameDialog().hide();
                     PlayerOne.setPlayerName(hud.getPlayersName());
@@ -356,10 +428,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     // update logics of game
     private void update(float deltaTime) {
 
-        if(gameStage == 2) 
-            if(checkAllShips())
+        if (gameStage == 2)
+            if (checkAllShips())
                 hud.getPlayButton().getStyle().imageUp = new SpriteDrawable(hud.getPlayButtonGreenStyle());
-        
+
         if (FirstBoardShipsDestroyed == sum) {
             gameStage = 4;
             PlayerOneLost = true;
@@ -367,6 +439,17 @@ public class GameScreen extends GameEngine implements InputProcessor {
             gameStage = 4;
             PlayerTwoLost = true;
         }
+
+        if (gameStage == 4)
+            if (!createDialog) {
+                if (PlayerOneLost)
+                    endSounds[1].play(hud.gameSettings.soundVolume);
+                else if (PlayerTwoLost)
+                    endSounds[0].play(hud.gameSettings.soundVolume);
+                createDialog();
+                createDialog = true;
+                Gdx.graphics.setCursor(crosshairs[2]);
+            }
 
         rotateTime += deltaTime;
         if (rotateTime >= 0.3f) {
@@ -539,10 +622,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (Gdx.input.isKeyPressed(Keys.R))
                 if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
                     rotateActualShip();
-            /*
-             * if (Gdx.input.isKeyPressed(Keys.E)) readyButtonCheck(); if
-             * (Gdx.input.isKeyPressed(Keys.Q)) generateAndPlaceShipsOnBoard(1, true);
-             */
         }
         return false;
     }

@@ -31,48 +31,47 @@ public class Scores {
 
         @Override
         public int compare(Node o1, Node o2) {
-            return (int) (o1.scoreValue - o2.scoreValue);
+            return (int) (o2.scoreValue - o1.scoreValue);
         }
 
-        Game game;
-        List<Node> scoresList;
+    }
 
-        public void Scores(Game game) {
-            this.game = game;
-            this.scoresList = new ArrayList<Node>();
-            try {
-                loadScores();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    List<Node> scoresList;
+
+    public Scores() {
+        this.scoresList = new ArrayList<Node>();
+        try {
+            loadScores();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        private void loadScores() throws IOException {
-            File file = new File("core/assets/files/scores.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-            } else {
-                Scanner scanner = new Scanner(file);
-                while (scanner.hasNext()) {
-                    String name = scanner.next().trim();
-                    float score = Float.valueOf(scanner.next().trim());
-                    float time = Float.valueOf(scanner.next().trim());
-                    float accuracy = Float.valueOf(scanner.next().trim());
-                    scoresList.add(new Node(name, score, time, accuracy));
-                }
-                scanner.close();
-                scoresList.sort(new SortByScore());
+    private void loadScores() throws IOException {
+        File file = new File("core/assets/files/scores.txt");
+        if (!file.exists()) {
+            file.createNewFile();
+        } else {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNext()) {
+                String name = scanner.next().trim();
+                float score = Float.valueOf(scanner.next().trim());
+                float time = Float.valueOf(scanner.next().trim());
+                float accuracy = Float.valueOf(scanner.next().trim());
+                scoresList.add(new Node(name, score, time, accuracy));
             }
+            scanner.close();
+            scoresList.sort(new SortByScore());
         }
+    }
 
-        public void drawScores(SpriteBatch batch, BitmapFont font, float gameH, float gameW) {
-            Node node;
-            for (int i = 0; i < scoresList.size(); i++) {
-                node = scoresList.get(i);
-                String text = i + ". " + node.name + " Score: " + node.scoreValue + " Time: " + node.timeElapsed
-                        + " Shots accuracy: " + node.accuracyRatio;
-                font.draw(batch, text, gameW / 2 - (text.length() / 2 * 43), gameH - 300 - (i * 50));
-            }
+    public void drawScores(SpriteBatch batch, BitmapFont font, float gameH, float gameW) {
+        Node node;
+        for (int i = 0; i < scoresList.size(); i++) {
+            node = scoresList.get(i);
+            String text = i + " - " + node.name + " Score: " + node.scoreValue + " Time: "
+                    + String.format("%.2f", node.timeElapsed) + " Shots accuracy: " + node.accuracyRatio;
+            font.draw(batch, text, gameW / 2 - 300, gameH - 50 - (i * 50));
         }
     }
 }

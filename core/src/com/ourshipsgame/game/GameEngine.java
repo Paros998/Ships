@@ -347,6 +347,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected float gameWidth_f = GAME_WIDTH_F;
     protected BitmapFont hudFont;
     // Sounds and music
+    protected Sound[] endSounds = new Sound[2];
     protected Sound rotateSound;
     protected Sound[] ShootSounds = new Sound[12];
     protected Sound WaterExplosionSounds;
@@ -436,6 +437,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         // Marks
         manager.load("core/assets/backgroundtextures/blackcross.png", Texture.class);
         manager.load("core/assets/backgroundtextures/redcross.png", Texture.class);
+        // Sound effects
+        manager.load("core/assets/sounds/won.mp3", Sound.class);
+        manager.load("core/assets/sounds/lose.mp3", Sound.class);
     }
 
     protected void loadHudAssets(AssetManager manager) {
@@ -497,6 +501,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         shipIcons[2] = manager.get("core/assets/oneship/one/oneshipModelIcon.png", Texture.class);
         shootMarks[0] = manager.get("core/assets/backgroundtextures/blackcross.png", Texture.class);
         shootMarks[1] = manager.get("core/assets/backgroundtextures/redcross.png", Texture.class);
+        endSounds[0] = manager.get("core/assets/sounds/won.mp3", Sound.class);
+        endSounds[1] = manager.get("core/assets/sounds/lose.mp3", Sound.class);
 
         PlayerOne.setPlayerName("TemplateName");
         PlayerTwo.setPlayerName("Computer");

@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.game.GameScreen;
+import com.ourshipsgame.mainmenu.HelpScreen;
 import com.ourshipsgame.mainmenu.MenuScreen;
 import com.ourshipsgame.mainmenu.OptionScreen;
+import com.ourshipsgame.mainmenu.ScoreScreen;
 
 public class GameTextButton extends TextButton {
 
@@ -51,9 +53,13 @@ public class GameTextButton extends TextButton {
             break;
 
         case 2: // Enters to a help screen
+            game.getScreen().dispose();
+            game.setScreen(new HelpScreen(game));
             break;
 
         case 3: // Enters to a scores screen
+            game.getScreen().dispose();
+            game.setScreen(new ScoreScreen(game));
             break;
 
         case 4: // Enters to a settings screen

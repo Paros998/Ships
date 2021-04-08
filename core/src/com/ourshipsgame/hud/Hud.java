@@ -99,7 +99,7 @@ public class Hud implements Constant {
 
     // Methods
     private void setButtonsSprites(Texture[] textures, Sprite[] sprites, float factor) {
-        for(int i = 0; i < sprites.length; i++) {
+        for (int i = 0; i < sprites.length; i++) {
             sprites[i] = new Sprite(textures[i]);
             sprites[i].setSize(sprites[i].getWidth() / factor, sprites[i].getHeight() / factor);
         }
