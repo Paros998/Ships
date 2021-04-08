@@ -37,6 +37,10 @@ public class BoomEffect {
         this.sprites[0].setOriginCenter();
     }
 
+    public Vector2 getPos() {
+        return new Vector2(sprite.getX(), sprite.getY());
+    }
+
     public void setPos(Vector2f vector2f) {
         this.sprite.setPosition(vector2f.x - 32, vector2f.y - 32);
     }

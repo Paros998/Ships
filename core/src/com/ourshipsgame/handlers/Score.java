@@ -42,7 +42,8 @@ public class Score {
             time = "Total time: " + second + "." + String.format("%.2f", vFloat - second * 60f);
             hudFont.draw(batch, time, xstart, gameHeight_f - 35);
 
-            hudFont.draw(batch, "Accuracy: " + this.getAccuracyRatio(), xstart + 150, gameHeight_f - 35);
+            hudFont.draw(batch, "Accuracy: " + (int) (this.getAccuracyRatio() * 100) + "%", xstart + 150,
+                    gameHeight_f - 35);
 
             hudFont.draw(batch, "Total score: " + this.getScoreValue(), xstart, gameHeight_f - 60);
 
@@ -68,7 +69,8 @@ public class Score {
             time = "Total time: " + second + "." + String.format("%.2f", vFloat - second * 60f);
             hudFont.draw(batch, time, xstart, gameHeight_f - 35);
 
-            hudFont.draw(batch, "Accuracy: " + this.getAccuracyRatio(), xstart - 150, gameHeight_f - 35);
+            hudFont.draw(batch, "Accuracy: " + (int) (this.getAccuracyRatio() * 100) + "%", xstart - 150,
+                    gameHeight_f - 35);
 
             hudFont.draw(batch, "Total score: " + this.getScoreValue(), xstart, gameHeight_f - 60);
 
@@ -86,19 +88,21 @@ public class Score {
         }
     }
 
-    public void update(int[][] PlayerShots, float deltaTime) {
+    public void update(int[][] PlayerShots) {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 if (PlayerShots[i][j] != 0)
                     shotsFired++;
-
                 if (PlayerShots[i][j] == -1)
                     shotsMissed++;
                 else if (PlayerShots[i][j] == 1 || PlayerShots[i][j] == 2)
                     shotsHitted++;
             }
         if (shotsFired != 0)
-            accuracyRatio = shotsHitted / shotsFired;
+            accuracyRatio = (float) shotsHitted / (float) shotsFired;
+    }
+
+    public void updateTime(float deltaTime) {
         timeElapsed += deltaTime;
     }
 

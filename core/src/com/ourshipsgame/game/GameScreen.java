@@ -305,6 +305,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private void update(float deltaTime) {
         runTime += deltaTime;
 
+        if (PlayerTurn == 1)
+            PlayerOne.updateTime(deltaTime);
+        else
+            PlayerTwo.updateTime(deltaTime);
+
         if (FirstBoardShipsDestroyed == sum) {
             gameStage = 4;
         } else if (SecondBoardShipsDestroyed == sum) {
@@ -319,12 +324,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         handleInput(deltaTime);
         rotateSound.setVolume(sid, hud.gameSettings.soundVolume);
         if (gameStage == 3) {
-            // Update Scores
-            if (PlayerTurn == 1) {
-                PlayerOne.update(FirstPlayerShotsDone, deltaTime);
-            } else {
-                PlayerTwo.update(SecondPlayerShotsDone, deltaTime);
-            }
 
             // Update AI info
             if (shootOrder)
@@ -345,6 +344,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
                             x = (enemyComputerPlayerAi.getX() * 64.0f) + FirstBoardStart.x;
                             y = (enemyComputerPlayerAi.getY() * 64.0f) + FirstBoardStart.y;
                             rotateTurretsWithMouse(x, y);
+                            PlayerTwo.update(SecondPlayerShotsDone);
                             shootingEnabled = false;
                         }
                     }
@@ -509,6 +509,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (gameStage == 3) {
                 if (PlayerTurn == 1) {
                     shootOrder = shoot(screenX, screenY);
+                    PlayerOne.update(FirstPlayerShotsDone);
                     shootSound = true;
                     hitMissSound = true;
                 }
