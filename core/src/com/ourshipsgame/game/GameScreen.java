@@ -19,6 +19,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.hud.Hud;
 
@@ -249,6 +251,31 @@ public class GameScreen extends GameEngine implements InputProcessor {
         hud.gameSettings = game.menuElements.gameSettings;
         // Deleting GlobalMenuElements object
         game.menuElements = null;
+        hud.getPlayButton().addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                readyButtonCheck();
+                if(gameStage == 3)
+                    hud.getStage().getActors().pop();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        hud.getRepeatButton().addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                generateAndPlaceShipsOnBoard(1, true);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
     }
 
     // loading method
@@ -481,10 +508,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (Gdx.input.isKeyPressed(Keys.R))
                 if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
                     rotateActualShip();
-            if (Gdx.input.isKeyPressed(Keys.E))
+            /*if (Gdx.input.isKeyPressed(Keys.E))
                 readyButtonCheck();
             if (Gdx.input.isKeyPressed(Keys.Q))
-                generateAndPlaceShipsOnBoard(1, true);
+                generateAndPlaceShipsOnBoard(1, true);*/
         }
         return false;
     }

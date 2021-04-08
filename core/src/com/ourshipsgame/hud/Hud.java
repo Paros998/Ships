@@ -8,16 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.game.GameObject;
 import com.ourshipsgame.game.GameSettings;
 import com.ourshipsgame.handlers.Constant;
 
 public class Hud implements Constant {
 
     // Fields
-    private GameObject uiBar;
-    private GameImageButton gameMenuButton;
-    private float buttonsWidth, buttonsHeight;
+    private GameImageButton gameMenuButton, repeatButton, playButton;
+    public Table layoutTable;
     private Stage stage;
     private Skin skin;
     public GameSettings gameSettings;
@@ -36,26 +34,43 @@ public class Hud implements Constant {
 
         Sprite[] buttonStylesSprites = new Sprite[2];
 
-        for (int i = 0; i < buttonStylesSprites.length; i++) {
-            buttonStylesSprites[i] = new Sprite(buttonStyles[i]);
-            buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.55f, buttonStylesSprites[i].getHeight() / 1.55f);
-        }
-
-        buttonsWidth = buttonStylesSprites[0].getWidth();
-        buttonsHeight = buttonStylesSprites[0].getHeight();
+        setButtonsSprites(buttonStyles, buttonStylesSprites, 1.55f);
 
         gameMenuButton = new GameImageButton(GAME_WIDTH - 10, GAME_HEIGHT - 3, this, buttonStylesSprites);
         gameMenuButton.setOptionsListener();
 
-        
+        // Repeat button
+        buttonStyles[0] = manager.get("core/assets/ui/reverse-button.png", Texture.class);
+        buttonStyles[1] = manager.get("core/assets/ui/reverse-button-pressed.png", Texture.class);
+
+        setButtonsSprites(buttonStyles, buttonStylesSprites, 6.5f);
+
+        repeatButton = new GameImageButton(buttonStylesSprites);
+
+        // Play button
+        buttonStyles[0] = manager.get("core/assets/ui/ready-button.png", Texture.class);
+        buttonStyles[1] = manager.get("core/assets/ui/ready-button-pressed.png", Texture.class);
+
+        setButtonsSprites(buttonStyles, buttonStylesSprites, 6.5f);
+
+        playButton = new GameImageButton(buttonStylesSprites);
+
+        // Table for play, repeat buttons
+        layoutTable = new Table();
+        layoutTable.bottom();
+        layoutTable.setFillParent(true);
+        layoutTable.add(playButton).expandX().padLeft(830f).padBottom(8);
+        layoutTable.add(repeatButton).expandX().padRight(830f).padBottom(8);
+
         stage.addActor(gameMenuButton);
+        stage.addActor(layoutTable);
     }
 
     // Methods
-    private void setButtonsSprites(Texture[] textures, Sprite[] sprites) {
+    private void setButtonsSprites(Texture[] textures, Sprite[] sprites, float factor) {
         for(int i = 0; i < sprites.length; i++) {
             sprites[i] = new Sprite(textures[i]);
-            sprites[i].setSize(buttonsWidth, buttonsHeight);
+            sprites[i].setSize(sprites[i].getWidth() / factor, sprites[i].getHeight() / factor);
         }
     }
 
@@ -66,6 +81,15 @@ public class Hud implements Constant {
 
     public void render(SpriteBatch batch) {
        // uiBar.getSprite().draw(batch);
+    }
+
+    // Getters
+    public GameImageButton getRepeatButton() {
+        return repeatButton;
+    }
+
+    public GameImageButton getPlayButton() {
+        return playButton;
     }
 
     public Stage getStage() {

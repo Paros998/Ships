@@ -432,10 +432,17 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     protected void loadHudAssets(AssetManager manager) {
+        // Skin
         manager.load("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
-        manager.load("core/assets/ui/CustomTopBar.bmp", Texture.class);
+        // Options button
         manager.load("core/assets/ui/ui.hud/ui/global/modern/gear.png", Texture.class);
         manager.load("core/assets/ui/ui.hud/ui/global/modern/gear-press.png", Texture.class);
+        // Play button
+        manager.load("core/assets/ui/ready-button.png", Texture.class);
+        manager.load("core/assets/ui/ready-button-pressed.png", Texture.class);
+        // Repeat button
+        manager.load("core/assets/ui/reverse-button-pressed.png", Texture.class);
+        manager.load("core/assets/ui/reverse-button.png", Texture.class);
     }
 
     // game methods below

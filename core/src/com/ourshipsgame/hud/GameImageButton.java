@@ -23,6 +23,11 @@ public class GameImageButton extends ImageButton {
         optionsWindow = new OptionsWindow("Game Menu", hud);
     }
 
+    public GameImageButton(Sprite[] buttonStyles) {
+        super(new SpriteDrawable(buttonStyles[0]),
+            new SpriteDrawable(buttonStyles[1]));
+    }
+
     public void setOptionsListener() {
         this.addListener(new InputListener() {
             @Override
