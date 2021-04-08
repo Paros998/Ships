@@ -447,6 +447,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         // Play button
         manager.load("core/assets/ui/ready-button.png", Texture.class);
         manager.load("core/assets/ui/ready-button-pressed.png", Texture.class);
+        manager.load("core/assets/ui/ready-button-go.png", Texture.class);
         // Repeat button
         manager.load("core/assets/ui/reverse-button-pressed.png", Texture.class);
         manager.load("core/assets/ui/reverse-button.png", Texture.class);

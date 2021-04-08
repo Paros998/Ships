@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ourshipsgame.game.GameSettings;
 import com.ourshipsgame.handlers.Constant;
@@ -15,6 +17,10 @@ public class Hud implements Constant {
 
     // Fields
     private GameImageButton gameMenuButton, repeatButton, playButton;
+    private Sprite playButtonGreenStyle;
+    private TextField playerNameTextField;
+    private Dialog playersSetNameDialog;
+    private String playersName;
     public Table layoutTable;
     private Stage stage;
     private Skin skin;
@@ -50,10 +56,35 @@ public class Hud implements Constant {
         // Play button
         buttonStyles[0] = manager.get("core/assets/ui/ready-button.png", Texture.class);
         buttonStyles[1] = manager.get("core/assets/ui/ready-button-pressed.png", Texture.class);
+        playButtonGreenStyle = new Sprite(manager.get("core/assets/ui/ready-button-go.png", Texture.class));
 
         setButtonsSprites(buttonStyles, buttonStylesSprites, 6.5f);
 
         playButton = new GameImageButton(buttonStylesSprites);
+
+        // Player Name textfield
+        playersName = "Player";
+        playersSetNameDialog = new Dialog("Enter Your Name", skin) {
+
+            {
+                playerNameTextField = new TextField(playersName, skin);
+                this.text("");
+                this.row();
+                this.add(playerNameTextField);
+                this.row();
+                this.getCells().removeIndex(1);
+                this.add(this.getButtonTable());
+                this.button("Accept");
+            }
+
+            @Override
+            protected void result(final Object act) {
+                playersName = playerNameTextField.getText();
+                playerNameTextField = null;
+            }
+        };
+
+        playersSetNameDialog.show(stage).setPosition(GAME_WIDTH / 2 + 150, 150);
 
         // Table for play, repeat buttons
         layoutTable = new Table();
@@ -90,6 +121,18 @@ public class Hud implements Constant {
 
     public GameImageButton getPlayButton() {
         return playButton;
+    }
+
+    public String getPlayersName() {
+        return playersName;
+    }
+
+    public Sprite getPlayButtonGreenStyle() {
+        return playButtonGreenStyle;
+    }
+
+    public Dialog getPlayersSetNameDialog() {
+        return playersSetNameDialog;
     }
 
     public Stage getStage() {

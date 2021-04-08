@@ -21,6 +21,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.hud.Hud;
 
@@ -275,8 +276,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 readyButtonCheck();
-                if(gameStage == 3)
+                if(gameStage == 3) {
                     hud.getStage().getActors().pop();
+                    hud.getPlayersSetNameDialog().hide();
+                    PlayerOne.setPlayerName(hud.getPlayersName());
+                }
             }
 
             @Override
@@ -353,6 +357,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private void update(float deltaTime) {
         runTime += deltaTime;
 
+        if(gameStage == 2) 
+            if(checkAllShips())
+                hud.getPlayButton().getStyle().imageUp = new SpriteDrawable(hud.getPlayButtonGreenStyle());
+        
         if (FirstBoardShipsDestroyed == sum) {
             gameStage = 4;
             PlayerOneLost = true;
