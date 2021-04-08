@@ -6,16 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.game.GameObject;
 import com.ourshipsgame.game.GameSettings;
 import com.ourshipsgame.handlers.Constant;
 
 public class Hud implements Constant {
 
-    // Fields
-    private GameObject uiBar;
     private GameImageButton gameMenuButton;
     private float buttonsWidth, buttonsHeight;
     private Stage stage;
@@ -38,7 +34,8 @@ public class Hud implements Constant {
 
         for (int i = 0; i < buttonStylesSprites.length; i++) {
             buttonStylesSprites[i] = new Sprite(buttonStyles[i]);
-            buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.55f, buttonStylesSprites[i].getHeight() / 1.55f);
+            buttonStylesSprites[i].setSize(buttonStylesSprites[i].getWidth() / 1.55f,
+                    buttonStylesSprites[i].getHeight() / 1.55f);
         }
 
         buttonsWidth = buttonStylesSprites[0].getWidth();
@@ -47,13 +44,12 @@ public class Hud implements Constant {
         gameMenuButton = new GameImageButton(GAME_WIDTH - 10, GAME_HEIGHT - 3, this, buttonStylesSprites);
         gameMenuButton.setOptionsListener();
 
-        
         stage.addActor(gameMenuButton);
     }
 
     // Methods
     private void setButtonsSprites(Texture[] textures, Sprite[] sprites) {
-        for(int i = 0; i < sprites.length; i++) {
+        for (int i = 0; i < sprites.length; i++) {
             sprites[i] = new Sprite(textures[i]);
             sprites[i].setSize(buttonsWidth, buttonsHeight);
         }
@@ -65,7 +61,7 @@ public class Hud implements Constant {
     }
 
     public void render(SpriteBatch batch) {
-       // uiBar.getSprite().draw(batch);
+        // uiBar.getSprite().draw(batch);
     }
 
     public Stage getStage() {

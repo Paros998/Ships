@@ -373,6 +373,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected boolean missed = false;
     protected boolean destroyed = false;
     protected boolean destroymentSound = false;
+    protected boolean PlayerOneLost = false;
+    protected boolean PlayerTwoLost = false;
     protected Vector2f hitPos = new Vector2f();
     protected Vector2f missPos = new Vector2f();
     protected Vector2f destroymentPos = new Vector2f();
