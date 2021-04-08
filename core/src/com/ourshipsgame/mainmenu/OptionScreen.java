@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.GameTextButton;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.game.GameSlider;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.hud.GameTextButton;
 
 public class OptionScreen implements Screen, Constant {
 

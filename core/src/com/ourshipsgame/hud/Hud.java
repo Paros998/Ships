@@ -80,7 +80,7 @@ public class Hud implements Constant {
     }
 
     public void render(SpriteBatch batch) {
-       // uiBar.getSprite().draw(batch);
+        // uiBar.getSprite().draw(batch);
     }
 
     // Getters

@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ourshipsgame.GameTextButton;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.game.GameObject;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.hud.GameTextButton;
 
 public class MenuScreen implements Screen, Constant {
 
@@ -130,7 +130,8 @@ public class MenuScreen implements Screen, Constant {
 
         helpButon = new GameTextButton("Help", GAME_WIDTH / 2, GAME_HEIGHT / 2, game.menuElements.skin, 2, game);
 
-        scoreButton = new GameTextButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3, game);
+        scoreButton = new GameTextButton("Score", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, game.menuElements.skin, 3,
+                game);
 
         optionsButton = new GameTextButton("Options", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 200, game.menuElements.skin, 4,
                 game);

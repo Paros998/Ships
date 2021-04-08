@@ -41,6 +41,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
 
         protected void placeShipOnBoard(int numberOfShips) {
+            if (BoardNumber == 1)
+                for (int i = 0; i < 10; i++)
+                    for (int j = 0; j < 10; j++)
+                        ShipsPlaced[i][j] = 0;
+
             GameObject actualShip;
             for (int i = 0; i < numberOfShips; i++) {
 
@@ -368,6 +373,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected boolean missed = false;
     protected boolean destroyed = false;
     protected boolean destroymentSound = false;
+    protected boolean PlayerOneLost = false;
+    protected boolean PlayerTwoLost = false;
     protected Vector2f hitPos = new Vector2f();
     protected Vector2f missPos = new Vector2f();
     protected Vector2f destroymentPos = new Vector2f();
