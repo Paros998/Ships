@@ -299,7 +299,7 @@ public class ComputerPlayerAi {
                     tmp.x--;
             }
             val = dir;
-        } else {
+        } else if (numberofHits == 2) {
             int dir = ran.nextInt(2);
             float x = LastHitPositions[index - 1].x;
             float y = LastHitPositions[index - 1].y;

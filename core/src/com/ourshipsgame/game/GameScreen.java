@@ -34,7 +34,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private Hud hud;
     private SpriteBatch sb;
     private ShapeRenderer sr;
-    private float runTime;
     private float progress;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -214,10 +213,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         String msg;
         if (PlayerOneLost) {
             msg = "You 've Lost!! Better luck next time!";
-            font.draw(sb, msg, gameWidth_f / 2 - (msg.length() / 2 * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
         } else if (PlayerTwoLost) {
             msg = "You 've Won!! Keep it up!!";
-            font.draw(sb, msg, gameWidth_f / 2 - (msg.length() / 2 * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
         }
     }
 
@@ -238,6 +237,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         endlayers = new int[3];
         endlayers[0] = 0;
         endlayers[1] = 1;
+        endlayers[2] = 2;
     }
 
     private void createFonts() {
@@ -355,7 +355,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     // update logics of game
     private void update(float deltaTime) {
-        runTime += deltaTime;
 
         if(gameStage == 2) 
             if(checkAllShips())
@@ -540,10 +539,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
             if (Gdx.input.isKeyPressed(Keys.R))
                 if ((activeSpriteDrag <= sum - 1) && (activeSpriteDrag >= 0))
                     rotateActualShip();
-            /*if (Gdx.input.isKeyPressed(Keys.E))
-                readyButtonCheck();
-            if (Gdx.input.isKeyPressed(Keys.Q))
-                generateAndPlaceShipsOnBoard(1, true);*/
+            /*
+             * if (Gdx.input.isKeyPressed(Keys.E)) readyButtonCheck(); if
+             * (Gdx.input.isKeyPressed(Keys.Q)) generateAndPlaceShipsOnBoard(1, true);
+             */
         }
         return false;
     }
