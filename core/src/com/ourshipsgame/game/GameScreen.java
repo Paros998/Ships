@@ -212,10 +212,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         String msg;
         if (PlayerOneLost) {
             msg = "You 've Lost!! Better luck next time!";
-            font.draw(sb, msg, gameWidth_f / 2 - (msg.length() / 2 * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
         } else if (PlayerTwoLost) {
             msg = "You 've Won!! Keep it up!!";
-            font.draw(sb, msg, gameWidth_f / 2 - (msg.length() / 2 * 43), gameHeight_f / 2);
+            font.draw(sb, msg, (gameWidth_f / 2) - ((msg.length() / 2) * 43), gameHeight_f / 2);
         }
     }
 
@@ -236,6 +236,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         endlayers = new int[3];
         endlayers[0] = 0;
         endlayers[1] = 1;
+        endlayers[2] = 2;
     }
 
     private void createFonts() {

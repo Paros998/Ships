@@ -73,7 +73,6 @@ public class Scores {
                         + " Shots accuracy: " + node.accuracyRatio;
                 font.draw(batch, text, gameW / 2 - (text.length() / 2 * 43), gameH - 300 - (i * 50));
             }
-
         }
     }
 }
