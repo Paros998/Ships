@@ -1,5 +1,7 @@
 package com.ourshipsgame.handlers;
 
+import java.text.NumberFormat;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,7 +44,7 @@ public class Score {
             time = "Total time: " + second + "." + String.format("%.2f", vFloat - second * 60f);
             hudFont.draw(batch, time, xstart, gameHeight_f - 35);
 
-            hudFont.draw(batch, "Accuracy: " + (int) (this.getAccuracyRatio() * 100) + "%", xstart + 150,
+            hudFont.draw(batch, "Accuracy: " + NumberFormat.getPercentInstance().format(accuracyRatio), xstart + 150,
                     gameHeight_f - 35);
 
             hudFont.draw(batch, "Total score: " + this.getScoreValue(), xstart, gameHeight_f - 60);
@@ -69,7 +71,7 @@ public class Score {
             time = "Total time: " + second + "." + String.format("%.2f", vFloat - second * 60f);
             hudFont.draw(batch, time, xstart, gameHeight_f - 35);
 
-            hudFont.draw(batch, "Accuracy: " + (int) (this.getAccuracyRatio() * 100) + "%", xstart - 150,
+            hudFont.draw(batch, "Accuracy: " + NumberFormat.getPercentInstance().format(accuracyRatio), xstart - 150,
                     gameHeight_f - 35);
 
             hudFont.draw(batch, "Total score: " + this.getScoreValue(), xstart, gameHeight_f - 60);
