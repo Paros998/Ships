@@ -231,6 +231,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         font = generator.generateFont(parameter);
         parameter.size = 16;
         parameter.borderWidth = 0;
+        parameter.borderColor = Color.BLACK;
+        parameter.color = Color.GOLD;
         hudFont = generator.generateFont(parameter);
         generator.dispose();
     }

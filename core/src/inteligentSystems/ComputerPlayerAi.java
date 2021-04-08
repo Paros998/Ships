@@ -237,22 +237,42 @@ public class ComputerPlayerAi {
                     NewPos.x--;
                 }
                 dirIndex++;
-            } else {
-                direction[dirIndex] = findNextSpot(2);
-                if (direction[dirIndex] == 0) {
-                    if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x)
-                        NewPos.y++;
-                    else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y)
-                        NewPos.x++;
-                } else {
-                    if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x)
-                        NewPos.y--;
-                    else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y)
-                        NewPos.x--;
-                }
-                dirIndex++;
             }
+        } else if (index == 2) {
+            direction[dirIndex] = findNextSpot(2);
+            if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x) {
+                // shoting up
+                if (direction[dirIndex] % 2 == 0) {
+                    // finding point up
+                    if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
+                        NewPos.y++;
+                    else
+                        NewPos.y = LastHitPositions[index - 2].y + 1;
+                } else if (direction[dirIndex] % 2 == 1) {
+                    // finding point down
+                    if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
+                        NewPos.y = LastHitPositions[index - 2].y - 1;
+                    else
+                        NewPos.y--;
+                }
+            } else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y) {
+                if (direction[dirIndex] % 2 == 0) {
+                    // right
+                    if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
+                        NewPos.x++;
+                    else
+                        NewPos.x = LastHitPositions[index - 2].x + 1;
+                } else if (direction[dirIndex] % 2 == 1) {
+                    // left
+                    if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
+                        NewPos.x = LastHitPositions[index - 2].x - 1;
+                    else
+                        NewPos.x++;
+                }
+            }
+            dirIndex++;
         }
+
         TargetPos = NewPos;
     }
 
