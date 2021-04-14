@@ -24,7 +24,9 @@ import com.ourshipsgame.hud.GameTextButton;
 public class HelpScreen implements Screen, Constant {
     private Main game;
     private Table childTable, mainTable;
-    private Sprite smallShip, mediumShip, largeShip, greenCrosshair, redCrosshair, cursor;
+    private Sprite smallShip, mediumShip, largeShip, destroyedLagreShip; // Ships sprites
+    private Sprite greenCrosshair, redCrosshair, cursor; // Cursors sprites
+    private Sprite blackX, redX; // X symbols sprites
     private GameTextButton backButton;
     private Stage stage;
     private SpriteBatch batch;
@@ -63,11 +65,16 @@ public class HelpScreen implements Screen, Constant {
         smallShip = new Sprite(new Texture("core/assets/oneship/one/oneshipModel.png"));
         mediumShip = new Sprite(new Texture("core/assets/oneship/two/twoshipModel.png"));
         largeShip = new Sprite(new Texture("core/assets/oneship/three/threeshipModel.png"));
+        destroyedLagreShip = new Sprite(new Texture("core/assets/oneship/three/threeshipModelDestroyed.png"));
 
         // Loading crosshairs
         greenCrosshair = new Sprite(new Texture("core/assets/cursors/crosshairGreen.png"));
         redCrosshair = new Sprite(new Texture("core/assets/cursors/crosshairRed.png"));
         cursor = new Sprite(new Texture("core/assets/ui/ui.hud/cursors/test.png"));
+
+        // Loading X symbols
+        blackX = new Sprite(new Texture("core/assets/backgroundtextures/blackcross.png"));
+        redX = new Sprite(new Texture("core/assets/backgroundtextures/redcross.png"));
 
 
         // Creating main Table for buttons and child Table
@@ -85,12 +92,17 @@ public class HelpScreen implements Screen, Constant {
         // Small Ship expand
         childTable.add(new Image(new SpriteDrawable(smallShip))).expandX();
         label = new Label("- small ship. Has 1 life.", style);
-        childTable.add(label).expandX();
+        childTable.add(label).expandX().padRight(50);
 
         // Green Crosshair expand
         childTable.add(new Image(new SpriteDrawable(greenCrosshair))).expandX().padLeft(20);
         label = new Label("- means that you are able to shoot.", style);
-        childTable.add(label).expandX();
+        childTable.add(label).expandX().padRight(120);
+
+        // Black X symbol expand
+        childTable.add(new Image(new SpriteDrawable(blackX))).expandX().padLeft(20);
+        label = new Label("- means that you have missed your shot.", style);
+        childTable.add(label).expandX().padRight(190);
 
         childTable.row();
 
@@ -99,27 +111,37 @@ public class HelpScreen implements Screen, Constant {
         label = new Label("- medium ship. Has 2 lifes.", style);
         childTable.add(label).expandX();
 
-        // Red Crosshait expand
+        // Red Crosshair expand
         childTable.add(new Image(new SpriteDrawable(redCrosshair))).expandX().padLeft(20);
         label = new Label("- means that you aren't able to shoot.", style);
-        childTable.add(label).expandX();
+        childTable.add(label).expandX().padRight(90);
+
+        // Red X symbol expand
+        childTable.add(new Image(new SpriteDrawable(redX))).expandX().padLeft(20);
+        label = new Label("- means that you have hit enemy's ship.", style);
+        childTable.add(label).expandX().padRight(200);
 
         childTable.row();
 
         // Large Ship expand
         childTable.add(new Image(new SpriteDrawable(largeShip))).expandX();
         label = new Label("- large ship. Has 3 lifes.", style);
-        childTable.add(label).expandX();
+        childTable.add(label).expandX().padRight(30);
 
         // Cursor expand
         childTable.add(new Image(new SpriteDrawable(cursor))).expandX().padLeft(20);
         label = new Label("- mouse cursor. You can press buttons with it.", style);
         childTable.add(label).expandX();
 
+        // Destroyed Ship expand
+        childTable.add(new Image(new SpriteDrawable(destroyedLagreShip))).expandX().padLeft(20);
+        label = new Label("- black stains on ship means that it has been destroyed.", style);
+        childTable.add(label).expandX();
+
         // Adding elements to main Table
-        mainTable.add(childTable);//.padRight(200);
+        mainTable.add(childTable).expandX();//.padRight(200);
         mainTable.row();
-        mainTable.add(backButton).padLeft(GAME_WIDTH / 2 - backButton.getWidth() / 2);
+        mainTable.add(backButton).expandX().padLeft(backButton.getWidth() / 2 - 50);
 
         stage.addActor(mainTable);
     }

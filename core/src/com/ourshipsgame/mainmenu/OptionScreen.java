@@ -56,7 +56,7 @@ public class OptionScreen implements Screen, Constant {
         soundSilderVolume.setSliderType(2);
 
         // Buttons
-        backButton = new GameTextButton("Back to Main Menu", GAME_WIDTH / 2 - 600, GAME_HEIGHT / 2 - 300,
+        backButton = new GameTextButton("Back", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300,
                 game.menuElements.skin, 6, game);
 
         stage.addActor(backButton);
@@ -125,7 +125,6 @@ public class OptionScreen implements Screen, Constant {
         }
         stage.dispose();
         batch.dispose();
-        System.out.println("Elements from Option Menu disposed.");
     }
 
 }
