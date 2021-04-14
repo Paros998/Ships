@@ -168,6 +168,5 @@ public class MenuScreen implements Screen, Constant {
     public void dispose() {
         stage.dispose();
         batch.dispose();
-        System.out.println("Elements from Main Menu disposed.");
     }
 }
