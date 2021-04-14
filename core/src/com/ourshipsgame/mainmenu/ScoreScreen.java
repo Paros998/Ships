@@ -1,5 +1,7 @@
 package com.ourshipsgame.mainmenu;
 
+import java.text.NumberFormat;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -71,7 +73,8 @@ public class ScoreScreen implements Screen, Constant {
         for (int i = 0; i < scores.scoresList.size(); i++) {
             node = scores.scoresList.get(i);
             text = (i + 1) + " - " + node.name + " Score: " + node.scoreValue + " Time: "
-                    + String.format("%.2f", node.timeElapsed) + " Shots accuracy: " + node.accuracyRatio;
+                    + String.format("%.2f", node.timeElapsed) + " Shots accuracy: "
+                    + NumberFormat.getPercentInstance().format(node.accuracyRatio);
             Label rLabel = new Label(text, style);
             rLabel.setAlignment(Align.center);
             rLabel.setWrap(true);
