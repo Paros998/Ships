@@ -368,7 +368,7 @@ public class ComputerPlayerAi {
                 if (allTrue)
                     return -1; // If there is no free pos in Y axis to shoot
 
-                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
+                do {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
@@ -381,8 +381,7 @@ public class ComputerPlayerAi {
                         else
                             tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
                     }
-
-                }
+                } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
             } else if (tmp.y == tmp2.y) {
                 tmp3.y = tmp2.y;
                 if (dir == 0)
@@ -420,7 +419,7 @@ public class ComputerPlayerAi {
                 if (allTrue)
                     return -2; // If there is no free pos in X axis to shoot
 
-                while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
+                do {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
@@ -433,7 +432,7 @@ public class ComputerPlayerAi {
                         else
                             tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
                     }
-                }
+                } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
             }
             val = dir;
         }
