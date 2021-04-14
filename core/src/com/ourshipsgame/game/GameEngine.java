@@ -22,12 +22,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.handlers.Score;
+import com.ourshipsgame.inteligentSystems.ComputerPlayerAi;
 import com.ourshipsgame.objects.BoomEffect;
 import com.ourshipsgame.objects.ShootParticleEffect;
 
 import org.lwjgl.util.vector.Vector2f;
-
-import inteligentSystems.ComputerPlayerAi;
 
 public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Board class
