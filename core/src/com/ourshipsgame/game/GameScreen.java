@@ -3,6 +3,7 @@ package com.ourshipsgame.game;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -295,7 +296,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         progress = manager.getProgress();
         sb.begin();
         sb.draw(loadingTexture, 0, 0);
-        String load = "Loading " + progress * 100 + "%";
+        String load = "Loading " + NumberFormat.getPercentInstance().format(progress);
         font.draw(sb, load, (gameWidth_f / 2f) - 175, (gameHeight_f / 2f) + 43);
         sb.end();
     }
