@@ -431,7 +431,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/sounds/miss/WaterSurfaceExplosion08.wav", Sound.class);
         // Animations textures
         manager.load("core/assets/animations/hitExplosion.png", Texture.class);
-        manager.load("core/assets/animations/missExplosion.png", Texture.class);
+        manager.load("core/assets/animations/splash2.png", Texture.class);
         manager.load("core/assets/animations/shipDestroyedExplosion.png", Texture.class);
         // Crosshairs
         manager.load("core/assets/cursors/crosshairRed.png", Pixmap.class);
@@ -516,7 +516,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         crosshairPixmaps[1] = manager.get("core/assets/cursors/crosshairGreen.png", Pixmap.class);
         crosshairPixmaps[2] = manager.get("core/assets/ui/ui.hud/cursors/test.png", Pixmap.class);
         hitTexture = manager.get("core/assets/animations/hitExplosion.png", Texture.class);
-        missTexture = manager.get("core/assets/animations/missExplosion.png", Texture.class);
+        missTexture = manager.get("core/assets/animations/splash2.png", Texture.class);
         destroymentTexture = manager.get("core/assets/animations/shipDestroyedExplosion.png", Texture.class);
         WaterExplosionSounds = manager.get("core/assets/sounds/miss/WaterSurfaceExplosion08.wav", Sound.class);
         MetalExplosionSounds = manager.get("core/assets/sounds/shoot/ExplosionMetalGverb.wav", Sound.class);
@@ -534,7 +534,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         PlayerTwo.setPlayerName("Computer");
         PlayerTurn = 1;
         hitEffect = new BoomEffect(MetalExplosionSounds, hitTexture);
-        missEffect = new BoomEffect(WaterExplosionSounds, missTexture);
+        missEffect = new BoomEffect(WaterExplosionSounds, missTexture, new Vector2(4, 2), (1.0f / 8f));
         destroymentEffect = new BoomEffect(DestroymentExplosionSounds, destroymentTexture, true);
 
         int xHot = crosshairPixmaps[0].getWidth() / 2;

@@ -145,4 +145,8 @@ public class ShootParticleEffect {
             this.sprites[i].draw(batch);
         }
     }
+
+    public void resetAnimation() {
+        this.animator.setStartAnimation();
+    }
 }
