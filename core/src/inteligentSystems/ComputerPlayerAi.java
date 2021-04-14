@@ -238,48 +238,68 @@ public class ComputerPlayerAi {
                 }
                 dirIndex++;
             }
-        } else if (index == 2) {
-            direction[dirIndex] = findNextSpot(2);
-            if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x) {
-                // shoting up
-                if (direction[dirIndex] % 2 == 0) {
-                    // finding point up
-                    if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
-                        NewPos.y++;
-                    else
-                        NewPos.y = LastHitPositions[index - 2].y + 1;
-                } else if (direction[dirIndex] % 2 == 1) {
-                    // finding point down
-                    if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
-                        NewPos.y = LastHitPositions[index - 2].y - 1;
-                    else
-                        NewPos.y--;
+        } else if (index >= 2) {
+            int dir = findNextSpot(2);
+            if (dir >= 0) {
+                direction[dirIndex] = dir;
+                if (LastHitPositions[index - 2].x == LastHitPositions[index - 1].x) {
+                    // shoting up
+                    if (direction[dirIndex] % 2 == 0) {
+                        // finding point up
+                        if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
+                            NewPos.y++;
+                        else
+                            NewPos.y = LastHitPositions[index - 2].y + 1;
+                    } else if (direction[dirIndex] % 2 == 1) {
+                        // finding point down
+                        if (LastHitPositions[index - 2].y < LastHitPositions[index - 1].y)
+                            NewPos.y = LastHitPositions[index - 2].y - 1;
+                        else
+                            NewPos.y--;
+                    }
+                } else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y) {
+                    if (direction[dirIndex] % 2 == 0) {
+                        // right
+                        if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
+                            NewPos.x++;
+                        else
+                            NewPos.x = LastHitPositions[index - 2].x + 1;
+                    } else if (direction[dirIndex] % 2 == 1) {
+                        // left
+                        if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
+                            NewPos.x = LastHitPositions[index - 2].x - 1;
+                        else
+                            NewPos.x++;
+                    }
                 }
-            } else if (LastHitPositions[index - 2].y == LastHitPositions[index - 1].y) {
-                if (direction[dirIndex] % 2 == 0) {
-                    // right
-                    if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
-                        NewPos.x++;
-                    else
-                        NewPos.x = LastHitPositions[index - 2].x + 1;
-                } else if (direction[dirIndex] % 2 == 1) {
-                    // left
-                    if (LastHitPositions[index - 2].x < LastHitPositions[index - 1].x)
-                        NewPos.x = LastHitPositions[index - 2].x - 1;
-                    else
-                        NewPos.x++;
-                }
-            }
-            dirIndex++;
-        }
+                dirIndex++;
+            } else if (dir == -1 || dir == -2) {
+                if (dir == -1)
+                    dir = findNextSpot(-1);
+                else if (dir == -2)
+                    dir = findNextSpot(-2);
+                direction[dirIndex] = dir;
 
+                if (direction[dirIndex] == 0) {
+                    NewPos.y++;
+                } else if (direction[dirIndex] == 1) {
+                    NewPos.x++;
+                } else if (direction[dirIndex] == 2) {
+                    NewPos.y--;
+                } else {
+                    NewPos.x--;
+                }
+
+                dirIndex++;
+            }
+        }
         TargetPos = NewPos;
     }
 
     private int findNextSpot(int numberofHits) {
         int val = 0;
         Random ran = new Random();
-        if (numberofHits == 1) {
+        if (numberofHits == 1 || numberofHits == -1 || numberofHits == -2) {
             int dir = ran.nextInt(4);
             float x = LastHitPositions[index - 1].x;
             float y = LastHitPositions[index - 1].y;
@@ -299,7 +319,7 @@ public class ComputerPlayerAi {
                     tmp.x--;
             }
             val = dir;
-        } else if (numberofHits == 2) {
+        } else if (numberofHits >= 2) {
             int dir = ran.nextInt(2);
             float x = LastHitPositions[index - 1].x;
             float y = LastHitPositions[index - 1].y;
@@ -308,19 +328,60 @@ public class ComputerPlayerAi {
             Vector2 tmp = new Vector2(x, y);
             Vector2 tmp2 = new Vector2(x2, y2);
             Vector2 tmp3 = new Vector2();
-
+            boolean cond1, cond2, cond3, cond4, cond11, cond22, cond33, cond44, allTrue;
+            cond1 = cond2 = cond3 = cond4 = cond11 = cond22 = cond33 = cond44 = false;
+            allTrue = true;
             if (tmp.x == tmp2.x) {
                 tmp3.x = tmp2.x;
                 if (dir == 0)
                     tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
                 else
                     tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
+
+                if (tmp.y - 1 < 0)
+                    cond1 = true;
+                if (tmp2.y - 1 < 0)
+                    cond2 = true;
+                if (tmp.y + 1 > 9)
+                    cond3 = true;
+                if (tmp2.y + 1 > 9)
+                    cond4 = true;
+
+                if (!cond1)
+                    cond11 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y - 1] != 0);
+                if (!cond2)
+                    cond22 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y - 1] != 0);
+                if (!cond3)
+                    cond33 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y + 1] != 0);
+                if (!cond4)
+                    cond44 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y + 1] != 0);
+
+                if (!cond1)
+                    allTrue = (allTrue && cond11);
+                if (!cond2)
+                    allTrue = (allTrue && cond22);
+                if (!cond3)
+                    allTrue = (allTrue && cond33);
+                if (!cond4)
+                    allTrue = (allTrue && cond44);
+
+                if (allTrue)
+                    return -1; // If there is no free pos in Y axis to shoot
+
                 while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
                     else
                         tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
+                    while (tmp3.y > 9 || tmp3.y < 0) {
+                        dir = ran.nextInt(2);
+                        if (dir == 0)
+                            tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
+                        else
+                            tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
+                    }
+
                 }
             } else if (tmp.y == tmp2.y) {
                 tmp3.y = tmp2.y;
@@ -328,12 +389,50 @@ public class ComputerPlayerAi {
                     tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
                 else
                     tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
+
+                if (tmp.x + 1 > 9)
+                    cond1 = true;
+                if (tmp2.x + 1 > 9)
+                    cond2 = true;
+                if (tmp.x - 1 < 0)
+                    cond3 = true;
+                if (tmp2.x - 1 < 0)
+                    cond4 = true;
+
+                if (!cond1)
+                    cond11 = (SecondPlayerShotsDone[(int) tmp.x + 1][(int) tmp3.y] != 0);
+                if (!cond2)
+                    cond22 = (SecondPlayerShotsDone[(int) tmp2.x + 1][(int) tmp3.y] != 0);
+                if (!cond3)
+                    cond33 = (SecondPlayerShotsDone[(int) tmp2.x - 1][(int) tmp3.y] != 0);
+                if (!cond4)
+                    cond44 = (SecondPlayerShotsDone[(int) tmp.x - 1][(int) tmp3.y] != 0);
+
+                if (!cond1)
+                    allTrue = (allTrue && cond11);
+                if (!cond2)
+                    allTrue = (allTrue && cond22);
+                if (!cond3)
+                    allTrue = (allTrue && cond33);
+                if (!cond4)
+                    allTrue = (allTrue && cond44);
+
+                if (allTrue)
+                    return -2; // If there is no free pos in X axis to shoot
+
                 while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0) {
                     dir = ran.nextInt(2);
                     if (dir == 0)
                         tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
                     else
                         tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
+                    while (tmp3.x > 9 || tmp3.x < 0) {
+                        dir = ran.nextInt(2);
+                        if (dir == 0)
+                            tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
+                        else
+                            tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
+                    }
                 }
             }
             val = dir;
