@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ourshipsgame.Main;
+import com.ourshipsgame.game.GameScreen;
 import com.ourshipsgame.game.GameSettings;
 import com.ourshipsgame.handlers.Constant;
 
@@ -25,13 +27,18 @@ public class Hud implements Constant {
     private Stage stage;
     private Skin skin;
     public GameSettings gameSettings;
+    public GameScreen gameScreen;
+    public Main game;
 
     // Constructor
-    public Hud(AssetManager manager) {
+    public Hud(AssetManager manager, Main game, GameScreen gameScreen) {
         skin = new Skin();
         skin = manager.get("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
 
         stage = new Stage(new ScreenViewport());
+
+        this.game = game;
+        this.gameScreen = gameScreen;
 
         // Close button
         Texture[] buttonStyles = new Texture[2];

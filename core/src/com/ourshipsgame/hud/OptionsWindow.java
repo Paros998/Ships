@@ -3,17 +3,18 @@ package com.ourshipsgame.hud;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.ourshipsgame.game.GameSlider;
 import com.ourshipsgame.handlers.Constant;
+import com.ourshipsgame.mainmenu.MenuGlobalElements;
+import com.ourshipsgame.mainmenu.MenuScreen;
 
 public class OptionsWindow extends Dialog implements Constant {
 
     // Fields
     private enum Actions {
-        RESUME_GAME, OPTIONS, EXIT_GAME;
+        RESUME_GAME, OPTIONS, BACK_TO_MAIN_MENU;
     }
 
     private Table layoutTable;
@@ -34,7 +35,7 @@ public class OptionsWindow extends Dialog implements Constant {
 
         this.button("Resume Game", Actions.RESUME_GAME);
         this.button("Options", Actions.OPTIONS);
-        this.button("Quit Game", Actions.EXIT_GAME);
+        this.button("Back to Main Menu", Actions.BACK_TO_MAIN_MENU);
 
         layoutTable.add(this).expandX().padBottom(10);
     }
@@ -96,7 +97,7 @@ public class OptionsWindow extends Dialog implements Constant {
             }.show(hud.getStage());
             break;
 
-        case EXIT_GAME:
+        case BACK_TO_MAIN_MENU:
             hud.gameSettings.playSound();
             new Dialog("Confitm Exit", hud.getSkin()) {
 
@@ -107,8 +108,11 @@ public class OptionsWindow extends Dialog implements Constant {
 
                 @Override
                 protected void result(final Object act) {
-                    if (act.toString() == "Yes")
-                        Gdx.app.exit();
+                    if (act.toString() == "Yes") {
+                        hud.gameScreen.dispose();
+                        hud.game.menuElements = new MenuGlobalElements(hud.game);
+                        hud.game.setScreen(new MenuScreen(hud.game));
+                    }
                     else {
                         hud.gameSettings.playSound();
                         backReference.show(hud.getStage());

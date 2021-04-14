@@ -339,7 +339,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
             gameStage = 2;
-            hud = new Hud(manager);
+            hud = new Hud(manager, game, GameScreen);
             createdTextures = true;
         }
 
