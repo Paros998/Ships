@@ -53,6 +53,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean shootSound = false;
     private boolean hitMissSound = false;
     private boolean createDialog = false;
+    private boolean drawShips = true;
     private long sid;
     private int[] layers;
     private int[] endlayers;
@@ -88,36 +89,37 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     private void drawShipsEnTurrets() {
-        switch (gameStage) {
-        case 2:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].updateTexture();
-                FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
-                SecondBoardShipsSprites[i].drawTurrets(sb, true);
+        if (drawShips)
+            switch (gameStage) {
+            case 2:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].updateTexture();
+                    FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].updateTexture();
+                    SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
+                    SecondBoardShipsSprites[i].drawTurrets(sb, true);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].updateTexture();
+                    FirstBoardShipsSprites[i].drawSprite(sb);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].updateTexture();
+                    SecondBoardShipsSprites[i].drawSprite(sb, true);
+                    SecondBoardShipsSprites[i].drawTurrets(sb, true);
+                }
+                break;
+            case 4:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].drawSprite(sb);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].drawSprite(sb);
+                    SecondBoardShipsSprites[i].drawTurrets(sb);
+                }
+                break;
             }
-            break;
-        case 3:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].updateTexture();
-                FirstBoardShipsSprites[i].drawSprite(sb);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb, true);
-                SecondBoardShipsSprites[i].drawTurrets(sb, true);
-            }
-            break;
-        case 4:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].drawSprite(sb);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].drawSprite(sb);
-                SecondBoardShipsSprites[i].drawTurrets(sb);
-            }
-            break;
-        }
     }
 
     private void drawHit(float deltaTime) {
