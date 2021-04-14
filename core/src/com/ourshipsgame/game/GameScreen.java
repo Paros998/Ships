@@ -53,12 +53,15 @@ public class GameScreen extends GameEngine implements InputProcessor {
     private boolean shootSound = false;
     private boolean hitMissSound = false;
     private boolean createDialog = false;
+    private boolean drawShips = true;
     private long sid;
     private int[] layers;
     private int[] endlayers;
     private float rotateTime;
     private float shootTime;
     private float destroyTime;
+    private float missTime;
+    private float hitTime;
     // other vars
     private BitmapFont font;
 
@@ -86,53 +89,60 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     private void drawShipsEnTurrets() {
-        switch (gameStage) {
-        case 2:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].updateTexture();
-                FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
-                SecondBoardShipsSprites[i].drawTurrets(sb, true);
+        if (drawShips)
+            switch (gameStage) {
+            case 2:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].updateTexture();
+                    FirstBoardShipsSprites[i].drawSprite(sb, true, false, sr);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].updateTexture();
+                    SecondBoardShipsSprites[i].drawSprite(sb, true, false, sr, true);
+                    SecondBoardShipsSprites[i].drawTurrets(sb, true);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].updateTexture();
+                    FirstBoardShipsSprites[i].drawSprite(sb);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].updateTexture();
+                    SecondBoardShipsSprites[i].drawSprite(sb, true);
+                    SecondBoardShipsSprites[i].drawTurrets(sb, true);
+                }
+                break;
+            case 4:
+                for (int i = 0; i < sum; i++) {
+                    FirstBoardShipsSprites[i].drawSprite(sb);
+                    FirstBoardShipsSprites[i].drawTurrets(sb);
+                    SecondBoardShipsSprites[i].drawSprite(sb);
+                    SecondBoardShipsSprites[i].drawTurrets(sb);
+                }
+                break;
             }
-            break;
-        case 3:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].updateTexture();
-                FirstBoardShipsSprites[i].drawSprite(sb);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].updateTexture();
-                SecondBoardShipsSprites[i].drawSprite(sb, true);
-                SecondBoardShipsSprites[i].drawTurrets(sb, true);
-            }
-            break;
-        case 4:
-            for (int i = 0; i < sum; i++) {
-                FirstBoardShipsSprites[i].drawSprite(sb);
-                FirstBoardShipsSprites[i].drawTurrets(sb);
-                SecondBoardShipsSprites[i].drawSprite(sb);
-                SecondBoardShipsSprites[i].drawTurrets(sb);
-            }
-            break;
-        }
     }
 
     private void drawHit(float deltaTime) {
-        if (shootTime <= 1f) {
+        hitTime += deltaTime;
+        if (hitTime <= 1f) {
             hitEffect.updateAnimation();
             hitEffect.drawEffect(sb);
         } else {
+            hitEffect.resetAnimation();
+            hitTime = 0f;
             hitted = false;
         }
         hitMissSound = false;
     }
 
     private void drawMiss(float deltaTime) {
-        if (shootTime <= 1f) {
+        missTime += deltaTime;
+        if (missTime <= 1f) {
             missEffect.updateAnimation();
             missEffect.drawEffect(sb);
         } else {
+            missEffect.resetAnimation();
+            missTime = 0f;
             missed = false;
         }
         hitMissSound = false;
@@ -144,6 +154,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             destroymentEffect.updateAnimation(true);
             destroymentEffect.drawEffect(sb, true);
         } else {
+            destroymentEffect.resetAnimation();
             destroyed = false;
             destroymentSound = false;
             destroyTime = 0f;
@@ -164,6 +175,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
         } else {
             if (missed)
                 switchTurn();
+            for (int i = 0; i < sum; i++) {
+                if (FirstBoardShipsSprites[i].shipDestroyed)
+                    continue;
+                shootEffect[i].resetAnimation();
+            }
             rotateEnabled = true;
             shootTime = 0f;
             shootOrder = false;

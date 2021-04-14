@@ -1,4 +1,4 @@
-package inteligentSystems;
+package com.ourshipsgame.inteligentSystems;
 
 import java.util.Random;
 

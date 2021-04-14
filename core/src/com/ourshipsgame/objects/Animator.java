@@ -29,6 +29,10 @@ public class Animator {
         totalTime = 0;
     }
 
+    public void setStartAnimation() {
+        currentImage.x = currentImage.y = 0;
+    }
+
     // Public methods
     public void update() {
 
