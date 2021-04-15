@@ -15,22 +15,72 @@ import com.ourshipsgame.game.GameSlider;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.hud.GameTextButton;
 
+/**
+ * Klasa okna opcji w głównym menu.
+ */
 public class OptionScreen implements Screen, Constant {
 
     // Class Fields
+
+    /**
+     * Obiekt klasy Main. Odpowiedzialny głównie za zarządzanie ekranami. W tej
+     * klasie jest również odwołaniem do klasy MenuGlobalElements.
+     */
     private Main game;
-    private GameSlider musicSliderVolume, soundSilderVolume;
+
+    /**
+     * Ssuwak z libGDX. Służy do regulowania głośności muzyki.
+     */
+    private GameSlider musicSliderVolume;
+
+    /**
+     * Ssuwak z libGDX. Służy do regulowania głośności dźwięków w grze.
+     */
+    private GameSlider soundSilderVolume;
+
+    /**
+     * Przycisk z libGDX. Wraca do głównego okna menu gry.
+     */
     private GameTextButton backButton;
+
+    /**
+     * Scena z silnika libGDX. Sprawia, że elementy w grze są interaktywne oraz
+     * rysuje je na ekranie.
+     */
     public Stage stage;
+
+    /**
+     * Obiekt silnika libGDX. Rysuje obiekty na ekranie tj. sprite'y czy tekstury.
+     */
     public SpriteBatch batch;
-    public TextField soundsVolumeText, musicVolumeText;
+
+    /**
+     * Pole tekstowe z libGDX. Opisuje poniższy ssuwak w oknie.
+     */
+    public TextField soundsVolumeText;
+
+    /**
+     * Pole tekstowe z libGDX. Opisuje poniższy ssuwak w oknie.
+     */
+    public TextField musicVolumeText;
 
     // Constructor
+
+    /**
+     * Główny i jedyny konstruktor klasy OptionScreen.
+     * 
+     * @param game Obiekt klasy Main.
+     */
     public OptionScreen(Main game) {
         this.game = game;
     }
 
     // Methods
+
+    /**
+     * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w oknie
+     * opcji (libGDX).
+     */
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -66,7 +116,9 @@ public class OptionScreen implements Screen, Constant {
     }
 
     /**
-     * @param deltaTime
+     * Metoda odpowiedzialna za odświeżanie opreacji w oknie opcji.
+     * 
+     * @param deltaTime Czas Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
@@ -76,7 +128,10 @@ public class OptionScreen implements Screen, Constant {
     }
 
     /**
-     * @throws IOException
+     * Metoda odpowiedzialna za zapis ustawień z okna opcji do pliku tekstowego
+     * settings.txt.
+     * 
+     * @throws IOException Wyjątek związany z plikami.
      */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
@@ -86,7 +141,9 @@ public class OptionScreen implements Screen, Constant {
     }
 
     /**
-     * @param delta
+     * Metoda odpowiedzialna za renderowanie okna opcji (libGDX).
+     * 
+     * @param delta Główny czas silnika libGDX.
      */
     @Override
     public void render(float delta) {
@@ -105,29 +162,43 @@ public class OptionScreen implements Screen, Constant {
     }
 
     /**
-     * @param width
-     * @param height
+     * Metoda obsługująca skalowanie okna gry (libGDX).
+     * 
+     * @param width  Szerokość okna.
+     * @param height Wysokość okna.
      */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     * Metoda obsługująca pauzę w grze (libGDX).
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Metoda obsługująca wyłączenie pauzy (libGDX).
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Metoda obsługująca ukrycie okna gry (libGDX).
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Metoda obsługująca niszczenie elementów silnika libGDX.
+     */
     @Override
     public void dispose() {
         try {
@@ -138,5 +209,4 @@ public class OptionScreen implements Screen, Constant {
         stage.dispose();
         batch.dispose();
     }
-
 }
