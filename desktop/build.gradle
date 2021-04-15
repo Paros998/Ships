@@ -23,8 +23,10 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
+    archiveName = 'ShipsDist.jar'
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Main-Class': 'com/ourshipsgame/desktop/DesktopLauncher'
     }
     dependsOn configurations.runtimeClasspath
     from {
