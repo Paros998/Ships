@@ -22,29 +22,84 @@ import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.hud.GameTextButton;
 import com.ourshipsgame.mainmenu.Scores.Node;
 
+/**
+ * Klasa okna wyników w głównym menu.
+ */
 public class ScoreScreen implements Screen, Constant {
+
+    /**
+     * Okno przewijania (libGDX).
+     * Zamieszczane są w nim wyniki z klasy Scores.
+     */
     private ScrollPane scoreList;
+
+    /**
+     * Przycisk z libGDX. Wraca do głównego okna menu gry.
+     */
     private GameTextButton backButton;
-    private Table layoutTable, scrollTable;
+
+    /**
+     * Tablica rozmieszczenia obiektów.
+     * Ułatwia rozmieszczenie elementów na ekranie.
+     */
+    private Table layoutTable;
+
+    /**
+     * Tablica rozmieszczenia do okna przewijania.
+     * Służy do prawidłowego rozmieszczenia danych w oknie.
+     */
+    private Table scrollTable;
+
+    /**
+     * Scena z silnika libGDX. 
+     * Sprawia, że elementy w grze są interaktywne oraz rysuje je na ekranie.
+     */
     private Stage stage;
+
+    /**
+     * Obiekt klasy score.
+     * Wczytuje wyniki gracza z pliku.
+     */
     private Scores scores;
+
+    /**
+     * Obiekt klasy Main. Odpowiedzialny głównie za zarządzanie ekranami. W tej
+     * klasie jest również odwołaniem do klasy MenuGlobalElements.
+     */
     private Main game;
+
+    /**
+     * Obiekt silnika libGDX. Rysuje obiekty na ekranie tj. sprite'y czy tekstury.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Czcionka do napisów.
+     */
     private BitmapFont font;
 
+    /**
+     * Główny i jedyny konstruktor klasy OptionScreen.
+     * @param game Obiekt klasy Main.
+     */
     public ScoreScreen(Main game) {
         this.game = game;
         scores = new Scores();
     }
 
     /**
-     * @param deltaTime
+     * Metoda odpowiedzialna za odświeżanie opreacji w oknie opcji.
+     * @param deltaTime Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
         stage.act();
     }
 
+    /**
+     * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w oknie
+     * opcji (libGDX).
+     */
     @Override
     public void show() {
         // // Creating batch and font
@@ -98,7 +153,8 @@ public class ScoreScreen implements Screen, Constant {
     }
 
     /**
-     * @param delta
+     * Metoda odpowiedzialna za renderowanie okna opcji (libGDX).
+     * @param delta Główny czas silnika libGDX.
      */
     @Override
     public void render(float delta) {
@@ -118,34 +174,46 @@ public class ScoreScreen implements Screen, Constant {
     }
 
     /**
-     * @param width
-     * @param height
+     * Metoda obsługująca skalowanie okna gry (libGDX).
+     * @param width Szerokość okna.
+     * @param height Wysokość okna.
      */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     * Metoda obsługująca pauzę w grze (libGDX).
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Metoda obsługująca wyłączenie pauzy (libGDX).
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Metoda obsługująca ukrycie okna gry (libGDX).
+     */
     @Override
     public void hide() {
         dispose();
     }
 
+    /**
+     * Metoda obsługująca niszczenie elementów silnika libGDX.
+     */
     @Override
     public void dispose() {
         batch.dispose();
         stage.dispose();
         font.dispose();
     }
-
 }

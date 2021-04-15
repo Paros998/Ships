@@ -118,7 +118,7 @@ public class OptionScreen implements Screen, Constant {
     /**
      * Metoda odpowiedzialna za odświeżanie opreacji w oknie opcji.
      * 
-     * @param deltaTime Czas Główny czas silnika libGDX.
+     * @param deltaTime Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
