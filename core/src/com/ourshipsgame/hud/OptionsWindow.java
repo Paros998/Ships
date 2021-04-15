@@ -40,6 +40,10 @@ public class OptionsWindow extends Dialog implements Constant {
         layoutTable.add(this).expandX().padBottom(10);
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
         savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
@@ -47,6 +51,10 @@ public class OptionsWindow extends Dialog implements Constant {
         savingPrintWriter.close();
     }
 
+    
+    /** 
+     * @param act
+     */
     // Method
     @Override
     protected void result(final Object act) {

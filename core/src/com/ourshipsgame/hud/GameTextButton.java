@@ -43,6 +43,10 @@ public class GameTextButton extends TextButton {
         });
     }
 
+    
+    /** 
+     * @param option
+     */
     // Setlistener method to create
 
     private void menuOptions(int option) {

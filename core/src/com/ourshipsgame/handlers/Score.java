@@ -22,10 +22,25 @@ public class Score {
         idNumber = id;
     }
 
+    
+    /** 
+     * @param name
+     */
     public void setPlayerName(String name) {
         PlayerName = name;
     }
 
+    
+    /** 
+     * @param hudFont
+     * @param batch
+     * @param gameWidth_f
+     * @param gameHeight_f
+     * @param ThreeShipsLeft
+     * @param TwoShipsLeft
+     * @param OneShipsLeft
+     * @param shipIcons
+     */
     public void drawInfo(BitmapFont hudFont, SpriteBatch batch, float gameWidth_f, float gameHeight_f,
             int ThreeShipsLeft, int TwoShipsLeft, int OneShipsLeft, Texture[] shipIcons) {
         float xstart;
@@ -90,6 +105,10 @@ public class Score {
         }
     }
 
+    
+    /** 
+     * @param PlayerShots
+     */
     public void update(int[][] PlayerShots) {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
@@ -104,6 +123,10 @@ public class Score {
             accuracyRatio = (float) shotsHitted / (float) shotsFired;
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     public void updateTime(float deltaTime) {
         timeElapsed += deltaTime;
     }
@@ -112,6 +135,10 @@ public class Score {
         this.scoreValue += (50 * (1 + 0.1 * combo));
     }
 
+    
+    /** 
+     * @param sizeofShip
+     */
     public void addPointsForDestroy(int sizeofShip) {
         shipsDestroyed++;
         if (sizeofShip == 3)

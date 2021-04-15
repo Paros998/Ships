@@ -36,6 +36,10 @@ public class GameSettings {
         clickSound.pause();
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     private void loadSettings() throws IOException {
         File file = new File("core/assets/files/settings.txt");
         if (!file.exists()) {

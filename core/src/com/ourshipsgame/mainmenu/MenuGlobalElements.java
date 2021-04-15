@@ -38,12 +38,14 @@ public class MenuGlobalElements {
 
         // Cursor
         pixmap = new Pixmap(Gdx.files.internal("core/assets/ui/ui.hud/cursors/test.png"));
-        int xHotspot = pixmap.getWidth() / 2;
-        int yHotspot = pixmap.getHeight() / 2;
-        cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+        cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
         Gdx.graphics.setCursor(cursor);
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     // Menu methods
     public void moveMenu(float deltaTime) {
         if ((menuTexture.x <= 0) && (direction == 0)) {

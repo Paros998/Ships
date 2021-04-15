@@ -44,6 +44,10 @@ public class GameImageButton extends ImageButton {
         });
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean getGameMenuState() {
         return (boolean) (optionsWindow != null ? optionsWindow.turnedOn : false);
     }

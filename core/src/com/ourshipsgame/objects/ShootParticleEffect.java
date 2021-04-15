@@ -30,6 +30,10 @@ public class ShootParticleEffect {
 
     }
 
+    
+    /** 
+     * @param actualShip
+     */
     public void setPositions(GameObject actualShip) {
         Sprite[] turrets = actualShip.getTurrets();
         int rotation = actualShip.getRotation();
@@ -103,6 +107,10 @@ public class ShootParticleEffect {
         }
     }
 
+    
+    /** 
+     * @param actualShip
+     */
     public void updateAnimation(GameObject actualShip) {
         this.animator.update();
         Sprite[] turrets = actualShip.getTurrets();
@@ -140,6 +148,10 @@ public class ShootParticleEffect {
         }
     }
 
+    
+    /** 
+     * @param batch
+     */
     public void drawAnimation(SpriteBatch batch) {
         for (int i = 0; i < turretsAmmount; i++) {
             this.sprites[i].draw(batch);

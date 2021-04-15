@@ -52,6 +52,10 @@ public class Animator {
         }
     }
 
+    
+    /** 
+     * @param row
+     */
     public void update(int row) {
         totalTime += Gdx.graphics.getDeltaTime();
         currentImage.y = row;
@@ -65,10 +69,18 @@ public class Animator {
         }
     }
 
+    
+    /** 
+     * @return TextureRegion
+     */
     public TextureRegion getCurrentFrame() {
         return frames[(int) currentImage.y][(int) currentImage.x];
     }
 
+    
+    /** 
+     * @return TextureRegion
+     */
     public TextureRegion getIdleAnimation() {
         return frames[(int) currentImage.y][(int) (imageCount.x - 1)];
     }

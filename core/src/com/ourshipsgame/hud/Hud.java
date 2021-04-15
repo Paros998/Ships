@@ -104,6 +104,12 @@ public class Hud implements Constant {
         stage.addActor(layoutTable);
     }
 
+    
+    /** 
+     * @param textures
+     * @param sprites
+     * @param factor
+     */
     // Methods
     private void setButtonsSprites(Texture[] textures, Sprite[] sprites, float factor) {
         for (int i = 0; i < sprites.length; i++) {
@@ -117,39 +123,75 @@ public class Hud implements Constant {
         stage.draw();
     }
 
+    
+    /** 
+     * @param batch
+     */
     public void render(SpriteBatch batch) {
         // uiBar.getSprite().draw(batch);
     }
 
+    
+    /** 
+     * @return GameImageButton
+     */
     // Getters
     public GameImageButton getRepeatButton() {
         return repeatButton;
     }
 
+    
+    /** 
+     * @return GameImageButton
+     */
     public GameImageButton getPlayButton() {
         return playButton;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getPlayersName() {
         return playersName;
     }
 
+    
+    /** 
+     * @return Sprite
+     */
     public Sprite getPlayButtonGreenStyle() {
         return playButtonGreenStyle;
     }
 
+    
+    /** 
+     * @return Dialog
+     */
     public Dialog getPlayersSetNameDialog() {
         return playersSetNameDialog;
     }
 
+    
+    /** 
+     * @return Stage
+     */
     public Stage getStage() {
         return stage;
     }
 
+    
+    /** 
+     * @return Skin
+     */
     public Skin getSkin() {
         return skin;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean isPasued() {
         return gameMenuButton.getGameMenuState();
     }

@@ -22,6 +22,11 @@ public class GameSlider extends Slider implements Constant {
         super(min, max, stepSize, vertical, skin);
     }
 
+    
+    /** 
+     * @param option
+     * @param settings
+     */
     public void setSliderType(int option, final GameSettings settings) {
         final Slider sliderTmp = this;
 
@@ -53,6 +58,10 @@ public class GameSlider extends Slider implements Constant {
 
     }
 
+    
+    /** 
+     * @param option
+     */
     public void setSliderType(int option) {
         final Slider sliderTmp = this;
 

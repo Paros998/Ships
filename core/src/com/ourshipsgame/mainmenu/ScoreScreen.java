@@ -37,6 +37,10 @@ public class ScoreScreen implements Screen, Constant {
         scores = new Scores();
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
         stage.act();
@@ -94,6 +98,10 @@ public class ScoreScreen implements Screen, Constant {
         stage.addActor(layoutTable);
     }
 
+    
+    /** 
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         update(delta);
@@ -111,6 +119,11 @@ public class ScoreScreen implements Screen, Constant {
         stage.draw();
     }
 
+    
+    /** 
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 

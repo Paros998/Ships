@@ -46,6 +46,10 @@ public class Scores {
         }
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     private void loadScores() throws IOException {
         File file = new File("core/assets/files/scores.txt");
         if (!file.exists()) {
@@ -64,6 +68,13 @@ public class Scores {
         }
     }
 
+    
+    /** 
+     * @param batch
+     * @param font
+     * @param gameH
+     * @param gameW
+     */
     public void drawScores(SpriteBatch batch, BitmapFont font, float gameH, float gameW) {
         Node node;
         for (int i = 0; i < scoresList.size(); i++) {

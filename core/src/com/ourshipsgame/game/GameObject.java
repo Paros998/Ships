@@ -98,14 +98,27 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getShipSize() {
         return this.size;
     }
 
+    
+    /** 
+     * @param index
+     * @return float
+     */
     public float getTurretRotation(int index) {
         return turretSprites[index].getRotation();
     }
 
+    
+    /** 
+     * @return Sprite[]
+     */
     public Sprite[] getTurrets() {
         return turretSprites;
     }
@@ -168,11 +181,19 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
+    
+    /** 
+     * @param x
+     */
     // This method simply moves main sprite texture in x axis
     public void moveTexture(float x) {
         this.x += x;
     }
 
+    
+    /** 
+     * @param texture
+     */
     // This is a method to create a sprite based on a texture , his allignment
     // rectangle and set size and position to a sprite
     protected void createSprite(Texture texture) {
@@ -184,6 +205,11 @@ public class GameObject extends Rectangle implements Constant {
         setSpritePos(this.oldPos);
     }
 
+    
+    /** 
+     * @param texture
+     * @param size
+     */
     // This is a method to create a sprite based on a texture , his allignment
     // rectangle and set size and position to a sprite but also its creating a int
     // array which will be used to represent ship destroyment in future
@@ -201,6 +227,10 @@ public class GameObject extends Rectangle implements Constant {
         setSpritePos(this.oldPos);
     }
 
+    
+    /** 
+     * @param textures
+     */
     // This method has to create array of turret sprites and its textures for a ship
     // depending on the ship size and place it on good positions accordingly to the
     // ship type
@@ -259,6 +289,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
+    
+    /** 
+     * @param batch
+     */
     // this method will draw with a parameter batch every single ship turret if they
     // exist
     public void drawTurrets(SpriteBatch batch) {
@@ -267,6 +301,11 @@ public class GameObject extends Rectangle implements Constant {
                 this.turretSprites[i].draw(batch);
     }
 
+    
+    /** 
+     * @param batch
+     * @param enemy
+     */
     // this method will draw with a parameter batch every single ship turret if they
     // exist
     public void drawTurrets(SpriteBatch batch, boolean enemy) {
@@ -276,20 +315,36 @@ public class GameObject extends Rectangle implements Constant {
                     this.turretSprites[i].draw(batch);
     }
 
+    
+    /** 
+     * @return Texture
+     */
     // this method simply return the main sprite texture
     public Texture getTexture() {
         return texture;
     }
 
+    
+    /** 
+     * @return Sprite
+     */
     // this method simply return the main sprite
     public Sprite getSprite() {
         return sprite;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getRotation() {
         return rotation;
     }
 
+    
+    /** 
+     * @param texture
+     */
     // This method method is simply used for creating the waves sprite for a ship
     // and place it accordingly to the given ship
     protected void createSpriteWave(Texture texture) {
@@ -302,11 +357,20 @@ public class GameObject extends Rectangle implements Constant {
         this.spriteWave.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 1.5f);
     }
 
+    
+    /** 
+     * @return Texture
+     */
     // this method also returns the main texture but it has different name only
     public Texture drawTexture() {
         return this.texture;
     }
 
+    
+    /** 
+     * @param batch
+     * @param enemy
+     */
     // this method draws the main sprite and its waves if they exist
     public void drawSprite(SpriteBatch batch, boolean enemy) {
         if (this.shipDestroyed) {
@@ -316,6 +380,10 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
+    
+    /** 
+     * @param batch
+     */
     // this method draws the main sprite and its waves if they exist
     public void drawSprite(SpriteBatch batch) {
         if (spriteWave != null)
@@ -324,6 +392,14 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
+    
+    /** 
+     * @param batch
+     * @param drawRect
+     * @param drawWaves
+     * @param sr
+     * @param enemy
+     */
     // this method also draws the main sprite and its waves if they exist but its
     // also drawing the main sprite rectangle with good colour based on its
     // placement on a board
@@ -341,6 +417,13 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
+    
+    /** 
+     * @param batch
+     * @param drawRect
+     * @param drawWaves
+     * @param sr
+     */
     // this method also draws the main sprite and its waves if they exist but its
     // also drawing the main sprite rectangle with good colour based on its
     // placement on a board
@@ -357,6 +440,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
+    
+    /** 
+     * @param vector2
+     */
     // this method is used to change the whole gameObject position , its main sprite
     // and also the ship waves sprite and rectangle if they exist
     public void setSpritePos(Vector2 vector2) {
@@ -444,6 +531,10 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
+    
+    /** 
+     * @param vector2
+     */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
     // and the ship turrets if they exist
@@ -461,6 +552,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
+    
+    /** 
+     * @param x
+     */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
     // and the ship turrets if they exist but only in x axis
@@ -477,6 +572,10 @@ public class GameObject extends Rectangle implements Constant {
         this.x = sprite.getX();
     }
 
+    
+    /** 
+     * @param y
+     */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
     // and the ship turrets if they exist but only in y axis
@@ -492,6 +591,11 @@ public class GameObject extends Rectangle implements Constant {
         this.y = sprite.getY();
     }
 
+    
+    /** 
+     * @param point
+     * @return boolean
+     */
     // this method checks if the point is placed in gameobject
     public boolean spriteContains(Vector2 point) {
         if (this.alligmentRectangle.contains(point))
@@ -508,6 +612,10 @@ public class GameObject extends Rectangle implements Constant {
             rectColour = Color.RED;
     }
 
+    
+    /** 
+     * @param isIt
+     */
     // this method changes the boolean value of good placement
     public void setGoodPlacement(boolean isIt) {
         this.goodPlacement = isIt;
@@ -522,6 +630,11 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
+    
+    /** 
+     * @param textureD
+     * @param turrets
+     */
     public void changeDestroyTexture(Texture textureD, Texture[] turrets) {
         this.spriteWave = null;
         if (this.size == 3) {
@@ -558,11 +671,20 @@ public class GameObject extends Rectangle implements Constant {
         this.shipDestroyed = true;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     // this method return true or false wheter the whole ship is destroyed
     public boolean isDestroyed() {
         return shipDestroyed;
     }
 
+    
+    /** 
+     * @param otherRectangle
+     * @return boolean
+     */
     // this method check if this sprite is colliding with another when they have the
     // same rotation
     public boolean collide(Rectangle otherRectangle) {
@@ -585,6 +707,13 @@ public class GameObject extends Rectangle implements Constant {
             return false;
     }
 
+    
+    /** 
+     * @param otherRectangle
+     * @param diffRotation
+     * @param actualShipRotatedVertically
+     * @return boolean
+     */
     // this method check if this sprite is colliding with another when they dont
     // have the same rotation
     public boolean collide(Rectangle otherRectangle, boolean diffRotation, boolean actualShipRotatedVertically) {
@@ -822,6 +951,11 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
+    
+    /** 
+     * @param degrees
+     * @param index
+     */
     public void rotateTurret(float degrees, int index) {
         if (!this.shipDestroyed)
             if (this.turretSprites != null) {
@@ -830,10 +964,19 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
+    
+    /** 
+     * @param i
+     * @return Vector2f
+     */
     public Vector2f getVectorPos(int i) {
         return new Vector2f(turretSprites[i].getX(), turretSprites[i].getY());
     }
 
+    
+    /** 
+     * @return Vector2f
+     */
     public Vector2f getPosition() {
         return new Vector2f(x, y);
     }

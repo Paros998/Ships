@@ -47,14 +47,28 @@ public class BoomEffect {
         this.sprites[0].setOriginCenter();
     }
 
+    
+    /** 
+     * @return Vector2
+     */
     public Vector2 getPos() {
         return new Vector2(sprite.getX(), sprite.getY());
     }
 
+    
+    /** 
+     * @param vector2f
+     */
     public void setPos(Vector2f vector2f) {
         this.sprite.setPosition(vector2f.x - 32, vector2f.y - 32);
     }
 
+    
+    /** 
+     * @param vector2f
+     * @param rotation
+     * @param radius
+     */
     public void setPos(Vector2f vector2f, int rotation, int radius) {
         this.radius = radius;
         this.sprites = new Sprite[radius];
@@ -78,6 +92,10 @@ public class BoomEffect {
         this.sprite.setRegion(region);
     }
 
+    
+    /** 
+     * @param multiple
+     */
     public void updateAnimation(boolean multiple) {
         this.animator.update();
         TextureRegion region = animator.getCurrentFrame();
@@ -85,21 +103,40 @@ public class BoomEffect {
             this.sprites[i].setRegion(region);
     }
 
+    
+    /** 
+     * @param batch
+     */
     public void drawEffect(SpriteBatch batch) {
         this.sprite.draw(batch);
     }
 
+    
+    /** 
+     * @param batch
+     * @param multiple
+     */
     public void drawEffect(SpriteBatch batch, boolean multiple) {
         for (int i = 0; i < radius; i++)
             this.sprites[i].draw(batch);
     }
 
+    
+    /** 
+     * @param multiple
+     * @param soundVolume
+     * @return boolean
+     */
     public boolean playSound(boolean multiple, float soundVolume) {
         for (int i = 0; i < radius; i++)
-            this.sound.play(soundVolume + (i * 0.1f));
+            this.sound.play(soundVolume * (1 + (i * 0.1f)));
         return false;
     }
 
+    
+    /** 
+     * @param soundVolume
+     */
     public void playSound(float soundVolume) {
         this.sound.play(soundVolume);
     }

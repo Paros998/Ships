@@ -393,6 +393,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             PlayerTurn = 1;
     }
 
+    
+    /** 
+     * @param manager
+     */
     // loading method
     protected void loadGameEngine(AssetManager manager) {
         // turrets and ships textures
@@ -448,6 +452,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/sounds/lose.mp3", Sound.class);
     }
 
+    
+    /** 
+     * @param manager
+     */
     protected void loadHudAssets(AssetManager manager) {
         // Skin
         manager.load("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
@@ -481,6 +489,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/fonts/nunito.light2.ttf", BitmapFont.class, param2);
     }
 
+    
+    /** 
+     * @param computerEnemy
+     * @param manager
+     * @return boolean
+     */
     // game methods below
     // Stage 1
     protected boolean preparation(boolean computerEnemy, AssetManager manager) {
@@ -626,6 +640,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return done;
     }
 
+    
+    /** 
+     * @param BoardNumber
+     * @param resetPos
+     */
     protected void generateAndPlaceShipsOnBoard(int BoardNumber, boolean resetPos) {
         GameObject actualShip;
         Board board;
@@ -727,6 +746,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         generator = null;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     */
     // Stage 2 methods to place ships on board
     protected void touchDownSprite(int screenX, int screenY) {
         for (int i = 0; i < sum; i++) {
@@ -755,6 +779,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         activeSpriteDrag = 99;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     */
     protected void dragSprite(int screenX, int screenY) {
         if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
             GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
@@ -792,6 +821,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    
+    /** 
+     * @param actualShip
+     * @param boardNumber
+     * @return boolean
+     */
     protected boolean isShipPlacedGood(GameObject actualShip, int boardNumber) {
         // Checking if ship is dropped on good position not colliding with anything
         if (boardNumber == 1) {
@@ -847,6 +882,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         FirstBoardShipsSprites[activeSpriteDrag].rotate90();
     }
 
+    
+    /** 
+     * @param font
+     * @param batch
+     */
     protected void drawStage2Text(BitmapFont font, SpriteBatch batch) {
         String text = "Place your ships within the board !";
         int len = text.length();
@@ -859,6 +899,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         font.draw(batch, text, (gameWidth_f - 230 - (43 * (len / 2))), gameHeight_f / 2);
     }
 
+    
+    /** 
+     * @return boolean
+     */
     protected boolean checkAllShips() {
         for (int i = 0; i < sum; i++) {
             if (isShipPlacedGood(FirstBoardShipsSprites[i], 1) == false)
@@ -867,6 +911,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return true;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     */
     // Stage 3 later
     protected void rotateTurretsWithMouse(float screenX, float screenY) {
         screenY = gameHeight_f - screenY;
@@ -928,6 +977,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    
+    /** 
+     * @param xPos
+     * @param yPos
+     */
     protected void checkHit(int xPos, int yPos) {
         int tx = xPos, ty = yPos;
         switch (PlayerTurn) {
@@ -991,6 +1045,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     * @return boolean
+     */
     protected boolean shoot(int screenX, int screenY) {
         if (shootingEnabled) {
             int xPos, yPos;
@@ -1023,6 +1083,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return false;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     */
     protected void checkEnemyBoard(int screenX, int screenY) {
         Rectangle board = new Rectangle(SecondBoardStart.x, SecondBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
                 BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);

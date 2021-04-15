@@ -20,14 +20,32 @@ public class ComputerPlayerAi {
     private int index, dirIndex;
     private int[][] SecondPlayerShotsDone;
 
+    
+    /** 
+     * @return float
+     */
     public float getX() {
         return TargetPos.x;
     }
 
+    
+    /** 
+     * @return float
+     */
     public float getY() {
         return TargetPos.y;
     }
 
+    
+    /** 
+     * @param missed
+     * @param hitted
+     * @param destroyed
+     * @param ShotsDone
+     * @param ships
+     * @param firstboard
+     * @param shipsAmmount
+     */
     public void update(boolean missed, boolean hitted, boolean destroyed, int[][] ShotsDone, GameObject[] ships,
             Vector2f firstboard, int shipsAmmount) {
         this.missed = missed;
@@ -83,6 +101,11 @@ public class ComputerPlayerAi {
         index = 0;
     }
 
+    
+    /** 
+     * @param deltaTime
+     * @return boolean
+     */
     public boolean attackEnemy(float deltaTime) {
         actualTime += deltaTime;
         if (actualTime < attackTime) {
@@ -209,6 +232,10 @@ public class ComputerPlayerAi {
             HittedAndNotDestroyed(hitsLeft);
     }
 
+    
+    /** 
+     * @param foundAnotherhit
+     */
     private void HittedAndNotDestroyed(boolean foundAnotherhit) {
         Vector2 NewPos;
         if (!foundAnotherhit) {
@@ -296,6 +323,11 @@ public class ComputerPlayerAi {
         TargetPos = NewPos;
     }
 
+    
+    /** 
+     * @param numberofHits
+     * @return int
+     */
     private int findNextSpot(int numberofHits) {
         int val = 0;
         Random ran = new Random();

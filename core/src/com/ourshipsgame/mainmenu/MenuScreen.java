@@ -13,30 +13,76 @@ import com.ourshipsgame.game.GameObject;
 import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.hud.GameTextButton;
 
+/**
+ * Klasa zawierająca główne menu gry.
+ */
 public class MenuScreen implements Screen, Constant {
 
-    // vars mandatory
+    /**
+     * Obiekt klasy Main. Odpowiedzialny głównie za zarządzanie ekranami. 
+     * W tej klasie jest również odwołaniem do klasy MenuGlobalElements.
+     */
     private Main game;
+
+    /**
+     * Scena z silnika libGDX. 
+     * Sprawia, że elementy w grze są interaktywne oraz rysuje je na ekranie.
+     */
     public Stage stage;
+
+    /**
+     * Obiekt silnika libGDX.
+     * Rysuje obiekty na ekranie tj. sprite'y czy tekstury.
+     */
     public SpriteBatch batch;
 
-    // Objects in menu
-    private GameObject notDestroyedShip, destroyedShip, fire;
-    private GameObject[] projectile;
-    private GameTextButton playButton, helpButon, scoreButton, optionsButton, quitButton;
+    /**
+     * Obiekty klasy GameObject.
+     * Są to statki w głównym menu gry.
+     */
+    private GameObject notDestroyedShip;
+    private GameObject destroyedShip;
+    private GameObject fire;
 
+    /**
+     * Tablica obiektów GameObject.
+     * Są to pociski 'wystrzeliwane' ze statków w głównym menu gry.
+     */
+    private GameObject[] projectile;
+
+    /**
+     * Przyciski w głównym menu gry.
+     * Są przejściem do ekranu kolejno rozgrywki, pomocy, wyników, opcji.
+     * Przycisk ostatni to wyjście z gry.
+     */
+    private GameTextButton playButton;
+    private GameTextButton helpButon;
+    private GameTextButton scoreButton;
+    private GameTextButton optionsButton;
+    private GameTextButton quitButton;
+
+    /**
+     * Główny i jedyny konstruktor klasy MenuScreen.
+     * @param game Obiekt klasy Main.
+     */
     public MenuScreen(Main game) {
         this.game = game;
     }
 
-    // update logics method
+    /**
+     * Metoda odpowiedzialna za odświeżanie opreacji w menu gry.
+     * @param deltaTime Główny czas silniku libGDX.
+     */
     private void update(float deltaTime) {
         stage.act();
         game.menuElements.moveMenu(deltaTime);
         fire.updateAnimation();
     }
-
-    // game loop method
+    
+    /** 
+     * Metoda odpowiedzialna za renderowanie menu gry.
+     * @param deltaTime Główny czas silniku libGDX.
+     */
     @Override
     public void render(float deltaTime) {
         // Updating menu
@@ -65,6 +111,7 @@ public class MenuScreen implements Screen, Constant {
         stage.draw();
     }
 
+    
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -154,6 +201,11 @@ public class MenuScreen implements Screen, Constant {
     public void resume() {
     }
 
+    
+    /** 
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 

@@ -66,6 +66,10 @@ public class OptionScreen implements Screen, Constant {
         stage.addActor(musicVolumeText);
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
         musicSliderVolume.setVisualPercent(game.menuElements.gameSettings.sliderMusicPercent);
@@ -73,6 +77,10 @@ public class OptionScreen implements Screen, Constant {
         stage.act();
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
         savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
@@ -80,6 +88,10 @@ public class OptionScreen implements Screen, Constant {
         savingPrintWriter.close();
     }
 
+    
+    /** 
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         update(delta);
@@ -96,6 +108,11 @@ public class OptionScreen implements Screen, Constant {
         stage.draw();
     }
 
+    
+    /** 
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 

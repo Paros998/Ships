@@ -7,6 +7,10 @@ import com.ourshipsgame.Main;
 import com.ourshipsgame.handlers.Constant;
 
 public class DesktopLauncher implements Constant {
+	
+	/** 
+	 * @param arg
+	 */
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Ships Game v1.0 Credits -> Patryk Grzywacz | Dominik Grudzień | Adrian Pełka";

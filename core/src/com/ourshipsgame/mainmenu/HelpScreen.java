@@ -36,6 +36,10 @@ public class HelpScreen implements Screen, Constant {
         this.game = game;
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void update(float deltaTime) {
         game.menuElements.moveMenu(deltaTime);
         stage.act();
@@ -146,6 +150,10 @@ public class HelpScreen implements Screen, Constant {
         stage.addActor(mainTable);
     }
 
+    
+    /** 
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         update(delta);
@@ -163,6 +171,11 @@ public class HelpScreen implements Screen, Constant {
         stage.draw();
     }
 
+    
+    /** 
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 

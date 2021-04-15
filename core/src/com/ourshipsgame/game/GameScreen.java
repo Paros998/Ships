@@ -123,6 +123,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
             }
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void drawHit(float deltaTime) {
         hitTime += deltaTime;
         if (hitTime <= 1f) {
@@ -136,6 +140,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         hitMissSound = false;
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void drawMiss(float deltaTime) {
         missTime += deltaTime;
         if (missTime <= 1f) {
@@ -149,6 +157,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         hitMissSound = false;
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void drawDestroyment(float deltaTime) {
         destroyTime += deltaTime;
         if (destroyTime <= 1f) {
@@ -162,6 +174,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     private void drawShootingEffect(float deltaTime) {
         shootTime += deltaTime;
         if (shootTime <= 1f) {
@@ -187,6 +203,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    
+    /** 
+     * @param batch
+     */
     private void drawMarks(SpriteBatch batch) {
         if (gameStage == 3) {
             float xpos, ypos;
@@ -275,6 +295,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }.show(hud.getStage());
     }
 
+    
+    /** 
+     * @param batch
+     */
     private void drawScores(SpriteBatch batch) {
         PlayerOne.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, FirstBoardThreeShipsLeft, FirstBoardTwoShipsLeft,
                 FirstBoardOneShipsLeft, shipIcons);
@@ -428,6 +452,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         shootSound = false;
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     // Not needed
     // Input and update methods
     private void handleInput(float deltaTime) {
@@ -444,6 +472,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     // update logics of game
     private void update(float deltaTime) {
 
@@ -510,6 +542,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    
+    /** 
+     * @param deltaTime
+     */
     // game loop method
     @Override
     public void render(float deltaTime) {
@@ -621,6 +657,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     }
 
+    
+    /** 
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
         gameHeight = height;
@@ -635,6 +676,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
         super.dispose();
     }
 
+    
+    /** 
+     * @param keycode
+     * @return boolean
+     */
     @Override
     public boolean keyDown(int keycode) {
         if (gameStage == 2) {
@@ -645,18 +691,36 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
+    
+    /** 
+     * @param keycode
+     * @return boolean
+     */
     @Override
     public boolean keyUp(int keycode) {
 
         return false;
     }
 
+    
+    /** 
+     * @param character
+     * @return boolean
+     */
     @Override
     public boolean keyTyped(char character) {
 
         return false;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     * @param pointer
+     * @param button
+     * @return boolean
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Buttons.LEFT) {
@@ -674,6 +738,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     * @param pointer
+     * @param button
+     * @return boolean
+     */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (gameStage == 2)
@@ -681,6 +753,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     * @param pointer
+     * @return boolean
+     */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (gameStage == 2)
@@ -688,6 +767,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
+    
+    /** 
+     * @param screenX
+     * @param screenY
+     * @return boolean
+     */
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if (gameStage == 3) {
@@ -704,6 +789,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
+    
+    /** 
+     * @param amountX
+     * @param amountY
+     * @return boolean
+     */
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
