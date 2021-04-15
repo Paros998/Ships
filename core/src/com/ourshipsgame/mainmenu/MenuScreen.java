@@ -36,12 +36,9 @@ public class MenuScreen implements Screen, Constant {
     public SpriteBatch batch;
 
     /**
-<<<<<<< HEAD
      * Obiekt klasy GameObject.
      * Jest to obrazek statku w głównym menu gry.
-=======
      * Obiekty klasy GameObject. Są to statki w głównym menu gry.
->>>>>>> 24e457f2e364728d3f71ff4a31e6c9c016af29bb
      */
     private GameObject notDestroyedShip;
     
@@ -64,13 +61,10 @@ public class MenuScreen implements Screen, Constant {
     private GameObject[] projectile;
 
     /**
-<<<<<<< HEAD
      * Przycisk w głównym menu gry.
      * Jest przejściem do ekranu rozgrywki.
-=======
      * Przyciski w głównym menu gry. Są przejściem do ekranu kolejno rozgrywki,
      * pomocy, wyników, opcji. Przycisk ostatni to wyjście z gry.
->>>>>>> 24e457f2e364728d3f71ff4a31e6c9c016af29bb
      */
     private GameTextButton playButton;
     
