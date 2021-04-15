@@ -193,7 +193,7 @@ public class OptionScreen implements Screen, Constant {
      */
     @Override
     public void hide() {
-
+        dispose();
     }
 
     /**

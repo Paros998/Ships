@@ -256,7 +256,7 @@ public class MenuScreen implements Screen, Constant {
      */
     @Override
     public void hide() {
-
+        dispose();
     }
 
     /**
@@ -266,5 +266,12 @@ public class MenuScreen implements Screen, Constant {
     public void dispose() {
         stage.dispose();
         batch.dispose();
+        notDestroyedShip.getTexture().dispose();
+        destroyedShip.getTexture().dispose();
+        fire.getTexture().dispose();
+        
+        for (GameObject proj : projectile) {
+            proj.getTexture().dispose();
+        }
     }
 }

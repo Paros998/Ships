@@ -51,23 +51,19 @@ public class GameTextButton extends TextButton {
     private void menuOptions(int option) {
         switch (option) {
         case 1: // Enters to the game
-            game.getScreen().dispose();
             game.dispose();
             game.setScreen(new GameScreen(game));
             break;
 
         case 2: // Enters to a help screen
-            game.getScreen().dispose();
             game.setScreen(new HelpScreen(game));
             break;
 
         case 3: // Enters to a scores screen
-            game.getScreen().dispose();
             game.setScreen(new ScoreScreen(game));
             break;
 
         case 4: // Enters to a settings screen
-            game.getScreen().dispose();
             game.setScreen(new OptionScreen(game));
             break;
 
@@ -76,7 +72,6 @@ public class GameTextButton extends TextButton {
             break;
 
         case 6: // Backs from current screen
-            game.getScreen().dispose();
             game.setScreen(new MenuScreen(game));
             break;
         }

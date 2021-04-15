@@ -138,13 +138,14 @@ public class ScoreScreen implements Screen, Constant {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         stage.dispose();
+        font.dispose();
     }
 
 }

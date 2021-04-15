@@ -22,6 +22,7 @@ import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.hud.GameTextButton;
 
 public class HelpScreen implements Screen, Constant {
+    
     private Main game;
     private Table childTable, mainTable;
     private Sprite smallShip, mediumShip, largeShip, destroyedLagreShip; // Ships sprites
@@ -189,12 +190,23 @@ public class HelpScreen implements Screen, Constant {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         stage.dispose();
+
+        blackX.getTexture().dispose();
+        redX.getTexture().dispose();
+        greenCrosshair.getTexture().dispose();
+        redCrosshair.getTexture().dispose();
+        cursor.getTexture().dispose();
+        smallShip.getTexture().dispose();
+        mediumShip.getTexture().dispose();
+        largeShip.getTexture().dispose();
+        destroyedLagreShip.getTexture().dispose();
+        font.dispose();
     }
 }
