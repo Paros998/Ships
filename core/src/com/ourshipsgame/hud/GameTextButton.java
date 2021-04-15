@@ -43,8 +43,7 @@ public class GameTextButton extends TextButton {
         });
     }
 
-    
-    /** 
+    /**
      * @param option
      */
     // Setlistener method to create
@@ -53,6 +52,7 @@ public class GameTextButton extends TextButton {
         switch (option) {
         case 1: // Enters to the game
             game.getScreen().dispose();
+            game.dispose();
             game.setScreen(new GameScreen(game));
             break;
 

@@ -16,7 +16,7 @@ public class GameSettings {
     public float sliderMusicPercent, sliderSoundPercent;
     public float soundVolume, musicVolume;
     public long soundId; // Add table to create more sounds
-    
+
     public GameSettings(Game game) {
         this.game = game;
 
@@ -36,8 +36,7 @@ public class GameSettings {
         clickSound.pause();
     }
 
-    
-    /** 
+    /**
      * @throws IOException
      */
     private void loadSettings() throws IOException {
@@ -63,5 +62,9 @@ public class GameSettings {
     public void playSound() {
         clickSound.play(soundVolume);
     }
-    
+
+    public void dispose() {
+        music.dispose();
+        clickSound.dispose();
+    }
 }

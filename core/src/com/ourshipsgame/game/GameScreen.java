@@ -36,7 +36,7 @@ import com.ourshipsgame.mainmenu.MenuScreen;
 public class GameScreen extends GameEngine implements InputProcessor {
 
     private final String id = getClass().getName();
-    private AssetManager manager;
+    public AssetManager manager;
     private Main game;
     private GameScreen GameScreen;
     private InputMultiplexer inputMultiplexer;
@@ -71,6 +71,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         this.GameScreen = this;
         this.game = game;
         Gdx.app.log(id, "This class is loaded!");
+        System.out.println(Gdx.app.getJavaHeap() / 1000000);
     }
 
     // Draw methods
@@ -123,8 +124,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             }
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void drawHit(float deltaTime) {
@@ -140,8 +140,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         hitMissSound = false;
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void drawMiss(float deltaTime) {
@@ -157,8 +156,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         hitMissSound = false;
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void drawDestroyment(float deltaTime) {
@@ -174,8 +172,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void drawShootingEffect(float deltaTime) {
@@ -203,8 +200,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
-    
-    /** 
+    /**
      * @param batch
      */
     private void drawMarks(SpriteBatch batch) {
@@ -271,6 +267,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 case "No":
                     new Dialog("What now?", hud.getSkin()) {
                         {
+
                             this.button("Main menu!", "menu");
                             this.button("Exit game!", "game");
                         }
@@ -295,8 +292,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }.show(hud.getStage());
     }
 
-    
-    /** 
+    /**
      * @param batch
      */
     private void drawScores(SpriteBatch batch) {
@@ -380,7 +376,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         // changing game stage from loading to Placing ships
         if (preparation(true, manager)) {
             gameStage = 2;
-            hud = new Hud(manager, game, GameScreen);
+            hud = new Hud(manager, game, GameScreen, crosshairs[2]);
             createdTextures = true;
         }
 
@@ -452,8 +448,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         shootSound = false;
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     // Not needed
@@ -472,8 +467,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     // update logics of game
@@ -542,8 +536,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     // game loop method
@@ -657,8 +650,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     }
 
-    
-    /** 
+    /**
      * @param width
      * @param height
      */
@@ -673,11 +665,22 @@ public class GameScreen extends GameEngine implements InputProcessor {
 
     @Override
     public void dispose() {
+        inputMultiplexer.clear();
+        sb.dispose();
+        sr.dispose();
+        manager.dispose();
+        loadingTexture.dispose();
+        font.dispose();
+        hudFont.dispose();
         super.dispose();
     }
 
-    
-    /** 
+    @Override
+    public void hide() {
+        super.hide();
+    }
+
+    /**
      * @param keycode
      * @return boolean
      */
@@ -691,8 +694,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param keycode
      * @return boolean
      */
@@ -702,8 +704,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param character
      * @return boolean
      */
@@ -713,8 +714,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      * @param pointer
@@ -738,8 +738,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      * @param pointer
@@ -753,8 +752,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      * @param pointer
@@ -767,8 +765,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      * @return boolean
@@ -789,8 +786,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param amountX
      * @param amountY
      * @return boolean

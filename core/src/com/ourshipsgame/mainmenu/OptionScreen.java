@@ -56,8 +56,7 @@ public class OptionScreen implements Screen, Constant {
         soundSilderVolume.setSliderType(2);
 
         // Buttons
-        backButton = new GameTextButton("Back", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300,
-                game.menuElements.skin, 6, game);
+        backButton = new GameTextButton("Back", GAME_WIDTH / 2, GAME_HEIGHT / 2 - 300, game.menuElements.skin, 6, game);
 
         stage.addActor(backButton);
         stage.addActor(musicSliderVolume);
@@ -66,8 +65,7 @@ public class OptionScreen implements Screen, Constant {
         stage.addActor(musicVolumeText);
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void update(float deltaTime) {
@@ -77,8 +75,7 @@ public class OptionScreen implements Screen, Constant {
         stage.act();
     }
 
-    
-    /** 
+    /**
      * @throws IOException
      */
     private void saveSettings() throws IOException {
@@ -88,8 +85,7 @@ public class OptionScreen implements Screen, Constant {
         savingPrintWriter.close();
     }
 
-    
-    /** 
+    /**
      * @param delta
      */
     @Override
@@ -108,8 +104,7 @@ public class OptionScreen implements Screen, Constant {
         stage.draw();
     }
 
-    
-    /** 
+    /**
      * @param width
      * @param height
      */

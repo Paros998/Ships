@@ -20,24 +20,21 @@ public class ComputerPlayerAi {
     private int index, dirIndex;
     private int[][] SecondPlayerShotsDone;
 
-    
-    /** 
+    /**
      * @return float
      */
     public float getX() {
         return TargetPos.x;
     }
 
-    
-    /** 
+    /**
      * @return float
      */
     public float getY() {
         return TargetPos.y;
     }
 
-    
-    /** 
+    /**
      * @param missed
      * @param hitted
      * @param destroyed
@@ -101,8 +98,7 @@ public class ComputerPlayerAi {
         index = 0;
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      * @return boolean
      */
@@ -232,8 +228,7 @@ public class ComputerPlayerAi {
             HittedAndNotDestroyed(hitsLeft);
     }
 
-    
-    /** 
+    /**
      * @param foundAnotherhit
      */
     private void HittedAndNotDestroyed(boolean foundAnotherhit) {
@@ -323,8 +318,7 @@ public class ComputerPlayerAi {
         TargetPos = NewPos;
     }
 
-    
-    /** 
+    /**
      * @param numberofHits
      * @return int
      */
@@ -333,8 +327,15 @@ public class ComputerPlayerAi {
         Random ran = new Random();
         if (numberofHits == 1 || numberofHits == -1 || numberofHits == -2) {
             int dir = ran.nextInt(4);
-            float x = LastHitPositions[index - 1].x;
-            float y = LastHitPositions[index - 1].y;
+            float x, y;
+            x = y = 0;
+            try {
+                x = LastHitPositions[index - 1].x;
+                y = LastHitPositions[index - 1].y;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Index not 1 XD " + e.getLocalizedMessage());
+                e.printStackTrace();
+            }
             Vector2 tmp = new Vector2(x, y);
             while (tmp.x > 9 || tmp.x < 0 || tmp.y > 9 || tmp.y < 0
                     || SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] != 0) {
@@ -353,10 +354,17 @@ public class ComputerPlayerAi {
             val = dir;
         } else if (numberofHits >= 2) {
             int dir = ran.nextInt(2);
-            float x = LastHitPositions[index - 1].x;
-            float y = LastHitPositions[index - 1].y;
-            float x2 = LastHitPositions[index - 2].x;
-            float y2 = LastHitPositions[index - 2].y;
+            float x, y, x2, y2;
+            x = y = x2 = y2 = 0;
+            try {
+                x = LastHitPositions[index - 1].x;
+                y = LastHitPositions[index - 1].y;
+                x2 = LastHitPositions[index - 2].x;
+                y2 = LastHitPositions[index - 2].y;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Index not 2 XD " + e.getLocalizedMessage());
+                e.printStackTrace();
+            }
             Vector2 tmp = new Vector2(x, y);
             Vector2 tmp2 = new Vector2(x2, y2);
             Vector2 tmp3 = new Vector2();

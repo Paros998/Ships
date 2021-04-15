@@ -28,7 +28,6 @@ public class OptionsWindow extends Dialog implements Constant {
         super(windowName, hud.getSkin());
         this.hud = hud;
         turnedOn = false;
-
         layoutTable = new Table();
         layoutTable.center();
         layoutTable.setFillParent(true);
@@ -36,12 +35,10 @@ public class OptionsWindow extends Dialog implements Constant {
         this.button("Resume Game", Actions.RESUME_GAME);
         this.button("Options", Actions.OPTIONS);
         this.button("Back to Main Menu", Actions.BACK_TO_MAIN_MENU);
-
         layoutTable.add(this).expandX().padBottom(10);
     }
 
-    
-    /** 
+    /**
      * @throws IOException
      */
     private void saveSettings() throws IOException {
@@ -51,8 +48,7 @@ public class OptionsWindow extends Dialog implements Constant {
         savingPrintWriter.close();
     }
 
-    
-    /** 
+    /**
      * @param act
      */
     // Method
@@ -117,11 +113,14 @@ public class OptionsWindow extends Dialog implements Constant {
                 @Override
                 protected void result(final Object act) {
                     if (act.toString() == "Yes") {
-                        hud.gameScreen.dispose();
                         hud.game.menuElements = new MenuGlobalElements(hud.game);
+                        hud.gameSettings.dispose();
+                        hud.gameScreen.dispose();
+                        hud.dispose();
+                        hud.gameSettings = null;
+                        hud.gameScreen = null;
                         hud.game.setScreen(new MenuScreen(hud.game));
-                    }
-                    else {
+                    } else {
                         hud.gameSettings.playSound();
                         backReference.show(hud.getStage());
                     }

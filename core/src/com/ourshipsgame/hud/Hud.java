@@ -1,6 +1,7 @@
 package com.ourshipsgame.hud;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,12 +30,19 @@ public class Hud implements Constant {
     public GameSettings gameSettings;
     public GameScreen gameScreen;
     public Main game;
+    public Cursor cursor;
+
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
+        cursor.dispose();
+    }
 
     // Constructor
-    public Hud(AssetManager manager, Main game, GameScreen gameScreen) {
+    public Hud(AssetManager manager, Main game, GameScreen gameScreen, Cursor kCursor) {
         skin = new Skin();
         skin = manager.get("core/assets/buttons/skins/rusty-robot/skin/rusty-robot-ui.json", Skin.class);
-
+        cursor = kCursor;
         stage = new Stage(new ScreenViewport());
 
         this.game = game;
@@ -104,8 +112,7 @@ public class Hud implements Constant {
         stage.addActor(layoutTable);
     }
 
-    
-    /** 
+    /**
      * @param textures
      * @param sprites
      * @param factor
@@ -123,16 +130,14 @@ public class Hud implements Constant {
         stage.draw();
     }
 
-    
-    /** 
+    /**
      * @param batch
      */
     public void render(SpriteBatch batch) {
         // uiBar.getSprite().draw(batch);
     }
 
-    
-    /** 
+    /**
      * @return GameImageButton
      */
     // Getters
@@ -140,56 +145,49 @@ public class Hud implements Constant {
         return repeatButton;
     }
 
-    
-    /** 
+    /**
      * @return GameImageButton
      */
     public GameImageButton getPlayButton() {
         return playButton;
     }
 
-    
-    /** 
+    /**
      * @return String
      */
     public String getPlayersName() {
         return playersName;
     }
 
-    
-    /** 
+    /**
      * @return Sprite
      */
     public Sprite getPlayButtonGreenStyle() {
         return playButtonGreenStyle;
     }
 
-    
-    /** 
+    /**
      * @return Dialog
      */
     public Dialog getPlayersSetNameDialog() {
         return playersSetNameDialog;
     }
 
-    
-    /** 
+    /**
      * @return Stage
      */
     public Stage getStage() {
         return stage;
     }
 
-    
-    /** 
+    /**
      * @return Skin
      */
     public Skin getSkin() {
         return skin;
     }
 
-    
-    /** 
+    /**
      * @return boolean
      */
     public boolean isPasued() {

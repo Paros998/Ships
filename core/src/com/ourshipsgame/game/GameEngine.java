@@ -393,8 +393,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             PlayerTurn = 1;
     }
 
-    
-    /** 
+    /**
      * @param manager
      */
     // loading method
@@ -452,8 +451,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/sounds/lose.mp3", Sound.class);
     }
 
-    
-    /** 
+    /**
      * @param manager
      */
     protected void loadHudAssets(AssetManager manager) {
@@ -489,8 +487,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         manager.load("core/assets/fonts/nunito.light2.ttf", BitmapFont.class, param2);
     }
 
-    
-    /** 
+    /**
      * @param computerEnemy
      * @param manager
      * @return boolean
@@ -559,9 +556,6 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         xHot = 0;
         yHot = 0;
         crosshairs[2] = Gdx.graphics.newCursor(crosshairPixmaps[2], xHot, yHot);
-        crosshairPixmaps[0].dispose();
-        crosshairPixmaps[1].dispose();
-        crosshairPixmaps[2].dispose();
 
         Gdx.graphics.setCursor(crosshairs[2]);
 
@@ -640,8 +634,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return done;
     }
 
-    
-    /** 
+    /**
      * @param BoardNumber
      * @param resetPos
      */
@@ -746,8 +739,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         generator = null;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      */
@@ -779,8 +771,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         activeSpriteDrag = 99;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      */
@@ -821,8 +812,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    
-    /** 
+    /**
      * @param actualShip
      * @param boardNumber
      * @return boolean
@@ -882,8 +872,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         FirstBoardShipsSprites[activeSpriteDrag].rotate90();
     }
 
-    
-    /** 
+    /**
      * @param font
      * @param batch
      */
@@ -899,8 +888,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         font.draw(batch, text, (gameWidth_f - 230 - (43 * (len / 2))), gameHeight_f / 2);
     }
 
-    
-    /** 
+    /**
      * @return boolean
      */
     protected boolean checkAllShips() {
@@ -911,8 +899,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return true;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      */
@@ -977,8 +964,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    
-    /** 
+    /**
      * @param xPos
      * @param yPos
      */
@@ -1045,8 +1031,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      * @return boolean
@@ -1083,8 +1068,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param screenX
      * @param screenY
      */
@@ -1112,5 +1096,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             shootingEnabled = false;
             rotateEnabled = false;
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }

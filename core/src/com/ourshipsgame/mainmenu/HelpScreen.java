@@ -36,8 +36,7 @@ public class HelpScreen implements Screen, Constant {
         this.game = game;
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void update(float deltaTime) {
@@ -80,7 +79,6 @@ public class HelpScreen implements Screen, Constant {
         blackX = new Sprite(new Texture("core/assets/backgroundtextures/blackcross.png"));
         redX = new Sprite(new Texture("core/assets/backgroundtextures/redcross.png"));
 
-
         // Creating main Table for buttons and child Table
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -88,7 +86,7 @@ public class HelpScreen implements Screen, Constant {
 
         // Creating Table for descriptions and icons
         childTable = new Table();
-        //childTable.setFillParent(true);
+        // childTable.setFillParent(true);
 
         // Adding elements to child Table
         Label label;
@@ -143,15 +141,14 @@ public class HelpScreen implements Screen, Constant {
         childTable.add(label).expandX();
 
         // Adding elements to main Table
-        mainTable.add(childTable).expandX();//.padRight(200);
+        mainTable.add(childTable).expandX();// .padRight(200);
         mainTable.row();
         mainTable.add(backButton).expandX().padLeft(backButton.getWidth() / 2 - 50);
 
         stage.addActor(mainTable);
     }
 
-    
-    /** 
+    /**
      * @param delta
      */
     @Override
@@ -171,8 +168,7 @@ public class HelpScreen implements Screen, Constant {
         stage.draw();
     }
 
-    
-    /** 
+    /**
      * @param width
      * @param height
      */

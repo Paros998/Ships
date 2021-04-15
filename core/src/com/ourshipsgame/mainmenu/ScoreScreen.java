@@ -37,8 +37,7 @@ public class ScoreScreen implements Screen, Constant {
         scores = new Scores();
     }
 
-    
-    /** 
+    /**
      * @param deltaTime
      */
     private void update(float deltaTime) {
@@ -98,8 +97,7 @@ public class ScoreScreen implements Screen, Constant {
         stage.addActor(layoutTable);
     }
 
-    
-    /** 
+    /**
      * @param delta
      */
     @Override
@@ -119,8 +117,7 @@ public class ScoreScreen implements Screen, Constant {
         stage.draw();
     }
 
-    
-    /** 
+    /**
      * @param width
      * @param height
      */
