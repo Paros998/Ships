@@ -7,8 +7,8 @@ import com.ourshipsgame.Main;
 import com.ourshipsgame.handlers.Constant;
 
 public class DesktopLauncher implements Constant {
-	
-	/** 
+
+	/**
 	 * @param arg
 	 */
 	public static void main(String[] arg) {

@@ -11,12 +11,12 @@ buildscript {
     dependencies {     
         
     }
+    
 }
 
 allprojects {
     apply plugin: "eclipse"
     version = '1.0'
-    
     
     
     ext {
@@ -35,8 +35,8 @@ allprojects {
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    }   
-    
+    }
+
 }
 
 project(":desktop") {
@@ -69,7 +69,7 @@ project(":desktop") {
                     'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
         }
         dependsOn ('dependencies')
-    }
+    } 
 }
 
 project(":core") {
@@ -91,5 +91,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
+    
 }
 
