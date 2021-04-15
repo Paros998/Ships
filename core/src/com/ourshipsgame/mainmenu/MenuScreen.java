@@ -94,7 +94,6 @@ public class MenuScreen implements Screen, Constant {
 
     /**
      * Główny i jedyny konstruktor klasy MenuScreen.
-     * 
      * @param game Obiekt klasy Main.
      */
     public MenuScreen(Main game) {
@@ -103,8 +102,7 @@ public class MenuScreen implements Screen, Constant {
 
     /**
      * Metoda odpowiedzialna za odświeżanie opreacji w menu gry.
-     * 
-     * @param deltaTime Główny czas silniku libGDX.
+     * @param deltaTime Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
         stage.act();
@@ -114,7 +112,7 @@ public class MenuScreen implements Screen, Constant {
     
     /** 
      * Metoda odpowiedzialna za renderowanie menu gry (libGDX).
-     * @param deltaTime Główny czas silniku libGDX.
+     * @param deltaTime Główny czas silnika libGDX.
      */
     @Override
     public void render(float deltaTime) {
