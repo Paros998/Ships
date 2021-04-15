@@ -39,13 +39,13 @@ public class ScoreScreen implements Screen, Constant {
     private GameTextButton backButton;
 
     /**
-     * Tablica rozmieszczenia obiektów.
+     * Tabela rozmieszczająca obiekty.
      * Ułatwia rozmieszczenie elementów na ekranie.
      */
     private Table layoutTable;
 
     /**
-     * Tablica rozmieszczenia do okna przewijania.
+     * Tabela rozmieszczająca elementy w oknie przewijania.
      * Służy do prawidłowego rozmieszczenia danych w oknie.
      */
     private Table scrollTable;
@@ -79,7 +79,7 @@ public class ScoreScreen implements Screen, Constant {
     private BitmapFont font;
 
     /**
-     * Główny i jedyny konstruktor klasy OptionScreen.
+     * Główny i jedyny konstruktor klasy ScoreScreen.
      * @param game Obiekt klasy Main.
      */
     public ScoreScreen(Main game) {
@@ -88,7 +88,7 @@ public class ScoreScreen implements Screen, Constant {
     }
 
     /**
-     * Metoda odpowiedzialna za odświeżanie opreacji w oknie opcji.
+     * Metoda odpowiedzialna za odświeżanie opreacji w oknie wyników.
      * @param deltaTime Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
@@ -98,7 +98,7 @@ public class ScoreScreen implements Screen, Constant {
 
     /**
      * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w oknie
-     * opcji (libGDX).
+     * wyników (libGDX).
      */
     @Override
     public void show() {
@@ -153,7 +153,7 @@ public class ScoreScreen implements Screen, Constant {
     }
 
     /**
-     * Metoda odpowiedzialna za renderowanie okna opcji (libGDX).
+     * Metoda odpowiedzialna za renderowanie okna wyników (libGDX).
      * @param delta Główny czas silnika libGDX.
      */
     @Override
