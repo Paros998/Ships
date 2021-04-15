@@ -19,26 +19,29 @@ import com.ourshipsgame.hud.GameTextButton;
 public class MenuScreen implements Screen, Constant {
 
     /**
-     * Obiekt klasy Main. Odpowiedzialny głównie za zarządzanie ekranami. 
-     * W tej klasie jest również odwołaniem do klasy MenuGlobalElements.
+     * Obiekt klasy Main. Odpowiedzialny głównie za zarządzanie ekranami. W tej
+     * klasie jest również odwołaniem do klasy MenuGlobalElements.
      */
     private Main game;
 
     /**
-     * Scena z silnika libGDX. 
-     * Sprawia, że elementy w grze są interaktywne oraz rysuje je na ekranie.
+     * Scena z silnika libGDX. Sprawia, że elementy w grze są interaktywne oraz
+     * rysuje je na ekranie.
      */
     public Stage stage;
 
     /**
-     * Obiekt silnika libGDX.
-     * Rysuje obiekty na ekranie tj. sprite'y czy tekstury.
+     * Obiekt silnika libGDX. Rysuje obiekty na ekranie tj. sprite'y czy tekstury.
      */
     public SpriteBatch batch;
 
     /**
+<<<<<<< HEAD
      * Obiekt klasy GameObject.
      * Jest to obrazek statku w głównym menu gry.
+=======
+     * Obiekty klasy GameObject. Są to statki w głównym menu gry.
+>>>>>>> 24e457f2e364728d3f71ff4a31e6c9c016af29bb
      */
     private GameObject notDestroyedShip;
     
@@ -55,14 +58,19 @@ public class MenuScreen implements Screen, Constant {
     private GameObject fire;
 
     /**
-     * Tablica obiektów GameObject.
-     * Są to pociski 'wystrzeliwane' ze statków w głównym menu gry.
+     * Tablica obiektów GameObject. Są to pociski 'wystrzeliwane' ze statków w
+     * głównym menu gry.
      */
     private GameObject[] projectile;
 
     /**
+<<<<<<< HEAD
      * Przycisk w głównym menu gry.
      * Jest przejściem do ekranu rozgrywki.
+=======
+     * Przyciski w głównym menu gry. Są przejściem do ekranu kolejno rozgrywki,
+     * pomocy, wyników, opcji. Przycisk ostatni to wyjście z gry.
+>>>>>>> 24e457f2e364728d3f71ff4a31e6c9c016af29bb
      */
     private GameTextButton playButton;
     
@@ -92,6 +100,7 @@ public class MenuScreen implements Screen, Constant {
 
     /**
      * Główny i jedyny konstruktor klasy MenuScreen.
+     * 
      * @param game Obiekt klasy Main.
      */
     public MenuScreen(Main game) {
@@ -100,6 +109,7 @@ public class MenuScreen implements Screen, Constant {
 
     /**
      * Metoda odpowiedzialna za odświeżanie opreacji w menu gry.
+     * 
      * @param deltaTime Główny czas silniku libGDX.
      */
     private void update(float deltaTime) {
