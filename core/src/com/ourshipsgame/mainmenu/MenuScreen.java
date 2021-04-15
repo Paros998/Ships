@@ -37,11 +37,21 @@ public class MenuScreen implements Screen, Constant {
     public SpriteBatch batch;
 
     /**
-     * Obiekty klasy GameObject.
-     * Są to statki w głównym menu gry.
+     * Obiekt klasy GameObject.
+     * Jest to obrazek statku w głównym menu gry.
      */
     private GameObject notDestroyedShip;
+    
+    /**
+     * Obiekt klasy GameObject.
+     * Jest to obrazek statku w głównym menu gry.
+     */
     private GameObject destroyedShip;
+    
+    /**
+     * Obiekt klasy GameObject.
+     * Jest to animacja płomieni w głównym menu gry.
+     */
     private GameObject fire;
 
     /**
@@ -51,14 +61,33 @@ public class MenuScreen implements Screen, Constant {
     private GameObject[] projectile;
 
     /**
-     * Przyciski w głównym menu gry.
-     * Są przejściem do ekranu kolejno rozgrywki, pomocy, wyników, opcji.
-     * Przycisk ostatni to wyjście z gry.
+     * Przycisk w głównym menu gry.
+     * Jest przejściem do ekranu rozgrywki.
      */
     private GameTextButton playButton;
+    
+    /**
+     * Przycisk w głównym menu gry.
+     * Jest przejściem do ekranu pomocy.
+     */
     private GameTextButton helpButon;
+    
+    /**
+     * Przycisk w głównym menu gry.
+     * Jest przejściem do ekranu wyników.
+     */
     private GameTextButton scoreButton;
+    
+    /**
+     * Przycisk w głównym menu gry.
+     * Jest przejściem do ekranu opcji.
+     */
     private GameTextButton optionsButton;
+    
+    /**
+     * Przycisk w głównym menu gry.
+     * Wyłącza grę.
+     */
     private GameTextButton quitButton;
 
     /**
@@ -80,7 +109,7 @@ public class MenuScreen implements Screen, Constant {
     }
     
     /** 
-     * Metoda odpowiedzialna za renderowanie menu gry.
+     * Metoda odpowiedzialna za renderowanie menu gry (libGDX).
      * @param deltaTime Główny czas silniku libGDX.
      */
     @Override
@@ -111,7 +140,9 @@ public class MenuScreen implements Screen, Constant {
         stage.draw();
     }
 
-    
+    /**
+     * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w głównym menu gry (libGDX).
+     */    
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -193,29 +224,42 @@ public class MenuScreen implements Screen, Constant {
         stage.addActor(quitButton);
     }
 
+    /**
+     * Metoda obsługująca pauzę w grze (libGDX).
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Metoda obsługująca wyłączenie pauzy (libGDX).
+     */
     @Override
     public void resume() {
     }
 
     
     /** 
-     * @param width
-     * @param height
+     * Metoda obsługująca skalowanie okna gry (libGDX).
+     * @param width Szerokość okna.
+     * @param height Wysokość okna.
      */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     * Metoda obsługująca ukrycie okna gry (libGDX).
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Metoda obsługująca niszczenie elementów silnika libGDX.
+     */
     @Override
     public void dispose() {
         stage.dispose();
