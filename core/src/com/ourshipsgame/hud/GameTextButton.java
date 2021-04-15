@@ -51,7 +51,7 @@ public class GameTextButton extends TextButton {
     private void menuOptions(int option) {
         switch (option) {
         case 1: // Enters to the game
-            game.dispose();
+            game.menuElements.disposeMenu();
             game.setScreen(new GameScreen(game));
             break;
 
