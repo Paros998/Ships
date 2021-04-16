@@ -387,14 +387,19 @@ public class ComputerPlayerAi {
                 if (tmp2.y + 1 > 9)
                     cond4 = true;
 
-                if (!cond1)
-                    cond11 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y - 1] != 0);
-                if (!cond2)
-                    cond22 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y - 1] != 0);
-                if (!cond3)
-                    cond33 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y + 1] != 0);
-                if (!cond4)
-                    cond44 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y + 1] != 0);
+                try {
+                    if (!cond1)
+                        cond11 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y - 1] != 0);
+                    if (!cond2)
+                        cond22 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y - 1] != 0);
+                    if (!cond3)
+                        cond33 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp.y + 1] != 0);
+                    if (!cond4)
+                        cond44 = (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp2.y + 1] != 0);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Sprawdzanie przy x = x wywaliło " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
 
                 if (!cond1)
                     allTrue = (allTrue && cond11);
@@ -407,21 +412,25 @@ public class ComputerPlayerAi {
 
                 if (allTrue)
                     return -1; // If there is no free pos in Y axis to shoot
-
-                do {
-                    dir = ran.nextInt(2);
-                    if (dir == 0)
-                        tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
-                    else
-                        tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
-                    while (tmp3.y > 9 || tmp3.y < 0) {
+                try {
+                    do {
                         dir = ran.nextInt(2);
                         if (dir == 0)
                             tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
                         else
                             tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
-                    }
-                } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
+                        while (tmp3.y > 9 || tmp3.y < 0) {
+                            dir = ran.nextInt(2);
+                            if (dir == 0)
+                                tmp3.y = tmp.y > tmp2.y ? tmp.y + 1 : tmp2.y + 1;
+                            else
+                                tmp3.y = tmp.y < tmp2.y ? tmp.y - 1 : tmp2.y - 1;
+                        }
+                    } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Sprawdzanie przy while gdzie x = x wywaliło " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
             } else if (tmp.y == tmp2.y) {
                 tmp3.y = tmp2.y;
                 if (dir == 0)
@@ -437,16 +446,19 @@ public class ComputerPlayerAi {
                     cond3 = true;
                 if (tmp2.x - 1 < 0)
                     cond4 = true;
-
-                if (!cond1)
-                    cond11 = (SecondPlayerShotsDone[(int) tmp.x + 1][(int) tmp3.y] != 0);
-                if (!cond2)
-                    cond22 = (SecondPlayerShotsDone[(int) tmp2.x + 1][(int) tmp3.y] != 0);
-                if (!cond3)
-                    cond33 = (SecondPlayerShotsDone[(int) tmp2.x - 1][(int) tmp3.y] != 0);
-                if (!cond4)
-                    cond44 = (SecondPlayerShotsDone[(int) tmp.x - 1][(int) tmp3.y] != 0);
-
+                try {
+                    if (!cond1)
+                        cond11 = (SecondPlayerShotsDone[(int) tmp.x + 1][(int) tmp3.y] != 0);
+                    if (!cond2)
+                        cond22 = (SecondPlayerShotsDone[(int) tmp2.x + 1][(int) tmp3.y] != 0);
+                    if (!cond3)
+                        cond33 = (SecondPlayerShotsDone[(int) tmp2.x - 1][(int) tmp3.y] != 0);
+                    if (!cond4)
+                        cond44 = (SecondPlayerShotsDone[(int) tmp.x - 1][(int) tmp3.y] != 0);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Sprawdzanie przy y = y wywaliło " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
                 if (!cond1)
                     allTrue = (allTrue && cond11);
                 if (!cond2)
@@ -458,21 +470,25 @@ public class ComputerPlayerAi {
 
                 if (allTrue)
                     return -2; // If there is no free pos in X axis to shoot
-
-                do {
-                    dir = ran.nextInt(2);
-                    if (dir == 0)
-                        tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
-                    else
-                        tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
-                    while (tmp3.x > 9 || tmp3.x < 0) {
+                try {
+                    do {
                         dir = ran.nextInt(2);
                         if (dir == 0)
                             tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
                         else
                             tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
-                    }
-                } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
+                        while (tmp3.x > 9 || tmp3.x < 0) {
+                            dir = ran.nextInt(2);
+                            if (dir == 0)
+                                tmp3.x = tmp.x > tmp2.x ? tmp.x + 1 : tmp2.x + 1;
+                            else
+                                tmp3.x = tmp.x < tmp2.x ? tmp.x - 1 : tmp2.x - 1;
+                        }
+                    } while (SecondPlayerShotsDone[(int) tmp3.x][(int) tmp3.y] != 0);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Sprawdzanie przy while gdzie y = y wywaliło " + e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
             }
             val = dir;
         }
