@@ -32,12 +32,6 @@ public class Hud implements Constant {
     public Main game;
     public Cursor cursor;
 
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-        cursor.dispose();
-    }
-
     // Constructor
     public Hud(AssetManager manager, Main game, GameScreen gameScreen, Cursor kCursor) {
         skin = new Skin();
@@ -128,6 +122,12 @@ public class Hud implements Constant {
     public void update() {
         stage.act();
         stage.draw();
+    }
+
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
+        cursor.dispose();
     }
 
     /**
