@@ -7,14 +7,40 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.game.GameObject;
 
-///One Ship Effect only
+/**
+ * Klasa ta przechowuje wszystkie efekty strzałów pojedyńczego statku
+ */
 public class ShootParticleEffect {
+    /**
+     * Tablica sprit'ów przechowuje wszystkie sprite'y wystrzałów
+     */
     protected Sprite[] sprites;
+    /**
+     * Obiekt ten ma za zadanie animować wszystkie sprite'y
+     */
     protected Animator animator;
+    /**
+     * Obiekt przechowujący teksturę strzału
+     */
     protected Texture particleTexture;
+    /**
+     * Zmienne określający pozycję sprite'a
+     */
     protected float x, y;
+    /**
+     * Zmienna określająca ilość wieżyczek statku
+     */
     protected int turretsAmmount;
 
+    /**
+     * Konstruktor główny obiektu
+     * 
+     * @param particleTexture Tesktura wystrzału
+     * @param x               Pozycja statku w osi x
+     * @param y               Pozycja statku w osi y
+     * @param vector2         Vector przechowujący ilosc klatek do animacji
+     * @param turretsAmmount  Ilość wieżyczek danego statku
+     */
     public ShootParticleEffect(Texture particleTexture, float x, float y, Vector2 vector2, int turretsAmmount) {
         this.particleTexture = particleTexture;
         this.sprites = new Sprite[turretsAmmount];
@@ -30,9 +56,12 @@ public class ShootParticleEffect {
 
     }
 
-    
-    /** 
-     * @param actualShip
+    /**
+     * Zadaniem tej metody jest poprawne ulokowanie animacji wystrzału zależnie od
+     * pozycji i rotacji , statku i wieżyczek.
+     * 
+     * @param actualShip Obiekt przechowujący dane o statku należącym do obiektu tej
+     *                   klasy
      */
     public void setPositions(GameObject actualShip) {
         Sprite[] turrets = actualShip.getTurrets();
@@ -107,9 +136,11 @@ public class ShootParticleEffect {
         }
     }
 
-    
-    /** 
-     * @param actualShip
+    /**
+     * Metoda do aktualizowania animacji wszystkich sprite'ów
+     * 
+     * @param actualShip Obiekt przechowujący dane o statku należącym do obiektu tej
+     *                   klasy
      */
     public void updateAnimation(GameObject actualShip) {
         this.animator.update();
@@ -148,9 +179,10 @@ public class ShootParticleEffect {
         }
     }
 
-    
-    /** 
-     * @param batch
+    /**
+     * Metoda do rysowania wszystkich animacji
+     * 
+     * @param batch SpriteBatch wykorzystywany do rysowania na ekranie
      */
     public void drawAnimation(SpriteBatch batch) {
         for (int i = 0; i < turretsAmmount; i++) {
@@ -158,6 +190,9 @@ public class ShootParticleEffect {
         }
     }
 
+    /**
+     * Metoda do resetowania animacji
+     */
     public void resetAnimation() {
         this.animator.setStartAnimation();
     }

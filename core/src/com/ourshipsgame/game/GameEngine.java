@@ -28,15 +28,38 @@ import com.ourshipsgame.objects.ShootParticleEffect;
 
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * Klasa abstrakcyjna zawierająca metody oraz obiekty i zmienne niezbędne do
+ * funkcjonowania aplikacji
+ */
 public abstract class GameEngine extends ScreenAdapter implements Constant {
     // Board class
+    /**
+     * Klasa przechowująca dane z plansz gry
+     */
     public class Board {
+        /**
+         * Tablica przechowująca rozmieszczenie statków na planszy
+         */
         protected int[][] ShipsPlaced = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
         // Vector index is a ship index
         // x and y are dimensions in ShipsPlaced where is the ship beginning
+        /**
+         * Tablica vektorów przechowująca początek statków na planszy gdzie x i y
+         * wektora to indexy to tablicy ShipsPlaced
+         */
         protected Vector2[] BoardShipsPos;
+        /**
+         * Identyfikator obiektu
+         */
         protected int BoardNumber;
 
+        /**
+         * Konstruktor obiektu
+         * 
+         * @param numberOfShips Ilość statków
+         * @param BoardNumber   Identyfikator planszy
+         */
         protected Board(int numberOfShips, int BoardNumber) {
             this.BoardShipsPos = new Vector2[numberOfShips];
             for (int i = 0; i < numberOfShips; i++)
@@ -44,6 +67,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             this.BoardNumber = BoardNumber;
         }
 
+        /**
+         * Metoda do wypełnienia tablicy rozmieszczeń statków
+         * 
+         * @param numberOfShips Ilość statków
+         */
         protected void placeShipOnBoard(int numberOfShips) {
             if (BoardNumber == 1)
                 for (int i = 0; i < 10; i++)
@@ -92,6 +120,14 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
             }
         }
 
+        /**
+         * Metoda do sprawdzania który ze statków na planszy został trafiony i
+         * ewentualnie znisczony,dodania punktów ,stworzenie animacji zniszczenia i
+         * innych obliczeń logiki
+         * 
+         * @param xPos Pozycja trafienia w osi X
+         * @param yPos Pozycja trafienia w osi Y
+         */
         protected void hitShip(int xPos, int yPos) {
             GameObject actualShip = FirstBoardShipsSprites[0];
             GameObject hittedShip = FirstBoardShipsSprites[0];
@@ -304,88 +340,307 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     // Important vars
+    /**
+     * Obiekt przechowujący informacje o wynikach gracza
+     */
     protected Score PlayerOne = new Score(1);
+    /**
+     * Obiekt przechowujący informacje o wynikach komputera
+     */
     protected Score PlayerTwo = new Score(2);
+    /**
+     * Zmienna przechowująca ilość zniszczonych okrętów pierwszej planszy
+     */
     protected int FirstBoardShipsDestroyed;
+    /**
+     * Zmienna przechowująca ilość zniszczonych okrętów drugiej planszy
+     */
     protected int SecondBoardShipsDestroyed;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów trój-polowych pierwszej
+     * planszy
+     */
     protected int FirstBoardThreeShipsLeft;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów trój-polowych drugiej planszy
+     */
     protected int SecondBoardThreeShipsLeft;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów dwu-polowych pierwszej
+     * planszy
+     */
     protected int FirstBoardTwoShipsLeft;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów dwu-polowych drugiej planszy
+     */
     protected int SecondBoardTwoShipsLeft;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów jedno-polowych pierwszej
+     * planszy
+     */
     protected int FirstBoardOneShipsLeft;
+    /**
+     * Zmienna przechowująca ilość znisczonych okrętów jedno-polowych drugiej
+     * planszy
+     */
     protected int SecondBoardOneShipsLeft;
+    /**
+     * Obiekt obliczający decyzje komputera
+     */
     protected ComputerPlayerAi enemyComputerPlayerAi;
+    /**
+     * Zmienna okreslająca czyja tura jest aktualnie
+     */
     protected int PlayerTurn;
+    /**
+     * Obiekt przechowujący dane o pierwszej planszy
+     */
     protected Board firstBoard;
+    /**
+     * Obiekt przechowujący dane o drugiej planszy
+     */
     protected Board secondBoard;
+    /**
+     * Tablica strzałów nieoddanych i oddanych przez gracza
+     */
     protected int[][] FirstPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+    /**
+     * Tablica strzałów nieoddanych i oddanych przez komputer
+     */
     protected int[][] SecondPlayerShotsDone = new int[BOX_X_AXIS_NUMBER][BOX_Y_AXIS_NUMBER];
+    /**
+     * Tablica ścieżek do tekstur wieżyczek
+     */
     protected String[] internalPaths = { "core/assets/turrets/ship_gun_red.png", "core/assets/turrets/ship_big_gun.png",
             "core/assets/turrets/ship_big_gun_dual.png", "core/assets/turrets/ship_gun_huge.png",
             "core/assets/turrets/ship_gun_red_destroyed.png", "core/assets/turrets/ship_big_gun_destroyed.png",
             "core/assets/turrets/ship_big_gun_dual_destroyed.png", "core/assets/turrets/ship_gun_huge_destroyed.png" };
+    /**
+     * Tablica tekstur wieżyczek
+     */
     protected Texture turretTextures[] = new Texture[8];
+    /**
+     * Tablica tekstur znaków strzałów
+     */
     protected Texture[] shootMarks = new Texture[2];
+    /**
+     * Tablica tekstur statku trój-polowego
+     */
     protected Texture BigShipTextures[] = new Texture[3];
+    /**
+     * Tablica tekstur statku dwu-polowego
+     */
     protected Texture MediumShipTextures[] = new Texture[3];
+    /**
+     * Tablica tekstur statku jedno-polowego
+     */
     protected Texture SmallShipTextures[] = new Texture[3];
+    /**
+     * Tablica kursorów
+     */
     protected Cursor[] crosshairs = new Cursor[3];
+    /**
+     * Kursor
+     */
     protected Cursor cursor;
+    /**
+     * Pixmapa kursorów
+     */
     protected Pixmap[] crosshairPixmaps = new Pixmap[3];
+    /**
+     * Obiekt przechowujący efekt trafienia
+     */
     protected BoomEffect hitEffect;
+    /**
+     * Obiekt przechowujący efekt nietrafienia
+     */
     protected BoomEffect missEffect;
+    /**
+     * Obiekt przechowujący efekt zniszczenia
+     */
     protected BoomEffect destroymentEffect;
+    /**
+     * Tekstura trafienia
+     */
     protected Texture hitTexture;
+    /**
+     * Tekstura nietrafienia
+     */
     protected Texture missTexture;
+    /**
+     * Tekstura zniszczenia
+     */
     protected Texture destroymentTexture;
+    /**
+     * Tablica tekstur ikonek
+     */
     protected Texture[] shipIcons = new Texture[3];
-    // Particles[0] - shooting texture
+    /**
+     * Tekstura efektów , (narazie tylko wystrzału)
+     */
     protected Texture Particles[] = new Texture[1];
+    /**
+     * Zmienna przechowująca początek pierwszej planszy
+     */
     protected Vector2f FirstBoardStart = new Vector2f(8 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
+    /**
+     * Zmienna przechowująca początek drugiej planszy
+     */
     protected Vector2f SecondBoardStart = new Vector2f(32 * BOX_WIDTH_F * BoardBoxToTile,
             8 * BOX_HEIGHT_F * BoardBoxToTile);
+    /**
+     * Zmienna przechowująca wysokość okna w pikselach
+     */
     protected int gameHeight = GAME_HEIGHT;
+    /**
+     * Zmienna przechowująca szerokość okna w pikselach
+     */
     protected int gameWidth = GAME_WIDTH;
+    /**
+     * Zmienna przechowująca wysokość okna w pikselach
+     */
     protected float gameHeight_f = GAME_HEIGHT_F;
+    /**
+     * Zmienna przechowująca szerokość okna w pikselach
+     */
     protected float gameWidth_f = GAME_WIDTH_F;
+    /**
+     * Czcionka do interfejsu
+     */
     protected BitmapFont hudFont;
+    /**
+     * Czcionka do tekstu tury nieaktywnej
+     */
     protected BitmapFont turnFont;
+    /**
+     * Czcionka do tekstu tury aktywnej
+     */
     protected BitmapFont turnFontActive;
     // Sounds and music
+    /**
+     * Tablica dźwięków końcowych
+     */
     protected Sound[] endSounds = new Sound[2];
+    /**
+     * Dźwięk rotacji wieżyczek
+     */
     protected Sound rotateSound;
+    /**
+     * Tablica dźwięków wystrzałów
+     */
     protected Sound[] ShootSounds = new Sound[12];
+    /**
+     * Dźwięk trafienia w wodę
+     */
     protected Sound WaterExplosionSounds;
+    /**
+     * Dźwięk trafienia w statek
+     */
     protected Sound MetalExplosionSounds;
+    /**
+     * Dźwięk eksplozji statku
+     */
     protected Sound DestroymentExplosionSounds;
     // Other vars
+    /**
+     * Zmienna przechowująca ilość statków trój-polowych
+     */
     protected int threeBoxShips = 3;
+    /**
+     * Zmienna przechowująca ilość statków dwu-polowych
+     */
     protected int twoBoxShips = 4;
+    /**
+     * Zmienna przechowująca ilość statków jedno-polowych
+     */
     protected int oneBoxShips = 5;
+    /**
+     * Zmienna przechowująca ilość wszystkich statków
+     */
     protected int sum = threeBoxShips + twoBoxShips + oneBoxShips;
     // Important Objects
+    /**
+     * Tablica obiektów przechowujących wszystko o statkach na pierwszej planszy
+     */
     protected GameObject FirstBoardShipsSprites[] = new GameObject[sum];
+    /**
+     * Tablica obiektów przechowujących wszystko o statkach na drugiej planszy
+     */
     protected GameObject SecondBoardShipsSprites[] = new GameObject[sum];
+    /**
+     * Tablica obiektów przechowujących efekty wystrzału statków z pierwszej planszy
+     */
     protected ShootParticleEffect shootEffect[] = new ShootParticleEffect[sum];
     // more other vars
+    /**
+     * Zmienna do logiki drag & drop statku w czasie ustawiania statków na planszy
+     */
     protected int activeSpriteDrag = 99;
+    /**
+     * Zmienna przechowująca pozycje x sprite'a
+     */
     protected float xSprite;
+    /**
+     * Zmienna przechowująca pozycje y sprite'a
+     */
     protected float ySprite;
+    /**
+     * Zmienna przechowująca róznicę w pozycji w osi X
+     */
     protected float xDiff;
+    /**
+     * Zmienna przechowująca róznicę w pozycji w osi Y
+     */
     protected float yDiff;
+    /**
+     * Zmienna określająca czy można obracać wieżyczki
+     */
     protected boolean rotateEnabled = false;
+    /**
+     * Zmienna określająca czy można strzelać
+     */
     protected boolean shootingEnabled = false;
+    /**
+     * Zmienna określająca czy trafiono po strzale
+     */
     protected boolean hitted = false;
+    /**
+     * Zmienna określająca czy nietrafiono po strzale
+     */
     protected boolean missed = false;
+    /**
+     * Zmienna określająca czy zniszczono okręt po strzale
+     */
     protected boolean destroyed = false;
+    /**
+     * Zmienna określająca czy można grać dźwięk zniszczenia okrętu
+     */
     protected boolean destroymentSound = false;
+    /**
+     * Zmienna określająca czy Gracz przegrał
+     */
     protected boolean PlayerOneLost = false;
+    /**
+     * Zmienna określająca czy Komputer przegrał
+     */
     protected boolean PlayerTwoLost = false;
+    /**
+     * Zmienna określająca pozycję trafienia
+     */
     protected Vector2f hitPos = new Vector2f();
+    /**
+     * Zmienna określająca pozycję nietrafienia
+     */
     protected Vector2f missPos = new Vector2f();
+    /**
+     * Zmienna określająca pozycję zniszczenia
+     */
     protected Vector2f destroymentPos = new Vector2f();
 
+    /**
+     * Metoda do zmiany tury
+     */
     protected void switchTurn() {
         if (PlayerTurn == 1)
             PlayerTurn = 2;
@@ -394,7 +649,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param manager
+     * Metoda do ładowania assetów gry do AssetManagera
+     * 
+     * @param manager AssetManager
      */
     // loading method
     protected void loadGameEngine(AssetManager manager) {
@@ -452,7 +709,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param manager
+     * Metoda do ładowania assetów interfejsu do AssetManagera
+     * 
+     * @param manager AssetManager
      */
     protected void loadHudAssets(AssetManager manager) {
         // Skin
@@ -488,9 +747,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param computerEnemy
-     * @param manager
-     * @return boolean
+     * Metoda do utworzenia faktycznych obiektów i zmiennych do gry
+     * 
+     * @param computerEnemy Określa czy przeciwniki to komputer
+     * @param manager       AssetManager przechowuje zasoby załadowane
+     * @return boolean Zwraca true po skończeniu
      */
     // game methods below
     // Stage 1
@@ -635,8 +896,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param BoardNumber
-     * @param resetPos
+     * Metoda do automatycznego generowania pozycji statków i ich ustawiania na
+     * planszy
+     * 
+     * @param BoardNumber Plansza przeznaczenia
+     * @param resetPos    Czy resetować pozycję poprzednie
      */
     protected void generateAndPlaceShipsOnBoard(int BoardNumber, boolean resetPos) {
         GameObject actualShip;
@@ -740,8 +1004,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param screenX
-     * @param screenY
+     * Metoda do określania na który statek kliknięto i przytrzymano lewy klawisz
+     * myszki
+     * 
+     * @param screenX Pozycja x na ekranie
+     * @param screenY Pozycja y na ekranie
      */
     // Stage 2 methods to place ships on board
     protected void touchDownSprite(int screenX, int screenY) {
@@ -752,6 +1019,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    /**
+     * Metoda do aktualizacji logiki o rozmieszczeniu statków
+     */
     protected void touchUpSprite() {
         if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
             GameObject actualShip = FirstBoardShipsSprites[activeSpriteDrag];
@@ -772,8 +1042,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param screenX
-     * @param screenY
+     * Metoda do poruszania statków na planszy drag&drop
+     * 
+     * @param screenX Nowa pozycja X na ekranie
+     * @param screenY Nowa pozycja Y na ekranie
      */
     protected void dragSprite(int screenX, int screenY) {
         if (activeSpriteDrag <= sum - 1 && activeSpriteDrag >= 0) {
@@ -813,9 +1085,12 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param actualShip
-     * @param boardNumber
-     * @return boolean
+     * Metoda do sprawdzania czy statek znajduje się w dopuszczalnej pozycji na
+     * planszy
+     * 
+     * @param actualShip  Aktualnie sprawdzany statek
+     * @param boardNumber Numer planszy
+     * @return boolean True jeśli poprawna pozycja / False jeśli niepoprawna pozycja
      */
     protected boolean isShipPlacedGood(GameObject actualShip, int boardNumber) {
         // Checking if ship is dropped on good position not colliding with anything
@@ -868,13 +1143,18 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    /**
+     * Metoda do rotowania aktualnie trzymanego statku po wciśnięciu klawisza R
+     */
     protected void rotateActualShip() {
         FirstBoardShipsSprites[activeSpriteDrag].rotate90();
     }
 
     /**
-     * @param font
-     * @param batch
+     * Metoda do rysowania tekstu pomocy w czasie przed bitwą
+     * 
+     * @param font  Czcionka do tekstu
+     * @param batch SpriteBatch do rysowania na ekranie
      */
     protected void drawStage2Text(BitmapFont font, SpriteBatch batch) {
         String text = "Place your ships within the board !";
@@ -889,7 +1169,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @return boolean
+     * Metoda do sprawdzenia czy wszystkie statki są na dobrych pozycjach
+     * 
+     * @return boolean Zwraca true jeśli wszystkie są dobrze ustawione
      */
     protected boolean checkAllShips() {
         for (int i = 0; i < sum; i++) {
@@ -900,8 +1182,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param screenX
-     * @param screenY
+     * Metoda do obracania wieżyczkami podczas własnej tury
+     * 
+     * @param screenX Pozycja X myszki na planszy wroga
+     * @param screenY Pozycja Y myszki na planszy wroga
      */
     // Stage 3 later
     protected void rotateTurretsWithMouse(float screenX, float screenY) {
@@ -965,8 +1249,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param xPos
-     * @param yPos
+     * Metoda do sprawdzenia czy trafiono w jakiś okręt na planszach
+     * 
+     * @param xPos Pozycja x jako indeks poziomy w tablicy
+     * @param yPos Pozycja y jako indeks pionowy w tablicy
      */
     protected void checkHit(int xPos, int yPos) {
         int tx = xPos, ty = yPos;
@@ -1032,9 +1318,13 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param screenX
-     * @param screenY
-     * @return boolean
+     * Metoda do oddawania strzałów
+     * 
+     * @param screenX Pozycja x myszki na planszy wroga / lub indeks x w tablicy
+     *                jeśli komputer strzela
+     * @param screenY Pozycja y myszki na planszy wroga / lub indeks y w tablicy
+     *                jeśli komputer strzela
+     * @return boolean Zwraca true jeśli strzelono
      */
     protected boolean shoot(int screenX, int screenY) {
         if (shootingEnabled) {
@@ -1069,8 +1359,11 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * @param screenX
-     * @param screenY
+     * Metoda do sprawdzenia czy gracz może oddać strzał na daną pozycję na planszy
+     * wroga
+     * 
+     * @param screenX Pozycja X myszki na ekranie
+     * @param screenY Pozycja Y myszki na ekranie
      */
     protected void checkEnemyBoard(int screenX, int screenY) {
         Rectangle board = new Rectangle(SecondBoardStart.x, SecondBoardStart.y, BOX_WIDTH_F * BOX_X_AXIS_NUMBER,
@@ -1098,6 +1391,9 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
         }
     }
 
+    /**
+     * Metoda do zwalniania zasobów wykorzystywanych przez klasę
+     */
     @Override
     public void dispose() {
         super.dispose();

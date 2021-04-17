@@ -6,40 +6,81 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Klasa przechowująca wyniki gracza i komputera w czasie bitwy
+ */
 public class Score {
+    /**
+     * Zmienna przechowująca wynik
+     */
     private float scoreValue;
+    /**
+     * Zmienna przechowująca czas trwania tur
+     */
     private float timeElapsed;
+    /**
+     * Zmienna przechowująca ilość strzałów oddanych
+     */
     private int shotsFired;
+    /**
+     * Zmienna przechowująca ilość niecelnych strzałów
+     */
     private int shotsMissed;
+    /**
+     * Zmienna przechowująca ilość celnych strzałów
+     */
     private int shotsHitted;
+    /**
+     * Zmienna przechowująca procentową celność trafień
+     */
     private float accuracyRatio;
+    /**
+     * Zmienna przechowująca ilość zniszczonych statków
+     */
     private int shipsDestroyed;
+    /**
+     * Zmienna określająca identyfikator obiektu
+     */
     private int idNumber;
+    /**
+     * Zmienna przechowująca nazwę
+     */
     private String PlayerName;
+    /**
+     * Zmienna przechowująca ilość trafień bez przerwy
+     */
     private int combo;
 
+    /**
+     * Konstruktor obiektu klasy Score nadający identyfikator
+     * 
+     * @param id Identyfikator
+     */
     public Score(int id) {
         idNumber = id;
     }
 
-    
-    /** 
-     * @param name
+    /**
+     * Metoda ustawiająca nazwę do obiektu
+     * 
+     * @param name Nazwa gracza lub komputer
      */
     public void setPlayerName(String name) {
         PlayerName = name;
     }
 
-    
-    /** 
-     * @param hudFont
-     * @param batch
-     * @param gameWidth_f
-     * @param gameHeight_f
-     * @param ThreeShipsLeft
-     * @param TwoShipsLeft
-     * @param OneShipsLeft
-     * @param shipIcons
+    /**
+     * Metoda do rysowania na ekranie elementów informacyjnych przechowywwanych w
+     * obiekcie
+     * 
+     * @param hudFont        Czcionka do tekstu
+     * @param batch          SpriteBatch do rysowania na ekranie
+     * @param gameWidth_f    Szerokość okna gry w pikselach
+     * @param gameHeight_f   Wysokość okna gry w pikselach
+     * @param ThreeShipsLeft Ilość niezniszczonych statków trój-polowych
+     * @param TwoShipsLeft   Ilość niezniszczonych statków dwu-polowych
+     * @param OneShipsLeft   Ilość niezniszczonych statków jedno-polowych
+     * @param shipIcons      Tablica tekstur do ikonek statków
      */
     public void drawInfo(BitmapFont hudFont, SpriteBatch batch, float gameWidth_f, float gameHeight_f,
             int ThreeShipsLeft, int TwoShipsLeft, int OneShipsLeft, Texture[] shipIcons) {
@@ -105,11 +146,13 @@ public class Score {
         }
     }
 
-    
-    /** 
-     * @param PlayerShots
+    /**
+     * Metoda do aktualizacji danych odnośnie strzałów
+     * 
+     * @param PlayerShots Tablica strzałów właściciela tego obiektu
      */
     public void update(int[][] PlayerShots) {
+        shotsFired = shotsHitted = shotsMissed = 0;
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 if (PlayerShots[i][j] != 0)
@@ -123,21 +166,26 @@ public class Score {
             accuracyRatio = (float) shotsHitted / (float) shotsFired;
     }
 
-    
-    /** 
-     * @param deltaTime
+    /**
+     * Metoda aktualizująca czas trwania tur właściciela tego obiektu
+     * 
+     * @param deltaTime Czas między klatkami gry
      */
     public void updateTime(float deltaTime) {
         timeElapsed += deltaTime;
     }
 
+    /**
+     * Metoda przyznająca punkty za trafienie
+     */
     public void addPointsForHit() {
         this.scoreValue += (50 * (1 + 0.1 * combo));
     }
 
-    
-    /** 
-     * @param sizeofShip
+    /**
+     * Metoda przyznająca punkty za zniszczenie
+     * 
+     * @param sizeofShip Wielkość zniszczonego statku
      */
     public void addPointsForDestroy(int sizeofShip) {
         shipsDestroyed++;
@@ -149,15 +197,23 @@ public class Score {
             this.scoreValue += (50 * (1 + 0.05 * combo));
     }
 
+    /**
+     * Metoda zwiększająca combo
+     */
     public void increaseCombo() {
         this.combo++;
     }
 
+    /**
+     * Metoda zerująca combo
+     */
     public void zeroCombo() {
         this.combo = 0;
     }
 
     /**
+     * Metoda zwracająca wynik właściciela tego obiektu
+     * 
      * @return the scoreValue
      */
     public float getScoreValue() {
@@ -165,6 +221,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca nazwę właściciela tego obiektu
+     * 
      * @return the playerName
      */
     public String getPlayerName() {
@@ -172,6 +230,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca czas trwania tur właściciela tego obiektu
+     * 
      * @return the timeElapsed
      */
     public float getTimeElapsed() {
@@ -179,6 +239,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca celność właściciela tego obiektu
+     * 
      * @return the accuracyRatio
      */
     public float getAccuracyRatio() {
@@ -186,6 +248,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca combo właściciela tego obiektu
+     * 
      * @return the combo
      */
     public int getCombo() {
@@ -193,6 +257,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca ilość zniszczonych statków przez właściciela tego obiektu
+     * 
      * @return the shipsDestroyed
      */
     public int getShipsDestroyed() {
@@ -200,6 +266,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca ilość niecelnych strzałów właściciela tego obiektu
+     * 
      * @return the shotsMissed
      */
     public int getShotsMissed() {
@@ -207,6 +275,8 @@ public class Score {
     }
 
     /**
+     * Metoda zwracająca identyfikator właściciela tego obiektu
+     * 
      * @return the idNumber
      */
     public int getIdNumber() {
