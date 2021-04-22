@@ -8,9 +8,7 @@ buildscript {
         google()
         
     }
-    dependencies {     
-        
-    }
+    
     
 }
 
@@ -38,7 +36,9 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
-
+    test {
+        useJUnitPlatform()
+    }
 }
 
 project(":desktop") {
@@ -61,7 +61,9 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-        testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        compile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        compile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+        compile "org.junit.platform:junit-platform-commons:1.5.2"
 
     } 
     jar{
@@ -84,7 +86,8 @@ project(":core") {
 
     dependencies {
         api "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-        testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        api "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        api "org.junit.platform:junit-platform-commons:1.5.2"
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -100,13 +103,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
-
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
-    }
+    
+    
 
 }
 
