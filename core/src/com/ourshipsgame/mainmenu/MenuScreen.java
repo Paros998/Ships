@@ -36,21 +36,18 @@ public class MenuScreen implements Screen, Constant {
     public SpriteBatch batch;
 
     /**
-     * Obiekt klasy GameObject.
-     * Jest to obrazek statku w głównym menu gry.
-     * Obiekty klasy GameObject. Są to statki w głównym menu gry.
+     * Obiekt klasy GameObject. Jest to obrazek statku w głównym menu gry. Obiekty
+     * klasy GameObject. Są to statki w głównym menu gry.
      */
     private GameObject notDestroyedShip;
-    
+
     /**
-     * Obiekt klasy GameObject.
-     * Jest to obrazek statku w głównym menu gry.
+     * Obiekt klasy GameObject. Jest to obrazek statku w głównym menu gry.
      */
     private GameObject destroyedShip;
-    
+
     /**
-     * Obiekt klasy GameObject.
-     * Jest to animacja płomieni w głównym menu gry.
+     * Obiekt klasy GameObject. Jest to animacja płomieni w głównym menu gry.
      */
     private GameObject fire;
 
@@ -61,39 +58,35 @@ public class MenuScreen implements Screen, Constant {
     private GameObject[] projectile;
 
     /**
-     * Przycisk w głównym menu gry.
-     * Jest przejściem do ekranu rozgrywki.
-     * Przyciski w głównym menu gry. Są przejściem do ekranu kolejno rozgrywki,
-     * pomocy, wyników, opcji. Przycisk ostatni to wyjście z gry.
+     * Przycisk w głównym menu gry. Jest przejściem do ekranu rozgrywki. Przyciski w
+     * głównym menu gry. Są przejściem do ekranu kolejno rozgrywki, pomocy, wyników,
+     * opcji. Przycisk ostatni to wyjście z gry.
      */
     private GameTextButton playButton;
-    
+
     /**
-     * Przycisk w głównym menu gry.
-     * Jest przejściem do ekranu pomocy.
+     * Przycisk w głównym menu gry. Jest przejściem do ekranu pomocy.
      */
     private GameTextButton helpButon;
-    
+
     /**
-     * Przycisk w głównym menu gry.
-     * Jest przejściem do ekranu wyników.
+     * Przycisk w głównym menu gry. Jest przejściem do ekranu wyników.
      */
     private GameTextButton scoreButton;
-    
+
     /**
-     * Przycisk w głównym menu gry.
-     * Jest przejściem do ekranu opcji.
+     * Przycisk w głównym menu gry. Jest przejściem do ekranu opcji.
      */
     private GameTextButton optionsButton;
-    
+
     /**
-     * Przycisk w głównym menu gry.
-     * Wyłącza grę.
+     * Przycisk w głównym menu gry. Wyłącza grę.
      */
     private GameTextButton quitButton;
 
     /**
      * Główny i jedyny konstruktor klasy MenuScreen.
+     * 
      * @param game Obiekt klasy Main.
      */
     public MenuScreen(Main game) {
@@ -102,6 +95,7 @@ public class MenuScreen implements Screen, Constant {
 
     /**
      * Metoda odpowiedzialna za odświeżanie opreacji w menu gry.
+     * 
      * @param deltaTime Główny czas silnika libGDX.
      */
     private void update(float deltaTime) {
@@ -109,9 +103,10 @@ public class MenuScreen implements Screen, Constant {
         game.menuElements.moveMenu(deltaTime);
         fire.updateAnimation();
     }
-    
-    /** 
+
+    /**
      * Metoda odpowiedzialna za renderowanie menu gry (libGDX).
+     * 
      * @param deltaTime Główny czas silnika libGDX.
      */
     @Override
@@ -143,8 +138,9 @@ public class MenuScreen implements Screen, Constant {
     }
 
     /**
-     * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w głównym menu gry (libGDX).
-     */    
+     * Metoda odopwiedzialna za tworzenie, ustawianie i ładowanie elementów w
+     * głównym menu gry (libGDX).
+     */
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -240,10 +236,10 @@ public class MenuScreen implements Screen, Constant {
     public void resume() {
     }
 
-    
-    /** 
+    /**
      * Metoda obsługująca skalowanie okna gry (libGDX).
-     * @param width Szerokość okna.
+     * 
+     * @param width  Szerokość okna.
      * @param height Wysokość okna.
      */
     @Override
@@ -269,7 +265,7 @@ public class MenuScreen implements Screen, Constant {
         notDestroyedShip.getTexture().dispose();
         destroyedShip.getTexture().dispose();
         fire.getTexture().dispose();
-        
+
         for (GameObject proj : projectile) {
             proj.getTexture().dispose();
         }

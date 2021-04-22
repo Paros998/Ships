@@ -33,40 +33,135 @@ import com.ourshipsgame.hud.Hud;
 import com.ourshipsgame.mainmenu.MenuGlobalElements;
 import com.ourshipsgame.mainmenu.MenuScreen;
 
+/**
+ * Klasa ekranu głównego gry
+ */
 public class GameScreen extends GameEngine implements InputProcessor {
 
+    /**
+     * Identyfikator klasy
+     */
     private final String id = getClass().getName();
+    /**
+     * AssetManager do ładowania zasobów gry
+     */
     public AssetManager manager;
+    /**
+     * Obiekt aplikacji
+     */
     private Main game;
+    /**
+     * Obiekt ekranu głównego
+     */
     private GameScreen GameScreen;
+    /**
+     * Multiplekser do obsługi wejścia (klawisze/myszka etc)
+     */
     private InputMultiplexer inputMultiplexer;
+    /**
+     * Obiekt głowny interfejsu
+     */
     private Hud hud;
+    /**
+     * Obiekt do rysowania na ekranie
+     */
     private SpriteBatch sb;
+    /**
+     * Obiekt do rysowania kształtów na ekranie
+     */
     private ShapeRenderer sr;
+    /**
+     * Zmienna przechowująca progres ładowania zasobów
+     */
     private float progress;
+    /**
+     * Obiekt do renderowania Tile Mapy gry
+     */
     private OrthogonalTiledMapRenderer renderer;
+    /**
+     * Obiekt określający projekcję gry na ekranie
+     */
     private OrthographicCamera camera;
+    /**
+     * Zmienna określająca ,który to stopień gry do obliczeń logiki gry
+     */
     private int gameStage = 1;
+    /**
+     * Mapa główna gry
+     */
     private TiledMap map;
+    /**
+     * Tło do ekranu ładowania
+     */
     private Texture loadingTexture;
+    /**
+     * Zmienna określająca czy utworzono tekstury
+     */
     private boolean createdTextures = false;
+    /**
+     * Zmienna określająca czy strzelono
+     */
     private boolean shootOrder = false;
+    /**
+     * Zmienna określająca czy dźwięk strzału można włączyć
+     */
     private boolean shootSound = false;
+    /**
+     * Zmienna określająca czy dźwięk trafienia/nietrafienia można włączyć
+     */
     private boolean hitMissSound = false;
+    /**
+     * Zmienna określająca czy należy stworzyć okno dialogowe z użytkownikiem
+     */
     private boolean createDialog = false;
+    /**
+     * Zmienna określająca czy należy renderować na ekranie statki
+     */
     private boolean drawShips = true;
+    /**
+     * Identyfikator dźwieku do ciągłego odtwarzania rotacji wieżyczek
+     */
     private long sid;
+    /**
+     * Warstwy mapy do renderowania w czasie bitwy
+     */
     private int[] layers;
+    /**
+     * Warstwy mapy do renderowania po bitwie
+     */
     private int[] endlayers;
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej z obrotem wieżyczek
+     */
     private float rotateTime;
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej oddaniem strzału
+     */
     private float shootTime;
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej z zniszczeniem okrętu
+     */
     private float destroyTime;
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej oddaniem niecelnego strzału
+     */
     private float missTime;
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej oddaniem celnego strzału
+     */
     private float hitTime;
     // other vars
+    /**
+     * Czcionka do ekranu ładowania
+     */
     private BitmapFont font;
 
     // constructor
+    /**
+     * Konstruktor ekranu głównego
+     * 
+     * @param game Obiekt aplikacji
+     */
     public GameScreen(Main game) {
         this.GameScreen = this;
         this.game = game;
@@ -75,7 +170,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // Draw methods
-
+    /**
+     * Metoda do renderowania mapy
+     */
     private void drawMap() {
         switch (gameStage) {
         case 2:
@@ -90,6 +187,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    /**
+     * Metoda do renderowania statków i ich elementów
+     */
     private void drawShipsEnTurrets() {
         if (drawShips)
             switch (gameStage) {
@@ -125,7 +225,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do renderowania efektu trafienia
+     * 
+     * @param deltaTime czas między klatkami
      */
     private void drawHit(float deltaTime) {
         hitTime += deltaTime;
@@ -141,7 +243,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do renderowania efektu nietrafienia
+     * 
+     * @param deltaTime czas między klatkami
      */
     private void drawMiss(float deltaTime) {
         missTime += deltaTime;
@@ -157,7 +261,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do renderowania efektu zniszczenia okrętu
+     * 
+     * @param deltaTime czas między klatkami
      */
     private void drawDestroyment(float deltaTime) {
         destroyTime += deltaTime;
@@ -173,7 +279,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do renderowania efektu wystrzału okrętów niezniszczonych
+     * 
+     * @param deltaTime czas między klatkami
      */
     private void drawShootingEffect(float deltaTime) {
         shootTime += deltaTime;
@@ -201,7 +309,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param batch
+     * Metoda do renderowania znaczków pomocniczych dla gracza na planszy wroga
+     * 
+     * @param batch SpriteBatch do renderowania
      */
     private void drawMarks(SpriteBatch batch) {
         if (gameStage == 3) {
@@ -236,6 +346,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    /**
+     * Metoda do stworzenia okna dialogowego po skończonej bitwie
+     */
     private void createDialog() {
         new Dialog("Do you wish to save score?", hud.getSkin()) {
             {
@@ -293,7 +406,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param batch
+     * Metoda do renderowania informacji o wynikach gracza i komputera
+     * 
+     * @param batch SpriteBatch do renderowania
      */
     private void drawScores(SpriteBatch batch) {
         PlayerOne.drawInfo(hudFont, batch, gameWidth_f, gameHeight_f, FirstBoardThreeShipsLeft, FirstBoardTwoShipsLeft,
@@ -312,6 +427,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    /**
+     * Metoda do renderowania ekranu ładowania
+     */
     private void drawLoadingScreen() {
         progress = manager.getProgress();
         sb.begin();
@@ -321,6 +439,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         sb.end();
     }
 
+    /**
+     * Metoda do renderowania wiadomości po bitwie
+     */
     private void drawExitScreen() {
         String msg;
         if (PlayerOneLost) {
@@ -333,6 +454,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // Create methods
+    /**
+     * Metoda do utworzenia mapy z AssetManagera oraz innych zmiennych do jej
+     * funkcjonowania
+     */
     private void createMap() {
         map = (TiledMap) manager.get("core/assets/map/mp1.tmx");
         camera = new OrthographicCamera();
@@ -351,6 +476,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         endlayers[1] = 1;
     }
 
+    /**
+     * Metoda do utworzenia czcionek
+     */
     private void createFonts() {
         font = new BitmapFont();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
@@ -370,6 +498,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // method to create elements
+    /**
+     * Metoda do tworzenia wszystkich elementów graficznych gry
+     */
     private void createGraphics() {
         // Map ,textures,cameras
         createMap();
@@ -414,6 +545,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // loading method
+    /**
+     * Metoda do ładowania wszystkich zasobów gry
+     */
     private void loadAssets() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load("core/assets/map/mp1.tmx", TiledMap.class);
@@ -422,11 +556,17 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // Sound effects methods
+    /**
+     * Metoda do odtwarzania dźwięku obrotu wieżyczek
+     */
     private void startRotateSound() {
-        sid = rotateSound.loop(hud.gameSettings.soundVolume);
+        sid = rotateSound.loop(hud.gameSettings.soundVolume * (1 + 0.3f));
         rotateSound.pause();
     }
 
+    /**
+     * Metoda do odtwarzania dźwięków wystrzałów
+     */
     private void playShootSound() {
         if (shootTime <= 1f) {
             if (PlayerTurn == 1) {
@@ -449,7 +589,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do sprawdzania wejścia
+     * 
+     * @param deltaTime czas między klatkami
      */
     // Not needed
     // Input and update methods
@@ -458,6 +600,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     // Invoked after ready button is pressed in stage 2
+    /**
+     * Metoda do sprawdzenia czy statki są na dobrych pozycjach i wystartowanie
+     * bitwy
+     */
     public void readyButtonCheck() {
         if (checkAllShips()) {
             firstBoard.placeShipOnBoard(sum);
@@ -468,7 +614,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do aktualizacji logiki gry
+     * 
+     * @param deltaTime czas między klatkami
      */
     // update logics of game
     private void update(float deltaTime) {
@@ -537,7 +685,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param deltaTime
+     * Metoda do renderowania całej szaty graficznej gry
+     * 
+     * @param deltaTime czas między klatkami
      */
     // game loop method
     @Override
@@ -628,6 +778,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         }
     }
 
+    /**
+     * Metoda wywoływana po pokazaniu ekranu gry
+     */
     @Override
     public void show() {
         sb = new SpriteBatch();
@@ -638,19 +791,27 @@ public class GameScreen extends GameEngine implements InputProcessor {
         loadAssets();
     }
 
+    /**
+     * Metoda wywoływana gdy ekran jest zapauzowany
+     */
     @Override
     public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
+        super.pause();
     }
 
     /**
-     * @param width
-     * @param height
+     * Metoda wywoływania gdy ekran wraca do aktywności
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * Metoda wywoływana gdy rozmiar okna jest zmieniany
+     * 
+     * @param width  Nowa szerokość okna
+     * @param height Nowa wysokość okna
      */
     @Override
     public void resize(int width, int height) {
@@ -661,6 +822,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
         super.resize(width, height);
     }
 
+    /**
+     * Metoda wywoływana gdy ekran zwalnia wszystkie zasoby
+     */
     @Override
     public void dispose() {
         inputMultiplexer.clear();
@@ -673,13 +837,18 @@ public class GameScreen extends GameEngine implements InputProcessor {
         super.dispose();
     }
 
+    /**
+     * Metoda wywoływana gdy ekran jest chowany
+     */
     @Override
     public void hide() {
         super.hide();
     }
 
     /**
-     * @param keycode
+     * Metoda wywoływana gdy klawisz jest wciskany
+     * 
+     * @param keycode Oznaczenie klawisza
      * @return boolean
      */
     @Override
@@ -693,7 +862,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param keycode
+     * Metoda wywoływana gdy klawisz jest puszczany
+     * 
+     * @param keycode Oznaczenie klawisza
      * @return boolean
      */
     @Override
@@ -703,7 +874,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param character
+     * Metoda wywoływana gdy znak klawiatury zostanie wciśnięty
+     * 
+     * @param character Znak
      * @return boolean
      */
     @Override
@@ -713,10 +886,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param screenX
-     * @param screenY
-     * @param pointer
-     * @param button
+     * Metoda wywoływana gdy klawisz myszki zostanie wciśnięty
+     * 
+     * @param screenX Pozycja X myszki na ekranie
+     * @param screenY Pozycja Y myszki na ekranie
+     * @param pointer Wskaźnik na coś..
+     * @param button  Oznaczenie przycisku który został wciśnięty
      * @return boolean
      */
     @Override
@@ -737,10 +912,12 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param screenX
-     * @param screenY
-     * @param pointer
-     * @param button
+     * Metoda wywoływana gdy klawisz myszki zostanie upuszczony
+     * 
+     * @param screenX Pozycja X myszki na ekranie
+     * @param screenY Pozycja Y myszki na ekranie
+     * @param pointer Wskaźnik na coś..
+     * @param button  Oznaczenie przycisku który został wciśnięty
      * @return boolean
      */
     @Override
@@ -751,9 +928,11 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param screenX
-     * @param screenY
-     * @param pointer
+     * Metoda wywoływana gdy klawisz myszki został wciśnięty i ruszony po ekranie
+     * 
+     * @param screenX Pozycja X myszki na ekranie
+     * @param screenY Pozycja Y myszki na ekranie
+     * @param pointer Wskaźnik na coś..
      * @return boolean
      */
     @Override
@@ -764,8 +943,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param screenX
-     * @param screenY
+     * Metoda wywoływana gdy mysz zostanie ruszona na ekranie
+     * 
+     * @param screenX Pozycja X myszki na ekranie
+     * @param screenY Pozycja Y myszki na ekranie
      * @return boolean
      */
     @Override
@@ -785,8 +966,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
     }
 
     /**
-     * @param amountX
-     * @param amountY
+     * Metoda wywoływana gdy scroll myszki będzie aktywowany
+     * 
+     * @param amountX ilość obrotu w poziomie
+     * @param amountY ilość obrotu w pionie
      * @return boolean
      */
     @Override

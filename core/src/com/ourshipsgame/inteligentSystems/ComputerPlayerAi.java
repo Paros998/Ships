@@ -7,20 +7,58 @@ import com.ourshipsgame.game.GameObject;
 
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * Klasa odpowiadająca za podejmowanie decyzji przez komputer
+ */
 public class ComputerPlayerAi {
+    /**
+     * Zmienna do losowania wartości
+     */
     private Random random;
+    /**
+     * Zmienna określająca stan po turze
+     */
     private boolean hittedNdestroyed;
+    /**
+     * Zmienna określająca stan po turze
+     */
     private boolean missed;
+    /**
+     * Zmienna określająca stan po turze
+     */
     private boolean hitted;
+    /**
+     * Tablica pozycji ostatnich trafień
+     */
     private Vector2[] LastHitPositions;
+    /**
+     * Stara i nowa pozycja do strzału
+     */
     private Vector2 TargetPos;
+    /**
+     * Tablica przechowująca już wypróbowane kierunki ataku od trafień
+     */
     private int[] direction;
+    /**
+     * Zmienna przechowująca czas namysłu komputera
+     */
     private float attackTime = 1f;
+    /**
+     * Zmienna przechowująca czas tury komputera
+     */
     private float actualTime;
+    /**
+     * Indexy do tablic
+     */
     private int index, dirIndex;
+    /**
+     * Tablica wszystkich strzałów/trafień/znisczeń dokonanych
+     */
     private int[][] SecondPlayerShotsDone;
 
     /**
+     * Metoda zwracająca pozycję w osi X strzału
+     * 
      * @return float
      */
     public float getX() {
@@ -28,6 +66,8 @@ public class ComputerPlayerAi {
     }
 
     /**
+     * Metoda zwracająca pozycję w osi Y strzału
+     * 
      * @return float
      */
     public float getY() {
@@ -35,13 +75,20 @@ public class ComputerPlayerAi {
     }
 
     /**
-     * @param missed
-     * @param hitted
-     * @param destroyed
-     * @param ShotsDone
-     * @param ships
-     * @param firstboard
-     * @param shipsAmmount
+     * Metoda do aktualizowania danych i logiki komputera
+     * 
+     * @param missed       Zmienna określająca czy w swojej turze komputer dokonał
+     *                     niecelnego strzału
+     * @param hitted       Zmienna określająca czy w swojej turze komputer dokonał
+     *                     celnego strzału
+     * @param destroyed    Zmienna określająca czy w swojej turze komputer zniszczył
+     *                     jakiś statek
+     * @param ShotsDone    Zmienna przechowująca tablicę wszystkich
+     *                     strzałów/trafień/znisczeń dokonanych
+     * @param ships        Tablica statków wroga do aktualizowania tablicy
+     *                     strzałów/trafień/zniszczeń
+     * @param firstboard   Vektor przechowujący pozycję początku mapy wroga
+     * @param shipsAmmount Zmienna przechowująca ilość statków
      */
     public void update(boolean missed, boolean hitted, boolean destroyed, int[][] ShotsDone, GameObject[] ships,
             Vector2f firstboard, int shipsAmmount) {
@@ -87,6 +134,12 @@ public class ComputerPlayerAi {
         }
     }
 
+    /**
+     * Konstruktor główny obiektu, który inicjuje i ustawia dane do obliczeń logiki
+     * 
+     * @param ShotsDone Zmienna przechowująca tablicę wszystkich
+     *                  strzałów/trafień/znisczeń dokonanych
+     */
     public ComputerPlayerAi(int[][] ShotsDone) {
 
         this.SecondPlayerShotsDone = ShotsDone;
@@ -99,8 +152,10 @@ public class ComputerPlayerAi {
     }
 
     /**
-     * @param deltaTime
-     * @return boolean
+     * Metoda sygnalizująca przeprowadzenie ataku
+     * 
+     * @param deltaTime Czas pomiędzy klatkami obrazu
+     * @return boolean Zwraca true gdy jest gotowy do ataku
      */
     public boolean attackEnemy(float deltaTime) {
         actualTime += deltaTime;
@@ -118,6 +173,10 @@ public class ComputerPlayerAi {
         }
     }
 
+    /**
+     * Metoda do obliczeń logiki i pozycji strzału gdy poprzedni strzał był
+     * nietrafiony
+     */
     private void Missed() {
         boolean hitsLeft = false;
         for (int j = 0; j < 10; j++)
@@ -173,6 +232,9 @@ public class ComputerPlayerAi {
             HittedAndNotDestroyed(hitsLeft);
     }
 
+    /**
+     * Metoda do obliczeń logiki i pozycji strzału gdy poprzedni strzał był trafiony
+     */
     private void HittedNdestroyed() {
         boolean hitsLeft = false;
         for (int j = 0; j < 10; j++)
@@ -229,7 +291,11 @@ public class ComputerPlayerAi {
     }
 
     /**
-     * @param foundAnotherhit
+     * Metoda do obliczeń logiki i pozycji strzału gdy statek przeciwnika został
+     * znisczony
+     * 
+     * @param foundAnotherhit Parametr do aktualizacji logiki oznaczający że
+     *                        pozostały nierozliczone trafienia
      */
     private void HittedAndNotDestroyed(boolean foundAnotherhit) {
         Vector2 NewPos;
@@ -319,8 +385,12 @@ public class ComputerPlayerAi {
     }
 
     /**
-     * @param numberofHits
-     * @return int
+     * Metoda do odnaleznie kolejnej poprawnej pozycji strzału przy uwzględnieniu
+     * wielu danych
+     * 
+     * @param numberofHits Zmienna przechowująca ilość nierozliczonych trafień
+     * @return int Zwraca kierunek kolejnego strzału lub inne dane do obliczeń
+     *         logiki
      */
     private int findNextSpot(int numberofHits) {
         int val = 0;

@@ -11,29 +11,82 @@ import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.objects.Animator;
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * Klasa przechowująca wszystkie dane dotyczące jednego statku
+ */
 public class GameObject extends Rectangle implements Constant {
     /**
-     *
+     * Oznaczenie wersji
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Tekstura statku
+     */
     protected Texture texture;
+    /**
+     * Tekstura fal tworzonych przez statek
+     */
     protected Texture textureWave;
+    /**
+     * Tekstury wieżyczek statku
+     */
     protected Texture[] turretTextures;
+    /**
+     * Sprite statku
+     */
     protected Sprite sprite;
+    /**
+     * Sprite fal statku
+     */
     protected Sprite spriteWave;
+    /**
+     * Sprite'y wieżyczek
+     */
     protected Sprite[] turretSprites;
+    /**
+     * Wielkość statku
+     */
     protected int size;
+    /**
+     * Zniszczenia statku
+     */
     protected int[] destroyed;
+    /**
+     * Stara pozycja statku do obliczeń
+     */
     protected Vector2 oldPos;
+    /**
+     * Zmienna określająca czy statek jest w dobrym położeniu
+     */
     protected boolean goodPlacement;
+    /**
+     * Zmienna określająca czy statek uległ zniszczeniu
+     */
     protected boolean shipDestroyed;
+    /**
+     * Prostokąt wokół sprite'a do obliczeń kolizji i logiki
+     */
     protected Rectangle alligmentRectangle;
+    /**
+     * Kolor prostokąta statku określający czy jest dobrze ustawiony
+     */
     protected Color rectColour;
+    /**
+     * Zmienna określająca w którą stronę statek jest obrócony
+     */
     protected int rotation;
+    /**
+     * Animator do animowania fal wytwarzanych przez statek
+     */
     protected Animator animator;
+    /**
+     * Ilość wieżyczek które statek posiada
+     */
     protected int turretsAmmount;
 
-    // Constructor for object with a texture only
+    /**
+     * Konstruktor obiektu z samą teksturą
+     */
     public GameObject(String internalPath, float x, float y) {
         texture = new Texture(internalPath);
         this.setX(x);
@@ -43,6 +96,16 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     // Constructor for object with a texture ,sprite and animation for this sprite
+    /**
+     * Kontruktor obiektu z teksturą ,spritem i animacją sprite'a
+     * 
+     * @param texture        Tekstura statku
+     * @param x              Nowa pozycja X na ekranie
+     * @param y              Nowa pozycja Y na ekranie
+     * @param createSprite   Czy ma tworzyć sprite'a
+     * @param createAnimator Czy ma tworzyć animator do sprite'a
+     * @param vector         Ilość klatek do animatora
+     */
     public GameObject(Texture texture, float x, float y, boolean createSprite, boolean createAnimator, Vector2 vector) {
         this.texture = texture;
         this.setX(x);
@@ -58,6 +121,18 @@ public class GameObject extends Rectangle implements Constant {
 
     // Constructor for object with 2 textures , 2 sprites :one is a ship and the
     // other one are his waves, and setting a size of this ship
+    /**
+     * Konstruktor obiektu z dwoma tekstrurami i dwoma sprite'ami, po jednym dla
+     * statku i jego fal
+     * 
+     * @param texture        Tekstura statku
+     * @param texture2       Tekstura fal
+     * @param x              Nowa pozycja X na ekranie
+     * @param y              Nowa pozycja Y na ekranie
+     * @param createSprite   Czy ma tworzyć sprite'a
+     * @param createAnimator Czy ma tworzyć animator do sprite'a
+     * @param vector         Ilość klatek do animatora
+     */
     public GameObject(Texture texture, Texture texture2, float x, float y, boolean createSprite, int sizeofShip,
             Vector2 vector2) {
         this.texture = texture;
@@ -76,6 +151,19 @@ public class GameObject extends Rectangle implements Constant {
     // Constructor for object with 2 textures , 2 sprites :one is a ship and the
     // other one are his waves,also this one is creating a sprite array which is
     // used to manage ships turrets, and setting a size of this ship
+    /**
+     * Konstruktor obiektu z dwoma tekstrurami i dwoma sprite'ami, po jednym dla
+     * statku i jego fal oraz z sprite'ami wieżyczek
+     * 
+     * @param texture        Tekstura statku
+     * @param texture2       Tekstura fal
+     * @param textures       Tekstury wieżyczek
+     * @param x              Nowa pozycja X na ekranie
+     * @param y              Nowa pozycja Y na ekranie
+     * @param createSprite   Czy ma tworzyć sprite'a
+     * @param createAnimator Czy ma tworzyć animator do sprite'a
+     * @param vector         Ilość klatek do animatora
+     */
     public GameObject(Texture texture, Texture texture2, Texture[] textures, float x, float y, boolean createSprite,
             int sizeofShip, Vector2 vector2) {
         this.texture = texture;
@@ -98,38 +186,47 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
-    
-    /** 
-     * @return int
+    /**
+     * Metoda do zwracania wielkości statku
+     * 
+     * @return int wielkość
      */
     public int getShipSize() {
         return this.size;
     }
 
-    
-    /** 
-     * @param index
-     * @return float
+    /**
+     * Metoda do zwracania kąta obróconej wieżyczki
+     * 
+     * @param index identyfikator wieżyczki
+     * @return float kąt obrotu
      */
     public float getTurretRotation(int index) {
         return turretSprites[index].getRotation();
     }
 
-    
-    /** 
-     * @return Sprite[]
+    /**
+     * Metoda do zwracania sprite'ów wieżyczek statku
+     * 
+     * @return Sprite[] wieżyczki
      */
     public Sprite[] getTurrets() {
         return turretSprites;
     }
 
     // Method to update simple sprite animation
+    /**
+     * Metoda do aktualizacji animacji statku
+     */
     public void updateAnimation() {
         animator.update(0);
         sprite.setRegion(animator.getCurrentFrame());
     }
 
     // Method to update ship waves animation and calculate it for rotation of ship
+    /**
+     * Metoda do aktualizacji animacji fal sprite'a
+     */
     public void updateTexture() {
         if (spriteWave != null) {
             this.animator.update(0);
@@ -181,8 +278,9 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
-    
-    /** 
+    /**
+     * Metoda do przesuwania tekstury wg osi X
+     * 
      * @param x
      */
     // This method simply moves main sprite texture in x axis
@@ -190,9 +288,11 @@ public class GameObject extends Rectangle implements Constant {
         this.x += x;
     }
 
-    
-    /** 
-     * @param texture
+    /**
+     * Metoda do tworzenia sprite'a i innych obiektów potrzebnych do jego poprawnego
+     * funkcjonowania w grze
+     * 
+     * @param texture Tekstura
      */
     // This is a method to create a sprite based on a texture , his allignment
     // rectangle and set size and position to a sprite
@@ -205,10 +305,12 @@ public class GameObject extends Rectangle implements Constant {
         setSpritePos(this.oldPos);
     }
 
-    
-    /** 
-     * @param texture
-     * @param size
+    /**
+     * Metoda do tworzenia sprite'a statku i innych obiektów potrzebnych do jego
+     * poprawnego funkcjonowania w grze
+     * 
+     * @param texture Tekstura statku
+     * @param size    Wielkość statku
      */
     // This is a method to create a sprite based on a texture , his allignment
     // rectangle and set size and position to a sprite but also its creating a int
@@ -227,9 +329,10 @@ public class GameObject extends Rectangle implements Constant {
         setSpritePos(this.oldPos);
     }
 
-    
-    /** 
-     * @param textures
+    /**
+     * Metoda do tworzenia tablicy sprite'ów wieżyczek statku i ich ustawienia -
+     * 
+     * @param textures Tekstury wieżyczek
      */
     // This method has to create array of turret sprites and its textures for a ship
     // depending on the ship size and place it on good positions accordingly to the
@@ -289,9 +392,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
-    
-    /** 
-     * @param batch
+    /**
+     * Metoda do rysowania sprite'ów wieżyczek
+     * 
+     * @param batch SpriteBatch do rysowania na ekranie
      */
     // this method will draw with a parameter batch every single ship turret if they
     // exist
@@ -301,10 +405,11 @@ public class GameObject extends Rectangle implements Constant {
                 this.turretSprites[i].draw(batch);
     }
 
-    
-    /** 
-     * @param batch
-     * @param enemy
+    /**
+     * Metoda do rysowania wieżyczek statku wroga
+     * 
+     * @param batch SpriteBatch do rysowania na ekranie
+     * @param enemy Określenie czy to wrogi statek
      */
     // this method will draw with a parameter batch every single ship turret if they
     // exist
@@ -315,8 +420,9 @@ public class GameObject extends Rectangle implements Constant {
                     this.turretSprites[i].draw(batch);
     }
 
-    
-    /** 
+    /**
+     * Metoda do zwrócenia tekstury obiektu
+     * 
      * @return Texture
      */
     // this method simply return the main sprite texture
@@ -324,8 +430,9 @@ public class GameObject extends Rectangle implements Constant {
         return texture;
     }
 
-    
-    /** 
+    /**
+     * Metoda do zwrócenia sprite'a obiektu
+     * 
      * @return Sprite
      */
     // this method simply return the main sprite
@@ -333,16 +440,18 @@ public class GameObject extends Rectangle implements Constant {
         return sprite;
     }
 
-    
-    /** 
+    /**
+     * Metoda do zwrócenia kierunku obrotu statku
+     * 
      * @return int
      */
     public int getRotation() {
         return rotation;
     }
 
-    
-    /** 
+    /**
+     * Metoda do tworzenia sprite'a fal statku i jego ustawienia
+     * 
      * @param texture
      */
     // This method method is simply used for creating the waves sprite for a ship
@@ -357,8 +466,9 @@ public class GameObject extends Rectangle implements Constant {
         this.spriteWave.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 1.5f);
     }
 
-    
-    /** 
+    /**
+     * Metoda do rysowania tekstury
+     * 
      * @return Texture
      */
     // this method also returns the main texture but it has different name only
@@ -366,10 +476,11 @@ public class GameObject extends Rectangle implements Constant {
         return this.texture;
     }
 
-    
-    /** 
-     * @param batch
-     * @param enemy
+    /**
+     * Metoda do rysowania statku wrogiego i jego fal
+     * 
+     * @param batch SpriteBatch do rysowania na ekranie
+     * @param enemy Określenie czy to wrogi okręt
      */
     // this method draws the main sprite and its waves if they exist
     public void drawSprite(SpriteBatch batch, boolean enemy) {
@@ -380,8 +491,9 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
-    
-    /** 
+    /**
+     * Metoda do rysowania statku i jego fal
+     * 
      * @param batch
      */
     // this method draws the main sprite and its waves if they exist
@@ -392,13 +504,14 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
-    
-    /** 
-     * @param batch
-     * @param drawRect
-     * @param drawWaves
-     * @param sr
-     * @param enemy
+    /**
+     * Metoda do rysowania statku i jego fal oraz prostokąta wokół niego
+     * 
+     * @param batch     SpriteBatch do rysowania na ekranie
+     * @param drawRect  Określenie czy należy rysować prostokąt
+     * @param drawWaves Określenie czy należy rysować fale statku
+     * @param sr        ShapeRenderer do rysowania prostokąta
+     * @param enemy     Określenie czy to wrogi statek
      */
     // this method also draws the main sprite and its waves if they exist but its
     // also drawing the main sprite rectangle with good colour based on its
@@ -417,12 +530,13 @@ public class GameObject extends Rectangle implements Constant {
         }
     }
 
-    
-    /** 
-     * @param batch
-     * @param drawRect
-     * @param drawWaves
-     * @param sr
+    /**
+     * Metoda do rysowania statku i jego fal oraz prostokąta wokół niego
+     * 
+     * @param batch     SpriteBatch do rysowania na ekranie
+     * @param drawRect  Określenie czy należy rysować prostokąt
+     * @param drawWaves Określenie czy należy rysować fale statku
+     * @param sr        ShapeRenderer do rysowania prostokąta
      */
     // this method also draws the main sprite and its waves if they exist but its
     // also drawing the main sprite rectangle with good colour based on its
@@ -440,9 +554,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
-    
-    /** 
-     * @param vector2
+    /**
+     * Metoda do ustawienia nowej pozycji statku i wszystkich jego elementów
+     * 
+     * @param vector2 Nowa pozycja na ekranie
      */
     // this method is used to change the whole gameObject position , its main sprite
     // and also the ship waves sprite and rectangle if they exist
@@ -531,9 +646,10 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
-    
-    /** 
-     * @param vector2
+    /**
+     * Metoda do ruszenia statku i jego elementów wg osi X i Y
+     * 
+     * @param vector2 Wartość X i Y o jaką zostanie ruszony statek
      */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
@@ -552,9 +668,10 @@ public class GameObject extends Rectangle implements Constant {
 
     }
 
-    
-    /** 
-     * @param x
+    /**
+     * Metoda do ruszenia statku i jego elementów wg osi X
+     * 
+     * @param x Wartość X o jaką zostanie ruszony statek
      */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
@@ -572,9 +689,10 @@ public class GameObject extends Rectangle implements Constant {
         this.x = sprite.getX();
     }
 
-    
-    /** 
-     * @param y
+    /**
+     * Metoda do ruszenia statku i jego elementów wg osi Y
+     * 
+     * @param y Wartość Y o jaką zostanie ruszony statek
      */
     // This method is used to move the whole game object
     // and its second sprite and rectangle if they exist
@@ -591,10 +709,11 @@ public class GameObject extends Rectangle implements Constant {
         this.y = sprite.getY();
     }
 
-    
-    /** 
-     * @param point
-     * @return boolean
+    /**
+     * Metoda do sprawdzenia czy punkt znajduje się w sprite'cie
+     * 
+     * @param point Punkt do sprawdzenia
+     * @return boolean Określenie czy się znajduje w sprite'cie czy nie
      */
     // this method checks if the point is placed in gameobject
     public boolean spriteContains(Vector2 point) {
@@ -605,6 +724,9 @@ public class GameObject extends Rectangle implements Constant {
 
     // this method is changing the allignment rectangle colour based on good
     // placement on board
+    /**
+     * Określenie koloru prostokąta w zależności od ustawienia
+     */
     public void changeRectColour() {
         if (goodPlacement)
             rectColour = Color.GREEN;
@@ -612,9 +734,10 @@ public class GameObject extends Rectangle implements Constant {
             rectColour = Color.RED;
     }
 
-    
-    /** 
-     * @param isIt
+    /**
+     * Metoda do zmiany wartości określającej czy sprite jest dobrze położony
+     * 
+     * @param isIt Nowa wartość
      */
     // this method changes the boolean value of good placement
     public void setGoodPlacement(boolean isIt) {
@@ -622,6 +745,9 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     // this method destroys one element of ship
+    /**
+     * Metoda do zniszczenia jednego elementu statku
+     */
     public void destroyElement() {
         for (int i = 0; i < size; i++)
             if (destroyed[i] == 0) {
@@ -630,10 +756,11 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
-    
-    /** 
-     * @param textureD
-     * @param turrets
+    /**
+     * Metoda do zmiany tekstur na zniszczone tekstury
+     * 
+     * @param textureD Nowa tekstura statku
+     * @param turrets  Nowe tekstury wieżyczek
      */
     public void changeDestroyTexture(Texture textureD, Texture[] turrets) {
         this.spriteWave = null;
@@ -663,6 +790,9 @@ public class GameObject extends Rectangle implements Constant {
     }
 
     // this method checks if the whole ship is destroyed
+    /**
+     * Metoda do sprawdzenia czy statek jest znisczony
+     */
     public void checkDestroyment() {
         for (int i = 0; i < size; i++) {
             if (destroyed[i] == 0)
@@ -671,8 +801,9 @@ public class GameObject extends Rectangle implements Constant {
         this.shipDestroyed = true;
     }
 
-    
-    /** 
+    /**
+     * Metoda do zwracania określenia czy statek jest zniszczony
+     * 
      * @return boolean
      */
     // this method return true or false wheter the whole ship is destroyed
@@ -680,10 +811,11 @@ public class GameObject extends Rectangle implements Constant {
         return shipDestroyed;
     }
 
-    
-    /** 
-     * @param otherRectangle
-     * @return boolean
+    /**
+     * Metoda do sprawdzenia kolizji z innym statkiem na planszy
+     * 
+     * @param otherRectangle Prostokąt opasający inny okręt
+     * @return boolean True jeśli zachodzi kolizja / False jeśli nie zachodzi
      */
     // this method check if this sprite is colliding with another when they have the
     // same rotation
@@ -707,12 +839,16 @@ public class GameObject extends Rectangle implements Constant {
             return false;
     }
 
-    
-    /** 
-     * @param otherRectangle
-     * @param diffRotation
-     * @param actualShipRotatedVertically
-     * @return boolean
+    /**
+     * Metoda do sprawdzenia kolizji z innym statkiem na planszy który ma inne
+     * obrócenie
+     * 
+     * @param otherRectangle              Prostokąt opasający inny okręt
+     * @param diffRotation                Określenie czy inny statek ma inne
+     *                                    obrócenie
+     * @param actualShipRotatedVertically Określenie czy ten statek jest obrócony
+     *                                    wertykalnie
+     * @return boolean True jeśli zachodzi kolizja / False jeśli nie zachodzi
      */
     // this method check if this sprite is colliding with another when they dont
     // have the same rotation
@@ -771,6 +907,9 @@ public class GameObject extends Rectangle implements Constant {
 
     // this method rotates the whole game object and its components in right for
     // 90degrees
+    /**
+     * Metoda do obrócenia statku o 90 stopni w prawo oraz wszystkich jego elementów
+     */
     public void rotate90() {
         sprite.rotate90(true);
         if (spriteWave != null) {
@@ -872,6 +1011,9 @@ public class GameObject extends Rectangle implements Constant {
         alligmentRectangle.setSize(width, height);
     }
 
+    /**
+     * Metoda do ustawienia wieżyczek w odpowiednim miejsu na statku
+     */
     public void placeTurretsAccordingly() {
         for (int i = 0; i < turretsAmmount; i++)
             if (turretSprites[i] != null) {
@@ -951,10 +1093,11 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
-    
-    /** 
-     * @param degrees
-     * @param index
+    /**
+     * Metoda do obrócenia wieżyczki
+     * 
+     * @param degrees nowy kąt obrotu
+     * @param index   identyfikator wieżyczki
      */
     public void rotateTurret(float degrees, int index) {
         if (!this.shipDestroyed)
@@ -964,18 +1107,20 @@ public class GameObject extends Rectangle implements Constant {
             }
     }
 
-    
-    /** 
-     * @param i
-     * @return Vector2f
+    /**
+     * Metoda do zwrócenia pozycji wieżyczki
+     * 
+     * @param i identyfikator wieżyczki
+     * @return Vector2f Pozycja wieżyczki
      */
     public Vector2f getVectorPos(int i) {
         return new Vector2f(turretSprites[i].getX(), turretSprites[i].getY());
     }
 
-    
-    /** 
-     * @return Vector2f
+    /**
+     * Metoda do zwrócenia pozycji statku
+     * 
+     * @return Vector2f Pozycja statku
      */
     public Vector2f getPosition() {
         return new Vector2f(x, y);
