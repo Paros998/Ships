@@ -6,12 +6,33 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+/**
+ * Klasa reprezentująca przycisk obrazkowy.
+ * Dziedziczy po klasie ImageButton
+ */
 public class GameImageButton extends ImageButton {
 
+    /**
+     * Obiekty klasy Hud.
+     * Jest referencją do elementów tej klasy.
+     */
     private Hud hud;
+
+    /**
+     * Obiekt klasy optionsWindow.
+     * Jest referencją do elementów tej klasy.
+     */
     private OptionsWindow optionsWindow;
 
-    // Game Menu constructor
+    // Game Menu constructors
+
+    /**
+     * Konstruktor klasy GameImageButton.
+     * @param x Współrzędna osi X.
+     * @param y Współrzędna osi Y.
+     * @param hud Referencja do klasy Hud.
+     * @param buttonStyles Style przycisków.
+     */
     public GameImageButton(float x, float y, Hud hud, Sprite[] buttonStyles) {
         super(new SpriteDrawable(buttonStyles[0]), 
             new SpriteDrawable(buttonStyles[1]));
@@ -23,11 +44,18 @@ public class GameImageButton extends ImageButton {
         optionsWindow = new OptionsWindow("Game Menu", hud);
     }
 
+    /**
+     * Drugi konstruktor klasy GameImageButton.
+     * @param buttonStyles Style przycisków.
+     */
     public GameImageButton(Sprite[] buttonStyles) {
         super(new SpriteDrawable(buttonStyles[0]),
             new SpriteDrawable(buttonStyles[1]));
     }
 
+    /**
+     * Metoda ustawiająca słuchacza do przycisku.
+     */
     public void setOptionsListener() {
         this.addListener(new InputListener() {
             @Override
@@ -46,7 +74,8 @@ public class GameImageButton extends ImageButton {
 
     
     /** 
-     * @return boolean
+     * Metoda typu get, zwraca w jakim stanie jest menu.
+     * @return Stan.
      */
     public boolean getGameMenuState() {
         return (boolean) (optionsWindow != null ? optionsWindow.turnedOn : false);

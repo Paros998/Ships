@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,22 +15,98 @@ import com.ourshipsgame.game.GameScreen;
 import com.ourshipsgame.game.GameSettings;
 import com.ourshipsgame.handlers.Constant;
 
+/**
+ * Klasa hud'u (heads-up display) gry.
+ */
 public class Hud implements Constant {
 
     // Fields
-    private GameImageButton gameMenuButton, repeatButton, playButton;
+
+    /**
+     * Główny przycisk do opcji gry w trakcie rozgrywki.
+     * Jest to złote koło zębate w górnym prawym rogu ekranu.
+     */
+    private GameImageButton gameMenuButton;
+
+    /**
+     * Przycisk do generowania losowego ustawienia statków na planszy.
+     */
+    private GameImageButton repeatButton;
+
+    /**
+     * Przycisk zatwierdzenia ustawienia statków.
+     * Gdy świeci na czerwono nie można przejść do rozgrywki po jego naciśnięciu.
+     * Gdy świeci na zielono można przejść do rozgrywki po jego naciśnięciu.
+     */
+    private GameImageButton playButton;
+
+    /**
+     * Style przycisku startu.
+     * Używane tylko przy tworzeniu przycisku.
+     */
     private Sprite playButtonGreenStyle;
+
+    /**
+     * Pole tekstowe do wpisywania nazwy gracza.
+     */
     private TextField playerNameTextField;
+
+    /**
+     * Okno dialogowe do ustawienia nazwy gracza.
+     */
     private Dialog playersSetNameDialog;
+
+    /**
+     * Nazwa gracza przekazywana do GameScreen.
+     */
     private String playersName;
+
+    /**
+     * Tabela do rozmieszczenia elementów na ekranie.
+     */
     public Table layoutTable;
+
+    /**
+     * Scena z silnika libGDX. Sprawia, że elementy w grze są interaktywne oraz
+     * rysuje je na ekranie.
+     */
     private Stage stage;
+
+    /**
+     * Motyw przycisków oraz innych elementów gui w grze.
+     */
     private Skin skin;
+
+    /**
+     * Obiekt klasy GameSettings.
+     * Zawiera ustawienia dźwięków i muzyki w grze.
+     */
     public GameSettings gameSettings;
+
+    /**
+     * Obiekt klasy GameScreen. 
+     * W tej klasie odpowiedzialny za niszczenie elementów Hud.
+     */
     public GameScreen gameScreen;
+
+    /**
+     * Obiekt klasy Main. 
+     * Odpowiedzialny głównie za zarządzanie ekranami.
+     */
     public Main game;
+
+    /**
+     * Kursor myszki.
+     */
     public Cursor cursor;
 
+    /**
+     * Główny i jedyny konstruktor klasy Hud.
+     * @param manager Pobierane są z niego tekstury.
+     * @param game Przełącza ekrany. Powrót do menu.
+     * @param gameScreen Niszczy elementy Hud.
+     * @param kCursor Referencja do kursora myszki.
+     */
     // Constructor
     public Hud(AssetManager manager, Main game, GameScreen gameScreen, Cursor kCursor) {
         skin = new Skin();
@@ -106,12 +181,14 @@ public class Hud implements Constant {
         stage.addActor(layoutTable);
     }
 
-    /**
-     * @param textures
-     * @param sprites
-     * @param factor
-     */
     // Methods
+
+    /**
+     * Metoda ustawiająca sprite'y przycisków.
+     * @param textures Tablica tekstur.
+     * @param sprites Tablica sprite'ów.
+     * @param factor Współczynnik rozmiaru.
+     */
     private void setButtonsSprites(Texture[] textures, Sprite[] sprites, float factor) {
         for (int i = 0; i < sprites.length; i++) {
             sprites[i] = new Sprite(textures[i]);
@@ -119,11 +196,17 @@ public class Hud implements Constant {
         }
     }
 
+    /**
+     * Metoda aktualizująca w czasie gry elementy hud'u.
+     */
     public void update() {
         stage.act();
         stage.draw();
     }
 
+    /**
+     * Metoda niszcząca elementy hud'u.
+     */
     public void dispose() {
         stage.dispose();
         skin.dispose();
@@ -131,14 +214,8 @@ public class Hud implements Constant {
     }
 
     /**
-     * @param batch
-     */
-    public void render(SpriteBatch batch) {
-        // uiBar.getSprite().draw(batch);
-    }
-
-    /**
-     * @return GameImageButton
+     * Metoda typu get, zwraca przycisk.
+     * @return Przycisk do generowania losowego ustawienia statków.
      */
     // Getters
     public GameImageButton getRepeatButton() {
@@ -146,49 +223,56 @@ public class Hud implements Constant {
     }
 
     /**
-     * @return GameImageButton
+     * Metoda typu get, zwraca przycisk.
+     * @return Przycisk do przejścia do rozgrywki.
      */
     public GameImageButton getPlayButton() {
         return playButton;
     }
 
     /**
-     * @return String
+     * Metoda typu get, zwraca String.
+     * @return Nazwa gracza.
      */
     public String getPlayersName() {
         return playersName;
     }
 
     /**
-     * @return Sprite
+     * Metoda typu get, zwraca Sprite.
+     * @return Styl przycisku Play.
      */
     public Sprite getPlayButtonGreenStyle() {
         return playButtonGreenStyle;
     }
 
     /**
-     * @return Dialog
+     * Metoda typu get, zwraca okno dialogowe.
+     * @return Okno dialogowe.
      */
     public Dialog getPlayersSetNameDialog() {
         return playersSetNameDialog;
     }
 
     /**
-     * @return Stage
+     * Metoda typu get, zwraca Stage.
+     * @return Scena elementów hud.
      */
     public Stage getStage() {
         return stage;
     }
 
     /**
-     * @return Skin
+     * Metoda typu get, zwraca Skin.
+     * @return Skórka elementów gry.
      */
     public Skin getSkin() {
         return skin;
     }
 
     /**
-     * @return boolean
+     * Metoda typu get, zwraca boolean.
+     * @return Czy włączone są opcje gry.
      */
     public boolean isPasued() {
         return gameMenuButton.getGameMenuState();

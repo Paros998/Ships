@@ -7,9 +7,29 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.ourshipsgame.Main;
 import com.ourshipsgame.handlers.Constant;
 
+/**
+ * Klasa reprezentująca ssuwak z libGDX.
+ * Dziedziczy po klasie Slider.
+ */
 public class GameSlider extends Slider implements Constant {
+
+    /**
+     * Obiekt klasy Main. 
+     * W tej klasie jest referencją do elementów menu (obiekt menuElements).
+     */
     private Main game;
 
+    /**
+     * Konstruktor klasy GameSlider.
+     * @param x Pozycja w X.
+     * @param y Pozycja w Y.
+     * @param min Minimalna wartość ssuwaka.
+     * @param max Maksymalna wartość ssuwaka.
+     * @param stepSize Rozbieżność ssuwaka.
+     * @param vertical Czy poziomo.
+     * @param skin Skórka ssuwaka.
+     * @param game Referencja obiektu Main.
+     */
     public GameSlider(float x, float y, float min, float max, float stepSize, boolean vertical, Skin skin,
             final Main game) {
         super(min, max, stepSize, vertical, skin);
@@ -18,14 +38,23 @@ public class GameSlider extends Slider implements Constant {
         this.setY(y);
     }
 
+    /**
+     * Drugi konstruktor klasy GameSlider.
+     * @param min Minimalna wartość ssuwaka.
+     * @param max Maksymalna wartość ssuwaka.
+     * @param stepSize Rozbieżność ssuwaka.
+     * @param vertical Czy poziomo.
+     * @param skin Skórka ssuwaka
+     */
     public GameSlider(float min, float max, float stepSize, boolean vertical, Skin skin) {
         super(min, max, stepSize, vertical, skin);
     }
 
     
     /** 
-     * @param option
-     * @param settings
+     * Ustawienie słuchacza ssuwaka.
+     * @param option Typ ssuwaka.
+     * @param settings Referencja obiektu GameSettings.
      */
     public void setSliderType(int option, final GameSettings settings) {
         final Slider sliderTmp = this;
@@ -60,7 +89,8 @@ public class GameSlider extends Slider implements Constant {
 
     
     /** 
-     * @param option
+     * Ustawienie słuchacza ssuwaka.
+     * @param option Typ ssuwaka.
      */
     public void setSliderType(int option) {
         final Slider sliderTmp = this;

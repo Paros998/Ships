@@ -12,17 +12,46 @@ import com.ourshipsgame.mainmenu.MenuScreen;
 import com.ourshipsgame.mainmenu.OptionScreen;
 import com.ourshipsgame.mainmenu.ScoreScreen;
 
+/**
+ * Klasa reprezentująca przycisk tekstowy.
+ * Dziedziczy po klasie TextButton
+ */
 public class GameTextButton extends TextButton {
 
+    /**
+     * Referencja do motywu przycisków oraz innych elementów gui w grze.
+     */
     public Skin skin;
+
+    /**
+     * Obiekt klasy Main. 
+     * Odpowiedzialny głównie za zarządzanie ekranami.
+     */
     Main game;
 
     // While in Game Constructor
+
+    /**
+     * Konstruktor klasy GameTextButton. Używany podczas rozgrywki.
+     * @param nameTag Tekst wyświetlany na przycisku.
+     * @param skin Skórka do przycisku.
+     * @param buttonNumber Numer przycisku (do metody menuOptions).
+     */
     public GameTextButton(String nameTag, Skin skin, final int buttonNumber) {
         super(nameTag, skin);
     }
 
     // While in Main Menu Constructor
+
+    /**
+     * Drugi konstruktor klasy GameTextButton. Używany w głównym menu.
+     * @param nameTag Tekst wyświetlany na przycisku.
+     * @param x Pozycja w X.
+     * @param y Pozycja w Y.
+     * @param skin Skórka do przycisku.
+     * @param buttonNumber Numer przycisku (do metody menuOptions).
+     * @param game Referencja obiektu Main.
+     */
     public GameTextButton(String nameTag, float x, float y, Skin skin, final int buttonNumber, final Main game) {
         super(nameTag, skin);
         this.game = game;
@@ -44,10 +73,9 @@ public class GameTextButton extends TextButton {
     }
 
     /**
-     * @param option
+     * Metoda określa numer przycisku i na jego podstawie przełączany jest ekran.
+     * @param option Numer przycisku.
      */
-    // Setlistener method to create
-
     private void menuOptions(int option) {
         switch (option) {
         case 1: // Enters to the game

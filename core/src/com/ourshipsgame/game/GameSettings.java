@@ -9,14 +9,50 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+/**
+ * Klasa zawierająca ustawienia gry.
+ */
 public class GameSettings {
-    public Game game;
-    public Music music;
-    public Sound clickSound;
-    public float sliderMusicPercent, sliderSoundPercent;
-    public float soundVolume, musicVolume;
-    public long soundId; // Add table to create more sounds
 
+    /**
+     * Referencja obiektu Game.
+     */
+    public Game game;
+
+    /**
+     * Muzyka w grze.
+     */
+    public Music music;
+
+    /**
+     * Dzwięk kliknięcia.
+     */
+    public Sound clickSound;
+
+    /**
+     * Wartość ssuwaka od muzyki.
+     */
+    public float sliderMusicPercent;
+
+    /**
+     * Wartość ssuwaka od dźwięków.
+     */
+    public float sliderSoundPercent;
+
+    /**
+     * Wartość głośności dźwięków.
+     */
+    public float soundVolume;
+
+    /**
+     * Wartość głośności muzyki.
+     */
+    public float musicVolume;
+
+    /**
+     * Konstruktor klasy GameSettings.
+     * @param game Referencja obiektu Game.
+     */
     public GameSettings(Game game) {
         this.game = game;
 
@@ -37,7 +73,8 @@ public class GameSettings {
     }
 
     /**
-     * @throws IOException
+     * Metoda wczytująca ustawienia z pliku.
+     * @throws IOException Wyjątek związany z plikiem.
      */
     private void loadSettings() throws IOException {
         File file = new File("core/assets/files/settings.txt");
