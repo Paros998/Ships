@@ -10,20 +10,59 @@ import com.ourshipsgame.handlers.Constant;
 import com.ourshipsgame.mainmenu.MenuGlobalElements;
 import com.ourshipsgame.mainmenu.MenuScreen;
 
+/**
+ * Klasa reprezentująca okno dialogowe.
+ * Dziedziczy po klasie Dialog.
+ */
 public class OptionsWindow extends Dialog implements Constant {
 
     // Fields
+
+    /**
+     * Typ wyliczeniowy Actions, określa opcje w oknie dialogowym.
+     */
     private enum Actions {
         RESUME_GAME, OPTIONS, BACK_TO_MAIN_MENU;
     }
 
+    /**
+     * Tablica rozmieszczenia elementów w oknie dialogowym.
+     */
     private Table layoutTable;
+
+    /**
+     * Określa czy okno dialogowe się pojawiło.
+     */
     public boolean turnedOn;
+
+    /**
+     * Referencja do elementów w klasie Hud.
+     */
     private Hud hud;
+
+    /**
+     * Referencja "do siebie".
+     * Jest używany w konstruktorze podokna dialogowego przy wyjściu z gry.
+     */
     private OptionsWindow backReference = this;
-    private GameSlider soundSlider, musicSlider;
+
+    /**
+     * Ssuwak z libGDX. Służy do regulowania głośności dźwięków.
+     */
+    private GameSlider soundSlider;
+
+    /**
+     * Ssuwak z libGDX. Służy do regulowania głośności muzyki.
+     */
+    private GameSlider musicSlider;
 
     // Constructor
+
+    /**
+     * Główny i jedyny konstruktor klasy OptionsWindow.
+     * @param windowName Nazwa okna.
+     * @param hud Referencja obiektu Hud.
+     */
     public OptionsWindow(String windowName, Hud hud) {
         super(windowName, hud.getSkin());
         this.hud = hud;
@@ -38,8 +77,11 @@ public class OptionsWindow extends Dialog implements Constant {
         layoutTable.add(this).expandX().padBottom(10);
     }
 
+    // Methods
+
     /**
-     * @throws IOException
+     * Metoda zapisująca ustawienia gry do pliku.
+     * @throws IOException Wyjątek związany z plikiem.
      */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
@@ -49,9 +91,9 @@ public class OptionsWindow extends Dialog implements Constant {
     }
 
     /**
-     * @param act
+     * Metoda wynikowa po wciśnięciu przycisku w oknie dialogowym.
+     * @param act Obiekt przycisku.
      */
-    // Method
     @Override
     protected void result(final Object act) {
         Actions action = Actions.valueOf(act.toString());

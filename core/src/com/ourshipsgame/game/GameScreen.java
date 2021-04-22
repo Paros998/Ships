@@ -619,8 +619,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 break;
             }
 
-            hud.render(sb);
-
             sb.end();
             sr.end();
             hud.update();
