@@ -574,7 +574,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     protected ShootParticleEffect shootEffect[] = new ShootParticleEffect[sum];
     // more other vars
     /**
-     * Zmienna do logiki drag & drop statku w czasie ustawiania statków na planszy
+     * Zmienna do logiki drag n drop statku w czasie ustawiania statków na planszy
      */
     protected int activeSpriteDrag = 99;
     /**
@@ -1042,7 +1042,7 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
     }
 
     /**
-     * Metoda do poruszania statków na planszy drag&drop
+     * Metoda do poruszania statków na planszy drag n drop
      * 
      * @param screenX Nowa pozycja X na ekranie
      * @param screenY Nowa pozycja Y na ekranie

@@ -99,12 +99,12 @@ public class GameObject extends Rectangle implements Constant {
     /**
      * Kontruktor obiektu z teksturą ,spritem i animacją sprite'a
      * 
-     * @param texture        Tekstura statku
-     * @param x              Nowa pozycja X na ekranie
-     * @param y              Nowa pozycja Y na ekranie
-     * @param createSprite   Czy ma tworzyć sprite'a
-     * @param createAnimator Czy ma tworzyć animator do sprite'a
-     * @param vector         Ilość klatek do animatora
+     * @param texture        Tekstura statku.
+     * @param x              Nowa pozycja X na ekranie.
+     * @param y              Nowa pozycja Y na ekranie.
+     * @param createSprite   Czy ma tworzyć sprite'a.
+     * @param createAnimator Czy ma tworzyć animator do sprite'a.
+     * @param vector         Ilość klatek do animatora.
      */
     public GameObject(Texture texture, float x, float y, boolean createSprite, boolean createAnimator, Vector2 vector) {
         this.texture = texture;
@@ -125,13 +125,12 @@ public class GameObject extends Rectangle implements Constant {
      * Konstruktor obiektu z dwoma tekstrurami i dwoma sprite'ami, po jednym dla
      * statku i jego fal
      * 
-     * @param texture        Tekstura statku
-     * @param texture2       Tekstura fal
-     * @param x              Nowa pozycja X na ekranie
-     * @param y              Nowa pozycja Y na ekranie
-     * @param createSprite   Czy ma tworzyć sprite'a
-     * @param createAnimator Czy ma tworzyć animator do sprite'a
-     * @param vector         Ilość klatek do animatora
+     * @param texture        Tekstura statku.
+     * @param texture2       Tekstura fal.
+     * @param x              Nowa pozycja X na ekranie.
+     * @param y              Nowa pozycja Y na ekranie.
+     * @param createSprite   Czy ma tworzyć sprite'a.
+     * @param vector2         Ilość klatek do animatora.
      */
     public GameObject(Texture texture, Texture texture2, float x, float y, boolean createSprite, int sizeofShip,
             Vector2 vector2) {
@@ -155,14 +154,13 @@ public class GameObject extends Rectangle implements Constant {
      * Konstruktor obiektu z dwoma tekstrurami i dwoma sprite'ami, po jednym dla
      * statku i jego fal oraz z sprite'ami wieżyczek
      * 
-     * @param texture        Tekstura statku
-     * @param texture2       Tekstura fal
-     * @param textures       Tekstury wieżyczek
-     * @param x              Nowa pozycja X na ekranie
-     * @param y              Nowa pozycja Y na ekranie
-     * @param createSprite   Czy ma tworzyć sprite'a
-     * @param createAnimator Czy ma tworzyć animator do sprite'a
-     * @param vector         Ilość klatek do animatora
+     * @param texture Tekstura statku.
+     * @param texture2 Tekstura fal.
+     * @param textures Tekstury wieżyczek.
+     * @param x Nowa pozycja X na ekranie.
+     * @param y Nowa pozycja Y na ekranie.
+     * @param createSprite Czy ma tworzyć sprite'a.
+     * @param vector2 Ilość klatek do animatora.
      */
     public GameObject(Texture texture, Texture texture2, Texture[] textures, float x, float y, boolean createSprite,
             int sizeofShip, Vector2 vector2) {
