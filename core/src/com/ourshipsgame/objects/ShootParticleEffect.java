@@ -89,7 +89,7 @@ public class ShootParticleEffect {
                 percent = (angle - 180) / 90;
                 x += (width / 2);
                 x -= (2 * width / 2) * percent;
-                y -= height;
+                y -= (height / 2);
                 y += (height / 2) * percent;
             } else if (angle > 270 && angle <= 360) {
                 percent = (angle - 270) / 90;
