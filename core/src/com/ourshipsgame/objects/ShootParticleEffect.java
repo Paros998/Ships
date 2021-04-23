@@ -100,9 +100,9 @@ public class ShootParticleEffect {
             }
 
             if (rotation % 2 == 0) {
-                this.sprites[i].setPosition(x - 58, y - 15);
+                this.sprites[i].setPosition(x - 58, y - 20);
             } else {
-                this.sprites[i].setPosition(x - 50, y - 25);
+                this.sprites[i].setPosition(x - 50, y - 35);
             }
 
             if (angle >= 0 && angle < 90) {
