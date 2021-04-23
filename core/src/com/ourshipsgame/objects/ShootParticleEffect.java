@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.ourshipsgame.game.GameObject;
 
 /**
- * Klasa ta przechowuje wszystkie efekty strzałów pojedyńczego statku
+ * Klasa ta przechowuje wszystkie efekty strzałów pojedynczego statku
  */
 public class ShootParticleEffect {
     /**
@@ -67,59 +67,42 @@ public class ShootParticleEffect {
         Sprite[] turrets = actualShip.getTurrets();
         int rotation = actualShip.getRotation();
         for (int i = 0; i < turretsAmmount; i++) {
+            float width = turrets[i].getWidth();
+            float height = turrets[i].getHeight();
             float x = turrets[i].getX();
             float y = turrets[i].getY();
             float angle = turrets[i].getRotation();
-
             angle -= rotation * 90;
             if (angle < 0)
                 angle += 360;
-            // 0-90
-            if (angle >= 0 && angle <= 30) {
-                x += 4;
-                y -= 12;
-            } else if (angle > 30 && angle <= 60) {
-                x += 8;
-                y -= 8;
-            } else if (angle > 60 && angle <= 90) {
-                x += 12;
-                y -= 4;
-                // 90-180
-            } else if (angle > 90 && angle <= 120) {
-                x += 12;
-                y += 4;
-            } else if (angle > 120 && angle <= 150) {
-                x += 8;
-                y += 8;
-            } else if (angle > 150 && angle <= 180) {
-                x += 4;
-                y += 12;
-                // 180-270
-            } else if (angle > 180 && angle <= 210) {
-                x -= 4;
-                y += 12;
-            } else if (angle > 210 && angle <= 240) {
-                x -= 8;
-                y += 8;
-            } else if (angle > 240 && angle <= 270) {
-                x -= 12;
-                y += 4;
-                // 270-360
-            } else if (angle > 270 && angle <= 300) {
-                x -= 12;
-                y -= 4;
-            } else if (angle > 300 && angle <= 330) {
-                x -= 8;
-                y -= 8;
-            } else if (angle > 330 && angle <= 360) {
-                x -= 4;
-                y -= 12;
+
+            float percent = 0;
+            if (angle >= 0 && angle <= 90) {
+                percent = angle / 90;
+                x += (width / 2) + ((height / 2) * percent);
+                y -= (height / 2) * percent;
+            } else if (angle > 90 && angle <= 180) {
+                percent = (angle - 90) / 90;
+                x += (width / 2) + (height / 2) - ((height / 2) * percent);
+                y -= (height / 2) - ((height / 2) * percent);
+            } else if (angle > 180 && angle <= 270) {
+                percent = (angle - 180) / 90;
+                x += (width / 2);
+                x -= (2 * width / 2) * percent;
+                y -= (height / 2);
+                y += (height / 2) * percent;
+            } else if (angle > 270 && angle <= 360) {
+                percent = (angle - 270) / 90;
+                x -= (width / 2);
+                x += (2 * width / 2) * percent;
+                y -= (height / 2);
+                y += (height / 2) * percent;
             }
 
             if (rotation % 2 == 0) {
-                this.sprites[i].setPosition(x - 53, y - 30);
+                this.sprites[i].setPosition(x - 58, y - 15);
             } else {
-                this.sprites[i].setPosition(x - 45, y - 40);
+                this.sprites[i].setPosition(x - 50, y - 25);
             }
 
             if (angle >= 0 && angle < 90) {

@@ -41,6 +41,7 @@ public class Scores {
         protected float accuracyRatio;
 
         /**
+         * Konstruktor obiektu rekordu
          * 
          * @param name     Zmienna przechowująca nazwę gracza
          * @param score    Zmienna przechowująca wynik
@@ -114,6 +115,8 @@ public class Scores {
     }
 
     /**
+     * Metoda rysująca na ekranie rekordy
+     * 
      * @param batch SpriteBatch wykorzystywany do rysowania na ekranie
      * @param font  Czcionka używana do wyświetlania tesktu
      * @param gameH Zmienna określająca wysokość okna w pikselach

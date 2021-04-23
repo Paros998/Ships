@@ -134,10 +134,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
      * Zmienna służąca do aktualizacji logiki związanej z obrotem wieżyczek
      */
     private float rotateTime;
-    /**
-     * Zmienna służąca do aktualizacji logiki związanej oddaniem strzału
-     */
-    private float shootTime;
+
     /**
      * Zmienna służąca do aktualizacji logiki związanej z zniszczeniem okrętu
      */
@@ -284,8 +281,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
      * @param deltaTime czas między klatkami
      */
     private void drawShootingEffect(float deltaTime) {
+        shootingDone = false;
         shootTime += deltaTime;
         if (shootTime <= 1f) {
+            shootingEnabled = false;
             if (PlayerTurn == 1) {
                 for (int i = 0; i < sum; i++) {
                     if (FirstBoardShipsSprites[i].shipDestroyed)
@@ -294,9 +293,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
                     shootEffect[i].drawAnimation(sb);
                 }
             }
-        } else {
-            if (missed)
-                switchTurn();
+        } else if (shootTime > 1f) {
             for (int i = 0; i < sum; i++) {
                 if (FirstBoardShipsSprites[i].shipDestroyed)
                     continue;
@@ -305,7 +302,10 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateEnabled = true;
             shootTime = 0f;
             shootOrder = false;
+            shootingDone = true;
         }
+        if (missed && shootingDone)
+            switchTurn();
     }
 
     /**
@@ -560,7 +560,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
      * Metoda do odtwarzania dźwięku obrotu wieżyczek
      */
     private void startRotateSound() {
-        sid = rotateSound.loop(hud.gameSettings.soundVolume * (1 + 0.3f));
+        sid = rotateSound.loop(hud.gameSettings.soundVolume * (1 + 0.5f));
         rotateSound.pause();
     }
 
@@ -650,8 +650,9 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateSound.pause();
         }
         handleInput(deltaTime);
-        rotateSound.setVolume(sid, hud.gameSettings.soundVolume);
+        rotateSound.setVolume(sid, hud.gameSettings.soundVolume * (1 + 0.5f));
         if (gameStage == 3) {
+
             if (PlayerTurn == 1)
                 PlayerOne.updateTime(deltaTime);
             else
@@ -742,7 +743,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
                         playShootSound();
                     }
                     drawShootingEffect(deltaTime);
-                    Gdx.graphics.setCursor(crosshairs[0]);
                     if (hitted == true && destroyed == false) {
                         if (hitMissSound)
                             hitEffect.playSound(hud.gameSettings.soundVolume);
@@ -901,10 +901,14 @@ public class GameScreen extends GameEngine implements InputProcessor {
                 touchDownSprite(screenX, screenY);
             if (gameStage == 3) {
                 if (PlayerTurn == 1) {
-                    shootOrder = shoot(screenX, screenY);
-                    PlayerOne.update(FirstPlayerShotsDone);
-                    shootSound = true;
-                    hitMissSound = true;
+                    if (shootingDone) {
+                        shootOrder = shoot(screenX, screenY);
+                        if (shootOrder) {
+                            PlayerOne.update(FirstPlayerShotsDone);
+                            shootSound = true;
+                            hitMissSound = true;
+                        }
+                    }
                 }
             }
         }
@@ -953,11 +957,13 @@ public class GameScreen extends GameEngine implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
         if (gameStage == 3) {
             if (PlayerTurn == 1) {
-                if (!shootOrder)
-                    checkEnemyBoard(screenX, screenY);
-                if (rotateEnabled) {
-                    rotateSound.resume();
-                    rotateTurretsWithMouse(screenX, screenY);
+                if (shootingDone) {
+                    if (!shootOrder)
+                        checkEnemyBoard(screenX, screenY);
+                    if (rotateEnabled) {
+                        rotateSound.resume();
+                        rotateTurretsWithMouse(screenX, screenY);
+                    }
                 }
             }
 

@@ -602,6 +602,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
      */
     protected boolean shootingEnabled = false;
     /**
+     * Zmienna określająca czy strzał się zakończył
+     */
+    protected boolean shootingDone = true;
+    /**
      * Zmienna określająca czy trafiono po strzale
      */
     protected boolean hitted = false;
@@ -637,6 +641,10 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
      * Zmienna określająca pozycję zniszczenia
      */
     protected Vector2f destroymentPos = new Vector2f();
+    /**
+     * Zmienna służąca do aktualizacji logiki związanej oddaniem strzału
+     */
+    protected float shootTime;
 
     /**
      * Metoda do zmiany tury
@@ -1339,9 +1347,8 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 screenY = (int) gameHeight_f - screenY;
                 xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
                 yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
-                shootingEnabled = false;
-
                 FirstPlayerShotsDone[xPos][yPos] = -1;
+                shootingEnabled = false;
                 Gdx.graphics.setCursor(crosshairs[0]);
                 checkHit(xPos, yPos);
                 break;
@@ -1370,18 +1377,34 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
         screenY = (int) gameHeight_f - screenY;
         if (board.contains(screenX, screenY)) {
-            int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
-            int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
-            if (xPos == 10 || yPos == 10)
-                return;
-            if (FirstPlayerShotsDone[xPos][yPos] != 0) {
-                shootingEnabled = false;
-                rotateEnabled = true;
-                Gdx.graphics.setCursor(crosshairs[0]);
-            } else {
-                shootingEnabled = true;
-                rotateEnabled = true;
-                Gdx.graphics.setCursor(crosshairs[1]);
+            if (PlayerTurn == 1) {
+                int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+                if (xPos == 10 || yPos == 10)
+                    return;
+                if (FirstPlayerShotsDone[xPos][yPos] != 0) {
+                    shootingEnabled = false;
+                    rotateEnabled = true;
+                    Gdx.graphics.setCursor(crosshairs[0]);
+                } else {
+                    shootingEnabled = true;
+                    rotateEnabled = true;
+                    Gdx.graphics.setCursor(crosshairs[1]);
+                }
+            } else if (PlayerTurn == 2) {
+                int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+                if (xPos == 10 || yPos == 10)
+                    return;
+                if (FirstPlayerShotsDone[xPos][yPos] != 0) {
+                    shootingEnabled = false;
+                    rotateEnabled = true;
+
+                } else {
+                    shootingEnabled = true;
+                    rotateEnabled = true;
+
+                }
             }
 
         } else {
