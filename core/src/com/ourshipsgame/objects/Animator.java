@@ -5,14 +5,51 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Klasa animująca obiekty w grze.
+ */
 public class Animator {
+
     // Data
+
+    /**
+     * Obiekt libGDX przechowujący wymiary sprite'a.
+     */
     private TextureRegion region;
-    private Vector2 currentImage, imageCount;
+
+    /**
+     * Wektor dwuwymiarowy, określający obecny obrazek w x i y.
+     */
+    private Vector2 currentImage;
+
+    /**
+     * Wektor dwuwymiarowy, określający wymiary spritesheet.
+     */
+    private Vector2 imageCount;
+
+    /**
+     * Tablica obiektów libGDX przechowująca obrazki do animacji.
+     */
     private TextureRegion[][] frames;
-    private float switchTime, totalTime;
+
+    /**
+     * Czas przełączania obrazków w animacji.
+     */
+    private float switchTime;
+
+    /**
+     * Maksymalny czas aktulalizowany czasem silnika libGDX.
+     */
+    private float totalTime;
 
     // Constructor
+
+    /**
+     * Główny i jedyny konstruktor klasy Animator.
+     * @param texture Tekstura, spritesheet.
+     * @param imageCount Wektor dwuwymiarowy, określający wymiary spritesheet.
+     * @param switchTime Czas przełączania obrazków w animacji.
+     */
     public Animator(Texture texture, Vector2 imageCount, float switchTime) {
         frames = new TextureRegion[(int) imageCount.y][(int) imageCount.x];
         region = new TextureRegion(texture);
@@ -29,11 +66,18 @@ public class Animator {
         totalTime = 0;
     }
 
+    // Public methods
+
+    /**
+     * Metoda resetująca animacje.
+     */
     public void setStartAnimation() {
         currentImage.x = currentImage.y = 0;
     }
 
-    // Public methods
+    /**
+     * Metoda aktualizująca animacje.
+     */
     public void update() {
 
         totalTime += Gdx.graphics.getDeltaTime();
@@ -54,6 +98,7 @@ public class Animator {
 
     
     /** 
+     * Metoda aktualizująca animacje w określonym wierszu spritesheet.
      * @param row
      */
     public void update(int row) {
@@ -71,7 +116,8 @@ public class Animator {
 
     
     /** 
-     * @return TextureRegion
+     * Metoda typu get, zwracająca obecny obrazek animacji.
+     * @return Obecny obrazek animacji.
      */
     public TextureRegion getCurrentFrame() {
         return frames[(int) currentImage.y][(int) currentImage.x];
@@ -79,7 +125,8 @@ public class Animator {
 
     
     /** 
-     * @return TextureRegion
+     * Metoda typu get, zwracająca animacje spoczynku.
+     * @return Animacja spoczynku.
      */
     public TextureRegion getIdleAnimation() {
         return frames[(int) currentImage.y][(int) (imageCount.x - 1)];
