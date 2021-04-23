@@ -1377,18 +1377,34 @@ public abstract class GameEngine extends ScreenAdapter implements Constant {
                 BOX_HEIGHT_F * BOX_Y_AXIS_NUMBER);
         screenY = (int) gameHeight_f - screenY;
         if (board.contains(screenX, screenY)) {
-            int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
-            int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
-            if (xPos == 10 || yPos == 10)
-                return;
-            if (FirstPlayerShotsDone[xPos][yPos] != 0) {
-                shootingEnabled = false;
-                rotateEnabled = true;
-                Gdx.graphics.setCursor(crosshairs[0]);
-            } else {
-                shootingEnabled = true;
-                rotateEnabled = true;
-                Gdx.graphics.setCursor(crosshairs[1]);
+            if (PlayerTurn == 1) {
+                int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+                if (xPos == 10 || yPos == 10)
+                    return;
+                if (FirstPlayerShotsDone[xPos][yPos] != 0) {
+                    shootingEnabled = false;
+                    rotateEnabled = true;
+                    Gdx.graphics.setCursor(crosshairs[0]);
+                } else {
+                    shootingEnabled = true;
+                    rotateEnabled = true;
+                    Gdx.graphics.setCursor(crosshairs[1]);
+                }
+            } else if (PlayerTurn == 2) {
+                int xPos = (int) ((screenX - SecondBoardStart.x) / BOX_WIDTH_F);
+                int yPos = (int) ((screenY - SecondBoardStart.y) / BOX_HEIGHT_F);
+                if (xPos == 10 || yPos == 10)
+                    return;
+                if (FirstPlayerShotsDone[xPos][yPos] != 0) {
+                    shootingEnabled = false;
+                    rotateEnabled = true;
+
+                } else {
+                    shootingEnabled = true;
+                    rotateEnabled = true;
+
+                }
             }
 
         } else {

@@ -560,7 +560,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
      * Metoda do odtwarzania dźwięku obrotu wieżyczek
      */
     private void startRotateSound() {
-        sid = rotateSound.loop(hud.gameSettings.soundVolume * (1 + 0.3f));
+        sid = rotateSound.loop(hud.gameSettings.soundVolume * (1 + 0.5f));
         rotateSound.pause();
     }
 
@@ -650,7 +650,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateSound.pause();
         }
         handleInput(deltaTime);
-        rotateSound.setVolume(sid, hud.gameSettings.soundVolume);
+        rotateSound.setVolume(sid, hud.gameSettings.soundVolume * (1 + 0.5f));
         if (gameStage == 3) {
 
             if (PlayerTurn == 1)
@@ -743,7 +743,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
                         playShootSound();
                     }
                     drawShootingEffect(deltaTime);
-                    Gdx.graphics.setCursor(crosshairs[0]);
                     if (hitted == true && destroyed == false) {
                         if (hitMissSound)
                             hitEffect.playSound(hud.gameSettings.soundVolume);
