@@ -408,8 +408,7 @@ public class ComputerPlayerAi {
                 e.printStackTrace();
             }
             Vector2 tmp = new Vector2(x, y);
-            while (tmp.x > 9 || tmp.x < 0 || tmp.y > 9 || tmp.y < 0
-                    || SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] != 0) {
+            do {
                 tmp.x = x;
                 tmp.y = y;
                 dir = ran.nextInt(4);
@@ -421,7 +420,20 @@ public class ComputerPlayerAi {
                     tmp.y--;
                 } else
                     tmp.x--;
-            }
+                while (tmp.x > 9 || tmp.x < 0 || tmp.y > 9 || tmp.y < 0) {
+                    tmp.x = x;
+                    tmp.y = y;
+                    dir = ran.nextInt(4);
+                    if (dir == 0)
+                        tmp.y++;
+                    else if (dir == 1)
+                        tmp.x++;
+                    else if (dir == 2) {
+                        tmp.y--;
+                    } else
+                        tmp.x--;
+                }
+            } while (SecondPlayerShotsDone[(int) tmp.x][(int) tmp.y] != 0);
             val = dir;
         } else if (numberofHits >= 2) {
             int dir = ran.nextInt(2);
