@@ -11,8 +11,7 @@ import com.ourshipsgame.mainmenu.MenuGlobalElements;
 import com.ourshipsgame.mainmenu.MenuScreen;
 
 /**
- * Klasa reprezentująca okno dialogowe.
- * Dziedziczy po klasie Dialog.
+ * Klasa reprezentująca okno dialogowe. Dziedziczy po klasie Dialog.
  */
 public class OptionsWindow extends Dialog implements Constant {
 
@@ -41,8 +40,8 @@ public class OptionsWindow extends Dialog implements Constant {
     private Hud hud;
 
     /**
-     * Referencja "do siebie".
-     * Jest używany w konstruktorze podokna dialogowego przy wyjściu z gry.
+     * Referencja "do siebie". Jest używany w konstruktorze podokna dialogowego przy
+     * wyjściu z gry.
      */
     private OptionsWindow backReference = this;
 
@@ -60,8 +59,9 @@ public class OptionsWindow extends Dialog implements Constant {
 
     /**
      * Główny i jedyny konstruktor klasy OptionsWindow.
+     * 
      * @param windowName Nazwa okna.
-     * @param hud Referencja obiektu Hud.
+     * @param hud        Referencja obiektu Hud.
      */
     public OptionsWindow(String windowName, Hud hud) {
         super(windowName, hud.getSkin());
@@ -81,17 +81,19 @@ public class OptionsWindow extends Dialog implements Constant {
 
     /**
      * Metoda zapisująca ustawienia gry do pliku.
+     * 
      * @throws IOException Wyjątek związany z plikiem.
      */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
-        savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
+        savingPrintWriter = new FileWriter("settings.txt", false);
         savingPrintWriter.write(musicSlider.getPercent() + "\n" + soundSlider.getPercent());
         savingPrintWriter.close();
     }
 
     /**
      * Metoda wynikowa po wciśnięciu przycisku w oknie dialogowym.
+     * 
      * @param act Obiekt przycisku.
      */
     @Override

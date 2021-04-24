@@ -8,27 +8,27 @@ import com.ourshipsgame.Main;
 import com.ourshipsgame.handlers.Constant;
 
 /**
- * Klasa reprezentująca ssuwak z libGDX.
- * Dziedziczy po klasie Slider.
+ * Klasa reprezentująca suwak z libGDX. Dziedziczy po klasie Slider.
  */
 public class GameSlider extends Slider implements Constant {
 
     /**
-     * Obiekt klasy Main. 
-     * W tej klasie jest referencją do elementów menu (obiekt menuElements).
+     * Obiekt klasy Main. W tej klasie jest referencją do elementów menu (obiekt
+     * menuElements).
      */
     private Main game;
 
     /**
      * Konstruktor klasy GameSlider.
-     * @param x Pozycja w X.
-     * @param y Pozycja w Y.
-     * @param min Minimalna wartość ssuwaka.
-     * @param max Maksymalna wartość ssuwaka.
-     * @param stepSize Rozbieżność ssuwaka.
+     * 
+     * @param x        Pozycja w X.
+     * @param y        Pozycja w Y.
+     * @param min      Minimalna wartość suwaka.
+     * @param max      Maksymalna wartość suwaka.
+     * @param stepSize Rozbieżność suwaka.
      * @param vertical Czy poziomo.
-     * @param skin Skórka ssuwaka.
-     * @param game Referencja obiektu Main.
+     * @param skin     Skórka suwaka.
+     * @param game     Referencja obiektu Main.
      */
     public GameSlider(float x, float y, float min, float max, float stepSize, boolean vertical, Skin skin,
             final Main game) {
@@ -40,26 +40,27 @@ public class GameSlider extends Slider implements Constant {
 
     /**
      * Drugi konstruktor klasy GameSlider.
-     * @param min Minimalna wartość ssuwaka.
-     * @param max Maksymalna wartość ssuwaka.
-     * @param stepSize Rozbieżność ssuwaka.
+     * 
+     * @param min      Minimalna wartość suwaka.
+     * @param max      Maksymalna wartość suwaka.
+     * @param stepSize Rozbieżność suwaka.
      * @param vertical Czy poziomo.
-     * @param skin Skórka ssuwaka
+     * @param skin     Skórka suwaka
      */
     public GameSlider(float min, float max, float stepSize, boolean vertical, Skin skin) {
         super(min, max, stepSize, vertical, skin);
     }
 
-    
-    /** 
-     * Ustawienie słuchacza ssuwaka.
-     * @param option Typ ssuwaka.
+    /**
+     * Ustawienie słuchacza suwaka.
+     * 
+     * @param option   Typ suwaka.
      * @param settings Referencja obiektu GameSettings.
      */
     public void setSliderType(int option, final GameSettings settings) {
         final Slider sliderTmp = this;
 
-        if(option == 1) {
+        if (option == 1) {
             this.setVisualPercent(settings.sliderMusicPercent);
             this.addListener(new ChangeListener() {
 
@@ -68,11 +69,11 @@ public class GameSlider extends Slider implements Constant {
                     settings.sliderMusicPercent = sliderTmp.getPercent();
                     settings.music.setVolume(sliderTmp.getPercent() / 5.0f);
                 }
-                
+
             });
         }
 
-        else if(option == 2) {
+        else if (option == 2) {
             this.setVisualPercent(settings.sliderSoundPercent);
             this.addListener(new ChangeListener() {
 
@@ -81,16 +82,16 @@ public class GameSlider extends Slider implements Constant {
                     settings.sliderSoundPercent = sliderTmp.getPercent();
                     settings.soundVolume = sliderTmp.getPercent() / 5.0f;
                 }
-                
+
             });
         }
 
     }
 
-    
-    /** 
-     * Ustawienie słuchacza ssuwaka.
-     * @param option Typ ssuwaka.
+    /**
+     * Ustawienie słuchacza suwaka.
+     * 
+     * @param option Typ suwaka.
      */
     public void setSliderType(int option) {
         final Slider sliderTmp = this;

@@ -234,6 +234,7 @@ public class ComputerPlayerAi {
 
     /**
      * Metoda do obliczeń logiki i pozycji strzału gdy poprzedni strzał był trafiony
+     * i statek zniszczono
      */
     private void HittedNdestroyed() {
         boolean hitsLeft = false;
@@ -291,8 +292,8 @@ public class ComputerPlayerAi {
     }
 
     /**
-     * Metoda do obliczeń logiki i pozycji strzału gdy statek przeciwnika został
-     * znisczony
+     * Metoda do obliczeń logiki i pozycji strzału gdy statek przeciwnika nie został
+     * zniszczony po trafieniu
      * 
      * @param foundAnotherhit Parametr do aktualizacji logiki oznaczający że
      *                        pozostały nierozliczone trafienia

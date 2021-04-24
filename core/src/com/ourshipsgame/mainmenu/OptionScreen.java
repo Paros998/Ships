@@ -135,7 +135,7 @@ public class OptionScreen implements Screen, Constant {
      */
     private void saveSettings() throws IOException {
         FileWriter savingPrintWriter;
-        savingPrintWriter = new FileWriter("core/assets/files/settings.txt", false);
+        savingPrintWriter = new FileWriter("settings.txt", false);
         savingPrintWriter.write(musicSliderVolume.getPercent() + "\n" + soundSilderVolume.getPercent());
         savingPrintWriter.close();
     }

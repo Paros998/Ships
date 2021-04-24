@@ -51,6 +51,7 @@ public class GameSettings {
 
     /**
      * Konstruktor klasy GameSettings.
+     * 
      * @param game Referencja obiektu Game.
      */
     public GameSettings(Game game) {
@@ -74,10 +75,11 @@ public class GameSettings {
 
     /**
      * Metoda wczytująca ustawienia z pliku.
+     * 
      * @throws IOException Wyjątek związany z plikiem.
      */
     private void loadSettings() throws IOException {
-        File file = new File("core/assets/files/settings.txt");
+        File file = new File("settings.txt");
         if (!file.exists()) {
             file.createNewFile(); // Creating player file with home details
             musicVolume = 0.2f;
@@ -96,10 +98,16 @@ public class GameSettings {
         }
     }
 
+    /**
+     * Metoda włączająca dźwięk kliknięcia
+     */
     public void playSound() {
         clickSound.play(soundVolume);
     }
 
+    /**
+     * Metoda usuwająca wszystkie elementy
+     */
     public void dispose() {
         music.dispose();
         clickSound.dispose();

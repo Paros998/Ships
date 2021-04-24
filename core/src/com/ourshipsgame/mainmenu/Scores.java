@@ -97,7 +97,7 @@ public class Scores {
      *                     następnie sortuje listę
      */
     private void loadScores() throws IOException {
-        File file = new File("core/assets/files/scores.txt");
+        File file = new File("scores.txt");
         if (!file.exists()) {
             file.createNewFile();
         } else {

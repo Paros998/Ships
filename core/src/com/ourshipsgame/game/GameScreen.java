@@ -360,7 +360,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             protected void result(Object object) {
                 switch (object.toString()) {
                 case "Yes":
-                    File file = new File("core/assets/files/scores.txt");
+                    File file = new File("scores.txt");
                     if (!file.exists())
                         try {
                             file.createNewFile();
@@ -588,17 +588,6 @@ public class GameScreen extends GameEngine implements InputProcessor {
         shootSound = false;
     }
 
-    /**
-     * Metoda do sprawdzania wejścia
-     * 
-     * @param deltaTime czas między klatkami
-     */
-    // Not needed
-    // Input and update methods
-    private void handleInput(float deltaTime) {
-        /// Buttons pressed
-    }
-
     // Invoked after ready button is pressed in stage 2
     /**
      * Metoda do sprawdzenia czy statki są na dobrych pozycjach i wystartowanie
@@ -649,7 +638,7 @@ public class GameScreen extends GameEngine implements InputProcessor {
             rotateTime -= 0.32f;
             rotateSound.pause();
         }
-        handleInput(deltaTime);
+
         rotateSound.setVolume(sid, hud.gameSettings.soundVolume * (1 + 0.5f));
         if (gameStage == 3) {
 
