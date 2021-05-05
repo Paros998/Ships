@@ -100,78 +100,76 @@ public class OptionsWindow extends Dialog implements Constant {
     protected void result(final Object act) {
         Actions action = Actions.valueOf(act.toString());
         switch (action) {
-        case RESUME_GAME:
-            hud.gameSettings.playSound();
-            this.hide();
-            turnedOn = false;
-            break;
+            case RESUME_GAME:
+                hud.gameSettings.playSound();
+                this.hide();
+                turnedOn = false;
+                break;
 
-        case OPTIONS:
-            hud.gameSettings.playSound();
-            new Dialog("Options", hud.getSkin()) {
+            case OPTIONS:
+                hud.gameSettings.playSound();
+                new Dialog("Options", hud.getSkin()) {
 
-                {
-                    soundSlider = new GameSlider(0, 100, 1, false, this.getSkin());
-                    musicSlider = new GameSlider(0, 100, 1, false, this.getSkin());
+                    {
+                        soundSlider = new GameSlider(0, 100, 1, false, this.getSkin());
+                        musicSlider = new GameSlider(0, 100, 1, false, this.getSkin());
 
-                    musicSlider.setSliderType(1, hud.gameSettings);
-                    soundSlider.setSliderType(2, hud.gameSettings);
+                        musicSlider.setSliderType(1, hud.gameSettings);
+                        soundSlider.setSliderType(2, hud.gameSettings);
 
-                    this.text("Music Volume");
-                    this.row();
-                    this.add(musicSlider).expandX().padLeft(20);
-                    this.row();
-                    this.text("SFX Volume");
-                    this.add(soundSlider).expandX().padLeft(20);
-                    this.row();
-                    this.getCells().removeIndex(1);
-                    this.add(this.getButtonTable());
-                    this.button("Back");
-                }
-
-                @Override
-                protected void result(final Object act) {
-                    hud.gameSettings.playSound();
-
-                    try {
-                        saveSettings();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        this.text("Music Volume");
+                        this.row();
+                        this.add(musicSlider).expandX().padLeft(20);
+                        this.row();
+                        this.text("SFX Volume");
+                        this.add(soundSlider).expandX().padLeft(20);
+                        this.row();
+                        this.getCells().removeIndex(1);
+                        this.add(this.getButtonTable());
+                        this.button("Back");
                     }
 
-                    backReference.show(hud.getStage());
-                }
-
-            }.show(hud.getStage());
-            break;
-
-        case BACK_TO_MAIN_MENU:
-            hud.gameSettings.playSound();
-            new Dialog("Confitm Exit", hud.getSkin()) {
-
-                {
-                    button("Yes", "Yes");
-                    button("No", "No");
-                }
-
-                @Override
-                protected void result(final Object act) {
-                    if (act.toString() == "Yes") {
-                        hud.game.menuElements = new MenuGlobalElements(hud.game);
-                        hud.gameSettings.dispose();
-                        hud.gameScreen.dispose();
-                        hud.dispose();
-                        hud.gameSettings = null;
-                        hud.gameScreen = null;
-                        hud.game.setScreen(new MenuScreen(hud.game));
-                    } else {
+                    @Override
+                    protected void result(final Object act) {
                         hud.gameSettings.playSound();
+
+                        try {
+                            saveSettings();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         backReference.show(hud.getStage());
                     }
-                }
 
-            }.show(hud.getStage());
-            break;
+                }.show(hud.getStage());
+                break;
+
+            case BACK_TO_MAIN_MENU:
+                hud.gameSettings.playSound();
+                new Dialog("Confitm Exit", hud.getSkin()) {
+
+                    {
+                        button("Yes", "Yes");
+                        button("No", "No");
+                    }
+
+                    @Override
+                    protected void result(final Object act) {
+                        if (act.toString() == "Yes") {
+                            hud.game.menuElements = new MenuGlobalElements(hud.game);
+                            hud.gameScreen.dispose();
+                            hud.gameSettings = null;
+                            hud.gameScreen = null;
+                            hud.game.setScreen(new MenuScreen(hud.game));
+                        } else {
+                            hud.gameSettings.playSound();
+                            backReference.show(hud.getStage());
+                        }
+                    }
+
+                }.show(hud.getStage());
+                break;
         }
     }
 }
