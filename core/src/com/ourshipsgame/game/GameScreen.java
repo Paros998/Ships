@@ -822,6 +822,8 @@ public class GameScreen extends GameEngine implements InputProcessor {
         manager.dispose();
         loadingTexture.dispose();
         font.dispose();
+        hud.gameSettings.dispose();
+        hud.dispose();
         hudFont.dispose();
         super.dispose();
     }
